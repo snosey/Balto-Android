@@ -17,7 +17,7 @@
         <ImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="5"
+            android:layout_weight="0"
             android:background="@drawable/line" />
 
     </LinearLayout>
@@ -25,7 +25,7 @@
     <ImageButton
         android:layout_width="@dimen/dimen_VerySmall"
         android:layout_height="@dimen/dimen_VerySmall"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_margin="@dimen/margin_Medium"
         android:background="@android:color/transparent"
         android:onClick="back"
@@ -36,16 +36,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_Medium"
-        android:layout_marginLeft="@dimen/margin_Large"
+        android:layout_marginStart="@dimen/margin_Large"
         android:layout_marginTop="@dimen/margin_Medium"
-        android:text="What is your email?"
+        android:text="@string/ask_email"
         android:textColor="@color/white"
         android:textSize="@dimen/text_Large" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_Large"
+        android:layout_marginBottom="@dimen/margin_Medium"
+        android:layout_marginStart="@dimen/margin_Large"
+        android:maxLines="1"
+        android:id="@+id/emailDesc"
+        android:ellipsize="end"
+        android:text="@string/emailDescription"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_VerySmall" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_Large"
         android:layout_marginTop="@dimen/margin_Medium"
         android:text="@string/email"
         android:textColor="@color/white"
@@ -54,8 +67,9 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_Large"
-        android:layout_marginRight="@dimen/margin_Large"
+        android:layout_marginStart="@dimen/margin_Large"
+        android:id="@+id/email"
+        android:layout_marginEnd="@dimen/margin_Large"
         android:backgroundTint="@color/white"
         android:inputType="textEmailAddress"
         android:textColor="@color/white" />
@@ -64,7 +78,7 @@
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_gravity="end"
         android:layout_margin="@dimen/margin_Medium"
         android:background="@drawable/circel"
         android:src="@drawable/next" />

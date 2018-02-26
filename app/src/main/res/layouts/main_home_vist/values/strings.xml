@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Home">Home</string>
+    <string name="reservation">Reservations</string>
+    <string name="promotions">Promotions</string>
+    <string name="addPayment">Payment</string>
+    <string name="share">Share</string>
+    <string name="lang">Language</string>
+    <string name="termAndCondition">Terms and Conditions</string>
+    <string name="logout">Logout</string>
+    <string name="areYouSure">Are you sure?</string>
+    <string name="back">back</string>
+    <string name="noPromo">No promotions available , share application to get promotions.</string>
+    <string name="emailDescription">For promotions, changing password and important notifications</string>
+    <string name="homeMain">Home Visit</string>
+    <string name="onlineMain">Online Consultation</string>
+    <string name="agreeConditions"><u><b>I agree to the terms and conditions</b></u></string>
+    <string name="Register">Register</string>
+    <string name="yourLocation">Your Location</string>
+    <string name="selectService">Select Service Category</string>
+    <string name="cash">cash</string>
+    <string name="change"><u>change</u></string>
+    <string name="baseFare">Base Fare</string>
+    <string name="serviceDuration">Service Duration</string>
+    <string name="Male">Male</string>
+    <string name="wallet">Wallet</string>
+    <string name="Agenda">Agenda</string>
+    <string name="Female">Female</string>
+    <string name="Both">Any</string>
+    <string name="estimatedFare">Total Fare</string>
+    <string name="schedule">Schedule</string>
+    <string name="requestNow">Request Now</string>
+    <string name="promoCodeRequest">Enter Promo Code if you have</string>
+    <string name="available">Available</string>
+    <string name="offline">Offline</string>
+    <string name="noProfissional">No professional available</string>
+    <string name="bookingRequestMessage">New Request</string>
+    <string name="searching">Searching</string>
+
+</resources>

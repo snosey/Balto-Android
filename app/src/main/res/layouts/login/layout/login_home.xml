@@ -4,7 +4,14 @@
     android:background="@drawable/login_background"
     android:layout_height="match_parent">
 
-
+    <TextView
+        android:layout_width="wrap_content"
+        android:onClick="lang"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/black_8am2"
+        android:layout_height="wrap_content"
+        android:id="@+id/lang"
+        android:layout_margin="@dimen/margin_Small" />
 
     <Button
         android:layout_width="match_parent"
@@ -27,11 +34,12 @@
         android:text="@string/signup"
         android:onClick="signup"
         android:textColor="@color/white"
+        android:id="@+id/signup"
         android:textAllCaps="false"
         android:backgroundTint="@color/red"
         android:background="@drawable/button_rounded"
-        android:layout_marginLeft="@dimen/margin_Large"
-        android:layout_marginRight="@dimen/margin_Large"
+        android:layout_marginStart="@dimen/margin_Large"
+        android:layout_marginEnd="@dimen/margin_Large"
         android:layout_height="@dimen/dimen_VerySmall" />
 
 </RelativeLayout>

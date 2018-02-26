@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Home">الرئيسيه</string>
+    <string name="reservation">الحجوزات</string>
+    <string name="promotions">الهدايا</string>
+    <string name="addPayment">الدفع</string>
+    <string name="share">مشاركه</string>
+    <string name="lang">اللغه</string>
+    <string name="termAndCondition">الشروط و الاحكام</string>
+    <string name="logout">تسجيل خروج</string>
+    <string name="areYouSure">هل انت متأكد</string>
+    <string name="back">رجوع</string>
+    <string name="noPromo">لا يوجد عروض حاليا , قم بمشاركه التطبيق للحصول على عروض و خصومات</string>
+    <string name="emailDescription">للهدايا , وتغير كلمة السر و الاشعارات المهمه</string>
+    <string name="homeMain">زياره منزليه</string>
+    <string name="onlineMain">استشاره اونلاين</string>
+    <string name="agreeConditions"><u><b>اوافق على الشروط و الاحكام</b></u></string>
+    <string name="Register">تسجيل</string>
+    <string name="yourLocation">موقعك الحالي</string>
+    <string name="selectService">اختر نوع الخدمه</string>
+    <string name="cash">نقدي</string>
+    <string name="wallet">المحفظه</string>
+    <string name="change"><u>تغيير</u></string>
+    <string name="baseFare">التكلفة الاساسية</string>
+    <string name="serviceDuration">مدة الخدمة</string>
+    <string name="Male">ذكر</string>
+    <string name="Female">أنثى</string>
+    <string name="Both">آي منهما</string>
+    <string name="estimatedFare">التكلفة الاجمالية</string>
+    <string name="schedule">حجز</string>
+    <string name="requestNow">اطلب الان</string>
+    <string name="Agenda">الأجنده</string>
+    <string name="promoCodeRequest">قم بادخال كود الخصم اذا كان لديك</string>
+    <string name="available">متاح</string>
+    <string name="offline">غير متاح</string>
+    <string name="noProfissional">لا يوجد متخصص متاح حاليا</string>
+    <string name="bookingRequestMessage">طلب جديد</string>
+    <string name="searching">جاري البحث</string>
+</resources>

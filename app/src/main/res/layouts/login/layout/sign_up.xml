@@ -20,10 +20,10 @@
 
 
     <Button
-        android:id="@+id/login"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_VerySmall"
         android:layout_alignParentBottom="true"
+        android:id="@+id/signup_facebook"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/margin_Medium"
         android:layout_marginLeft="@dimen/margin_Large"
@@ -39,6 +39,7 @@
     <!-- Or -->
     <RelativeLayout
         android:layout_width="match_parent"
+        android:id="@+id/orRl"
         android:layout_height="wrap_content">
 
         <TextView
@@ -46,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:text="Or"
+            android:text="@string/or"
             android:textColor="@color/white" />
 
         <ImageView

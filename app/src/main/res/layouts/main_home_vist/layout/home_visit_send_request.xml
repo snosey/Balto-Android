@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".6"
+        tools:context="com.example.snosey.balto.MainActivity" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".4">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <!-- estimated fare -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_margin="@dimen/margin_Medium"
+                    android:drawablePadding="@dimen/margin_Medium"
+                    android:drawableStart="@drawable/money"
+                    android:gravity="center"
+                    android:text="@string/estimatedFare" />
+
+                <TextView
+                    android:id="@+id/estimatedFare"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="@dimen/margin_Medium" />
+
+            </RelativeLayout>
+
+            <!-- payment way -->
+            <TextView
+                android:id="@+id/paymentWay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_margin="@dimen/margin_Medium"
+                android:drawablePadding="@dimen/margin_Medium"
+                android:drawableStart="@drawable/payment"
+                android:gravity="center"
+                android:text="@string/cash" />
+
+
+            <!-- Line -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_Medium"
+                android:src="@drawable/line"
+                android:tint="@color/colorPrimary" />
+
+            <!-- icon and text -->
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/icon"
+                    android:layout_width="@dimen/dimen_VeryVerySmall"
+                    android:layout_height="@dimen/dimen_VeryVerySmall"
+                    android:layout_alignParentStart="true"
+                    android:layout_margin="@dimen/margin_Medium" />
+
+                <TextView
+                    android:id="@+id/iconText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_Medium"
+                    android:layout_toEndOf="@id/icon"
+                    android:textColor="@color/red" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/schedule"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:textColor="@color/white"
+                    android:paddingStart="@dimen/margin_Medium"
+                    android:paddingEnd="@dimen/margin_Medium"
+                    android:text="@string/schedule"
+                    android:layout_margin="@dimen/margin_Medium"
+                    android:backgroundTint="@color/black_8am2"
+                    android:background="@drawable/button_rounded" />
+
+
+                <Button
+                    android:id="@+id/requestNow"
+                    android:text="@string/requestNow"
+                    android:layout_width="wrap_content"
+                    android:textColor="@color/white"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:paddingStart="@dimen/margin_Medium"
+                    android:paddingEnd="@dimen/margin_Medium"
+                    android:layout_margin="@dimen/margin_Medium"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:background="@drawable/button_rounded" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+

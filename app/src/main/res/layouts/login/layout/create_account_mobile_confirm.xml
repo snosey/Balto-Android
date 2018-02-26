@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:clickable="true"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_Medium"
+        android:layout_marginTop="@dimen/margin_Medium"
+        android:text="@string/smsSent"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_Medium"
+        android:text="@string/confirmation_Code"
+        android:textColor="@color/white"
+        android:textSize="13sp" />
+
+    <EditText
+        android:id="@+id/code"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/margin_Medium"
+        android:layout_marginStart="@dimen/margin_Medium"
+        android:layout_marginTop="@dimen/margin_Medium"
+        android:backgroundTint="@android:color/transparent"
+        android:inputType="number"
+        android:maxLength="6"
+        android:textCursorDrawable="@color/white"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
+        android:textSize="30sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_height="wrap_content">
+    <ImageView
+        android:layout_width="@dimen/dimen_VeryVerySmall"
+        android:src="@drawable/line"
+        android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_width="@dimen/dimen_VeryVerySmall"
+            android:src="@drawable/line"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_width="@dimen/dimen_VeryVerySmall"
+            android:src="@drawable/line"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_width="@dimen/dimen_VeryVerySmall"
+            android:src="@drawable/line"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_width="@dimen/dimen_VeryVerySmall"
+            android:src="@drawable/line"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:layout_width="@dimen/dimen_VeryVerySmall"
+            android:src="@drawable/line"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_Medium"
+        android:layout_marginTop="@dimen/margin_Medium"
+        android:text="@string/didntReciveCode"
+        android:textColor="@color/white"
+        android:textSize="11sp" />
+
+    <Button
+        android:id="@+id/resend"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dimen_VeryVerySmall"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_Large"
+        android:background="@drawable/button_rounded_stroked"
+        android:text="@string/resend"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_VerySmall" />
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/margin_Medium"
+        android:layout_marginTop="@dimen/margin_Medium"
+        android:text="Skip"
+        android:textColor="@color/white"
+        android:textSize="11sp"
+        android:visibility="gone" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_Medium"
+        android:layout_marginEnd="@dimen/margin_Large"
+        android:layout_marginStart="@dimen/margin_Large"
+        android:layout_marginTop="@dimen/margin_Large"
+        android:text="@string/promoCode"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_Medium" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_Large"
+        android:layout_marginStart="@dimen/margin_Large"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/promoCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".8"
+            android:backgroundTint="@color/white"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/white" />
+
+        <Button
+            android:id="@+id/confirm"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dimen_VeryVerySmall"
+            android:layout_gravity="center"
+            android:layout_weight=".2"
+            android:background="@drawable/button_rounded"
+            android:backgroundTint="@color/red"
+            android:text="@string/confirm"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_VerySmall" />
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_margin="@dimen/margin_Medium"
+        android:layout_height="wrap_content">
+
+
+
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:buttonTint="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"/>
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/checkbox"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:layout_marginStart="@dimen/margin_Medium"
+            android:layout_centerVertical="true"
+            android:text="@string/agreeConditions"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="@dimen/dimen_Medium"
+        android:background="@drawable/button_rounded"
+        android:textSize="@dimen/text_Small"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/red"
+        android:id="@+id/register"
+        android:layout_margin="@dimen/margin_Medium"
+        android:layout_gravity="center"
+        android:text="@string/Register"
+        android:layout_height="@dimen/dimen_VerySmall" />
+
+</LinearLayout>
