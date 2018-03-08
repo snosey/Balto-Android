@@ -68,6 +68,8 @@ public class CategoryDetails extends Fragment {
     @InjectView(R.id.confirm)
     Button confirm;
 
+    String id_payment_way = "1";
+
     String logoText;
     String totalPrice = "0";
     Bundle bundle;
@@ -97,9 +99,9 @@ public class CategoryDetails extends Fragment {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
                         double value = min + (progress * 1);
-                        serviceDuration.setText((int) value + "");
+                        serviceDuration.setText((int) value);
                         try {
-                            totalPrice = ((jsonObject.getInt("price_per_hour") * ((int)value - 1)) + "");
+                            totalPrice = ((jsonObject.getInt("price_per_hour") * ((int) value - 1)) + "");
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -139,14 +141,15 @@ public class CategoryDetails extends Fragment {
         else if (radioGroup.getCheckedRadioButtonId() == both.getId())
             genderId = "3";
 
+        bundle.putString(WebService.Booking.id_payment_way, id_payment_way);
         bundle.putString(WebService.HomeVisit.id_gender, genderId);
         bundle.putString("address", getArguments().getString("address"));
         bundle.putString(WebService.HomeVisit.totalPrice, ((Integer.parseInt(totalPrice) +
                 Integer.parseInt(baseFare.getText().toString())
         ) + ""));
         bundle.putString(WebService.HomeVisit.duration, serviceDuration.getText().toString());
-        bundle.putDouble("lat",getArguments().getDouble("lat"));
-        bundle.putDouble("lng",getArguments().getDouble("lng"));
+        bundle.putDouble("lat", getArguments().getDouble("lat"));
+        bundle.putDouble("lng", getArguments().getDouble("lng"));
         bundle.putString("name", title.getText().toString());
         bundle.putString("logo", logoText);
         SendRequest fragment = new SendRequest();

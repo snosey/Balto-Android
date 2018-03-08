@@ -2,11 +2,13 @@ package com.example.snosey.balto;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -30,14 +32,14 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.snosey.balto.BuildConfig;
-import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
 import com.example.snosey.balto.login.RegistrationActivity;
+import com.example.snosey.balto.main.Agenda;
 import com.example.snosey.balto.main.Promotions;
+import com.example.snosey.balto.main.reservations.ReservationsMain;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -52,13 +54,15 @@ import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by Snosey on 2/7/2018.
  */
 
 public class MainActivity extends FragmentActivity {
-    JSONObject jsonObject;
+    public static JSONObject jsonObject;
 
     @InjectView(R.id.clientName)
     TextView clientName;
@@ -90,15 +94,33 @@ public class MainActivity extends FragmentActivity {
     LocationRequest mLocationRequest;
     FusedLocationProviderClient mFusedLocationClient;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+    @InjectView(R.id.menu)
+    ImageView menu;
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/arial.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
+
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
+        ((Application) this.getApplicationContext()).setCurrentActivity(MainActivity.this);
+
+        menu.setColorFilter(Color.BLACK);
         try {
             jsonObject = new JSONObject(getIntent().getStringExtra("userData"));
+
             if (Locale.getDefault().getLanguage().equals("ar"))
                 clientName.setText(jsonObject.getString("first_name_ar"));
             else
@@ -119,7 +141,7 @@ public class MainActivity extends FragmentActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(output);
                             if (!jsonObject.getString(WebService.Slider.total_rate).equals("0"))
-                                clientRate.setText(WebService.Slider.total_rate);
+                                clientRate.setText(jsonObject.getString(WebService.Slider.total_rate));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -177,6 +199,11 @@ public class MainActivity extends FragmentActivity {
 
         updateLocationInDB();
 
+        reservations(null);
+
+        if (getIntent().hasExtra("data")) {
+            new NotificationTransaction(MainActivity.this, getIntent().getStringExtra("data"));
+        }
     }
 
 
@@ -186,9 +213,43 @@ public class MainActivity extends FragmentActivity {
     }
 
 
+    public void agenda(View view) {
+        if (drawerLayout.isDrawerOpen(drawer))
+            drawerLayout.closeDrawer(drawer);
+
+        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("agenda");
+        if (myFragment != null && myFragment.isVisible())
+            return;
+
+        FragmentManager fm = getSupportFragmentManager();
+        Agenda fragment = new Agenda();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.fragment, fragment, "agenda");
+
+        if (view != null)
+            ft.addToBackStack("agenda");
+
+        ft.commit();
+    }
+
+
     public void reservations(View view) {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
+
+        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("ReservationsMain");
+        if (myFragment != null && myFragment.isVisible())
+            return;
+
+        FragmentManager fm = getSupportFragmentManager();
+        ReservationsMain fragment = new ReservationsMain();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.fragment, fragment, "ReservationsMain");
+
+        if (view != null)
+            ft.addToBackStack("ReservationsMain");
+
+        ft.commit();
     }
 
     public void payment(View view) {
@@ -202,7 +263,7 @@ public class MainActivity extends FragmentActivity {
             drawerLayout.closeDrawer(drawer);
 
         Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("promo");
-        if (myFragment == null || !myFragment.isVisible()) {
+        if (myFragment == null && !myFragment.isVisible()) {
 
 
             FragmentManager fm = getSupportFragmentManager();
@@ -462,6 +523,5 @@ public class MainActivity extends FragmentActivity {
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
         }
     }
-
 
 }

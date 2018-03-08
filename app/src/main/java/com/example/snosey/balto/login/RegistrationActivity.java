@@ -20,13 +20,27 @@ import com.example.snosey.balto.login.create_account.SignUp;
 
 import java.util.Locale;
 
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+
 
 public class RegistrationActivity extends FragmentActivity {
     SharedPreferences sharedPreferences;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/arial.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
         setContentView(R.layout.activity_registration);
         new GetHashKey(this);
         checkLang();
@@ -38,7 +52,7 @@ public class RegistrationActivity extends FragmentActivity {
             ft.commit();
         }
 
-        if (BuildConfig.APPLICATION_ID.contains("doctor")) {
+        if (com.example.snosey.balto.BuildConfig.APPLICATION_ID.contains("doctor")) {
             sharedPreferences = getSharedPreferences("login_doctor", Context.MODE_PRIVATE);
         } else {
             sharedPreferences = getSharedPreferences("login_client", Context.MODE_PRIVATE);

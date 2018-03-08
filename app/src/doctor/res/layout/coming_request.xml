@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="@dimen/dimen_Small"
+            android:layout_height="79dp"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_Medium"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/clientName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/black_8am2"
+            android:textSize="@dimen/text_Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/clientRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@id/clientName"
+            android:layout_below="@id/clientName"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_Medium"
+            android:drawableEnd="@drawable/star"
+            android:drawablePadding="@dimen/margin_Medium"
+            android:text="5"
+            android:textSize="@dimen/text_VerySmall" />
+
+        <TextView
+            android:id="@+id/requestDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="@dimen/margin_Medium"
+            android:drawablePadding="@dimen/margin_Medium"
+            android:drawableStart="@drawable/info"
+            android:gravity="center"
+            android:textSize="@dimen/text_Small" />
+
+
+        <!-- service duration -->
+        <RelativeLayout
+            android:id="@+id/vistDataLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/visitDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="@dimen/margin_Medium"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginStart="@dimen/margin_Medium"
+                android:layout_marginTop="@dimen/margin_Medium"
+                android:drawablePadding="@dimen/margin_Medium"
+                android:drawableStart="@drawable/time"
+                android:gravity="center" />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/margin_Medium"
+                android:textColor="@color/black_8am2"
+                android:visibility="gone" />
+
+
+        </RelativeLayout>
+
+
+        <TextView
+            android:id="@+id/details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Large"
+            android:gravity="center"
+            android:textColor="@color/black_8am2"
+            android:textSize="@dimen/text_Small"
+            android:visibility="gone" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/margin_Large"
+            android:src="@drawable/line"
+            android:tint="@color/colorPrimary" />
+
+        <!-- base fare -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_margin="@dimen/margin_Medium"
+                android:drawablePadding="@dimen/margin_Medium"
+                android:drawableStart="@drawable/money"
+                android:gravity="center"
+                android:text="@string/estimatedFare" />
+
+            <TextView
+                android:id="@+id/estimatedFare"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/margin_Medium" />
+
+        </RelativeLayout>
+
+        <!-- service duration -->
+        <RelativeLayout
+            android:id="@+id/durationLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/serviceDurationText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="@dimen/margin_Medium"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginLeft="@dimen/margin_Medium"
+                android:layout_marginRight="@dimen/margin_Medium"
+                android:layout_marginStart="@dimen/margin_Medium"
+                android:layout_marginTop="@dimen/margin_Medium"
+                android:drawablePadding="@dimen/margin_Medium"
+                android:drawableStart="@drawable/time"
+                android:gravity="center"
+                android:text="@string/serviceDuration" />
+
+
+            <TextView
+                android:id="@+id/serviceDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/margin_Medium"
+                android:textColor="@color/black_8am2" />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/paymentWay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Medium"
+            android:drawablePadding="@dimen/margin_Medium"
+            android:drawableStart="@drawable/payment"
+            android:gravity="center"
+            android:text="@string/cash" />
+
+        <TextView
+            android:id="@+id/clientAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Medium"
+            android:drawablePadding="@dimen/margin_Medium"
+            android:drawableStart="@drawable/gps"
+            android:gravity="center"
+            android:textColor="@color/red" />
+
+
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_VerySmall"
+            android:layout_margin="@dimen/margin_Medium"
+            android:id="@+id/accept"
+            android:background="@drawable/button_rounded"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/accept"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/cancel"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_Medium"
+            android:text="@android:string/cancel"
+            android:textSize="@dimen/text_Small" />
+    </LinearLayout>
+</ScrollView>

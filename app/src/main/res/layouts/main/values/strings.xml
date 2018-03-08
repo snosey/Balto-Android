@@ -19,7 +19,7 @@
     <string name="yourLocation">Your Location</string>
     <string name="selectService">Select Service Category</string>
     <string name="cash">cash</string>
-    <string name="change"><u>change</u></string>
+    <string name="change"><u>Change</u></string>
     <string name="baseFare">Base Fare</string>
     <string name="serviceDuration">Service Duration</string>
     <string name="Male">Male</string>
@@ -30,11 +30,24 @@
     <string name="estimatedFare">Total Fare</string>
     <string name="schedule">Schedule</string>
     <string name="requestNow">Request Now</string>
-    <string name="promoCodeRequest">Enter Promo Code if you have</string>
+    <string name="promoCodeRequest">Promo Code</string>
     <string name="available">Available</string>
     <string name="offline">Offline</string>
     <string name="noProfissional">No professional available</string>
     <string name="bookingRequestMessage">New Request</string>
     <string name="searching">Searching</string>
+    <string name="credit">Credit</string>
+    <string name="requestNotAvailable">Request is not available any more !</string>
+    <string name="coming">Upcoming</string>
+    <string name="past">Past</string>
+    <string name="alarmComingReservation">You have reservation in 30 minute</string>
+    <string name="ProfissionalBusy">All our representatives are now engaged in customer service</string>
+    <string name="optional">Optional</string>
+    <string name="hour">H</string>
+    <string name="egp">EGP</string>
+    <string name="fromHour">Available from</string>
+    <string name="toHour">To</string>
+    <string name="details">Details</string>
+    <string name="medReport">Med Report</string>
 
 </resources>

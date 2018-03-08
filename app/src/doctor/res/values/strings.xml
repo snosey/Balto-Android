@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="accept">Accept</string>
+    <string name="visitData">The date of the visit</string>
+    <string name="newAgenda">Add a new appointment</string>
+    <string name="wrongAppoinment">The appointment is not available</string>
+</resources>

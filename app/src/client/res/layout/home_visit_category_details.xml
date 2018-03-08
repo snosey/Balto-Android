@@ -150,7 +150,6 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_Medium"
                 android:buttonTint="@color/red"
-                android:checked="true"
                 android:text="@string/Male" />
 
 
@@ -165,6 +164,7 @@
 
             <RadioButton
                 android:id="@+id/both"
+                android:checked="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_Medium"
@@ -194,6 +194,7 @@
             <EditText
                 android:id="@+id/promoCode"
                 android:layout_width="0dp"
+                android:hint="@string/optional"
                 android:layout_height="wrap_content"
                 android:layout_weight=".7"
                 android:backgroundTint="@color/red"
@@ -206,7 +207,8 @@
                 android:layout_height="@dimen/dimen_VerySmall"
                 android:layout_gravity="center"
                 android:layout_weight=".3"
-                android:background="@color/red"
+                android:background="@drawable/button_rounded"
+                android:backgroundTint="@color/red"
                 android:text="@string/confirm"
                 android:textAllCaps="false"
                 android:textColor="@color/white"

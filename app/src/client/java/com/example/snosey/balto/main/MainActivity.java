@@ -2,6 +2,7 @@ package com.example.snosey.balto;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,6 +38,7 @@ import com.example.snosey.balto.Support.webservice.WebService;
 import com.example.snosey.balto.login.RegistrationActivity;
 import com.example.snosey.balto.main.HomeAndOnline;
 import com.example.snosey.balto.main.Promotions;
+import com.example.snosey.balto.main.reservation.Reservations;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -51,6 +53,8 @@ import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by Snosey on 2/7/2018.
@@ -91,10 +95,23 @@ public class MainActivity extends FragmentActivity {
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     @Override
+    protected void attachBaseContext(Context newBase) {
+        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+                .setDefaultFontPath("fonts/arial.ttf")
+                .setFontAttrId(R.attr.fontPath)
+                .build()
+        );
+
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+
 
 
         try {
@@ -119,7 +136,7 @@ public class MainActivity extends FragmentActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(output);
                             if (!jsonObject.getString(WebService.Slider.total_rate).equals("0"))
-                                clientRate.setText(WebService.Slider.total_rate);
+                                clientRate.setText(jsonObject.getString(WebService.Slider.total_rate));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -166,6 +183,9 @@ public class MainActivity extends FragmentActivity {
 
         updateLocationInDB();
 
+        if (getIntent().hasExtra("data")) {
+            new NotificationTransaction(MainActivity.this, getIntent().getStringExtra("data"));
+        }
     }
 
     private void MainHomeOfClient() {
@@ -209,8 +229,21 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void reservations(View view) {
+
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
+
+        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("ReservationsMain");
+        if (myFragment == null || !myFragment.isVisible()) {
+
+
+            FragmentManager fm = getSupportFragmentManager();
+            Reservations fragment = new Reservations();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment, fragment, "ReservationsMain");
+            ft.commit();
+
+        }
     }
 
     public void payment(View view) {

@@ -65,7 +65,7 @@ public class DoctorKind extends Fragment {
                             JSONArray jsonArray =
                                     finalJsonObject.getJSONArray("category").
                                             getJSONObject(spinner.getSelectedItemPosition()).getJSONArray(sub);
-
+                            accountObject.id_sub.clear();
                             for (int i = 0; i < jsonArray.length(); i++)
                                 accountObject.id_sub.add(jsonArray.getJSONObject(i).getString("id"));
 

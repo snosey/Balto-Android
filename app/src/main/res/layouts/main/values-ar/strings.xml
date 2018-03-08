@@ -30,10 +30,23 @@
     <string name="schedule">حجز</string>
     <string name="requestNow">اطلب الان</string>
     <string name="Agenda">الأجنده</string>
-    <string name="promoCodeRequest">قم بادخال كود الخصم اذا كان لديك</string>
+    <string name="promoCodeRequest">كود الخصم</string>
     <string name="available">متاح</string>
     <string name="offline">غير متاح</string>
     <string name="noProfissional">لا يوجد متخصص متاح حاليا</string>
     <string name="bookingRequestMessage">طلب جديد</string>
     <string name="searching">جاري البحث</string>
+    <string name="credit">البطاقه الائتمانيه</string>
+    <string name="requestNotAvailable">هذا الطلب لم يعد متاح !</string>
+    <string name="coming">القادمه</string>
+    <string name="past">السابقه</string>
+    <string name="alarmComingReservation">لديك حجز بعد 30 دقيقه</string>
+    <string name="ProfissionalBusy">جميع ممثلينا مشغولين الآن في خدمة عملاء</string>
+    <string name="optional">اختياري</string>
+    <string name="hour">س</string>
+    <string name="egp">جنيه</string>
+    <string name="fromHour">متاح من</string>
+    <string name="toHour">الى</string>
+    <string name="details">تفاصيل</string>
+    <string name="medReport">Med Report</string>
 </resources>

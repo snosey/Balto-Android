@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import com.example.snosey.balto.Support.webservice.WebService;
-import com.example.snosey.balto.main.reservation.Reservations;
+import com.example.snosey.balto.main.ComingRequest;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,8 +24,8 @@ public class NotificationTransaction {
             JSONObject notification = new JSONObject(jsonString);
             String kind = notification.getString("kind");
             String data = notification.getString("data");
-            if (kind.equals(WebService.Notification.Types.alarm)) {
-                ReservationsAlarm(data);
+            if (kind.equals(WebService.Notification.Types.bookingRequest)) {
+                checkComingRequest(data);
             }
 
         } catch (JSONException e) {
@@ -33,12 +33,15 @@ public class NotificationTransaction {
         }
     }
 
-    private void ReservationsAlarm(String data) {
+    private void checkComingRequest(String data) {
+        Bundle bundle = new Bundle();
+        bundle.putString(WebService.Booking.id, data);
         FragmentManager fm = activity.getSupportFragmentManager();
-        Reservations fragment = new Reservations();
+        ComingRequest fragment = new ComingRequest();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.replace(R.id.fragment, fragment, "ReservationsMain");
-        ft.addToBackStack("ReservationsMain");
+        fragment.setArguments(bundle);
+        ft.replace(R.id.fragment, fragment, "ComingRequest");
+        ft.addToBackStack("ComingRequest");
         ft.commit();
     }
 }

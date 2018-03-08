@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="@dimen/margin_Medium"
+        android:text="@string/Agenda"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_Large"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="@dimen/dimen_Medium"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_Medium"
+        android:weightSum="7">
+
+        <Button
+            android:id="@+id/day1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/margin_Medium"
+            android:text="1"
+            android:textSize="@dimen/text_Large" />
+
+        <Button
+            android:id="@+id/day2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/margin_Medium"
+            android:text="2"
+            android:textSize="@dimen/text_Large" />
+
+        <Button
+            android:id="@+id/day3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/margin_Medium"
+            android:text="3"
+            android:textSize="@dimen/text_Large" />
+
+        <Button
+            android:id="@+id/day4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/margin_Medium"
+            android:text="4"
+            android:textSize="@dimen/text_Large" />
+
+        <Button
+            android:id="@+id/day5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/margin_Medium"
+            android:text="5"
+            android:textSize="@dimen/text_Large" />
+
+        <Button
+            android:id="@+id/day6"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/margin_Medium"
+            android:text="6"
+            android:textSize="@dimen/text_Large" />
+
+        <Button
+            android:id="@+id/day7"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:padding="@dimen/margin_Medium"
+            android:text="7"
+            android:textSize="@dimen/text_Large" />
+
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/margin_Medium"
+        android:paddingEnd="@dimen/margin_Medium"
+        android:paddingStart="@dimen/margin_Medium"
+        android:weightSum="7">
+
+        <TextView
+            android:id="@+id/day1text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+
+        <TextView
+            android:id="@+id/day2text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+
+        <TextView
+            android:id="@+id/day3text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+
+        <TextView
+            android:id="@+id/day4text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+
+        <TextView
+            android:id="@+id/day5text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+
+        <TextView
+            android:id="@+id/day6text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+
+        <TextView
+            android:id="@+id/day7text"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/red" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/newAgenda"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_VerySmall"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/margin_Medium"
+            android:background="@drawable/button_rounded"
+            android:backgroundTint="@color/red"
+            android:text="@string/newAgenda"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/agendaRV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/newAgenda"
+            android:layout_margin="@dimen/margin_Medium" />
+
+    </RelativeLayout>
+
+</LinearLayout>

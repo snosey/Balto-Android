@@ -147,7 +147,9 @@ public class Main extends Fragment implements OnMapReadyCallback {
                         public void onClick(View view) {
                             if (choosePlaceNow) {
                                 try {
-                                    pickLocation(jsonObject.getJSONArray("mainCategory").getJSONObject(0).getString("id"));
+                                    categoryId=jsonObject.getJSONArray("mainCategory").getJSONObject(0).getString("id");
+                                    clientLocation();
+                                  //    pickLocation(jsonObject.getJSONArray("mainCategory").getJSONObject(0).getString("id"));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -159,7 +161,9 @@ public class Main extends Fragment implements OnMapReadyCallback {
                         public void onClick(View view) {
                             if (choosePlaceNow) {
                                 try {
-                                    pickLocation(jsonObject.getJSONArray("mainCategory").getJSONObject(1).getString("id"));
+                                    categoryId=jsonObject.getJSONArray("mainCategory").getJSONObject(1).getString("id");
+                                    clientLocation();
+                                //    pickLocation(jsonObject.getJSONArray("mainCategory").getJSONObject(1).getString("id"));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -171,7 +175,8 @@ public class Main extends Fragment implements OnMapReadyCallback {
                         public void onClick(View view) {
                             if (choosePlaceNow) {
                                 try {
-                                    pickLocation(jsonObject.getJSONArray("mainCategory").getJSONObject(2).getString("id"));
+                                    categoryId=jsonObject.getJSONArray("mainCategory").getJSONObject(2).getString("id");
+                                    clientLocation();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -183,7 +188,8 @@ public class Main extends Fragment implements OnMapReadyCallback {
                         public void onClick(View view) {
                             if (choosePlaceNow) {
                                 try {
-                                    pickLocation(jsonObject.getJSONArray("mainCategory").getJSONObject(3).getString("id"));
+                                    categoryId=jsonObject.getJSONArray("mainCategory").getJSONObject(3).getString("id");
+                                    clientLocation();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -193,6 +199,22 @@ public class Main extends Fragment implements OnMapReadyCallback {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+            }
+
+            private void clientLocation() {
+                FragmentManager fm = getActivity().getSupportFragmentManager();
+                Bundle bundle = new Bundle();
+                //bundle.putString("address", PlacePicker.getPlace(data, getActivity()).getAddress().toString());
+                bundle.putDouble("lat", mCurrLocationMarker.getPosition().latitude);
+                bundle.putDouble("lng",mCurrLocationMarker.getPosition().longitude);
+                bundle.putString(WebService.HomeVisit.id_user, getArguments().getString(WebService.HomeVisit.id_user));
+                bundle.putString(WebService.HomeVisit.id_main, categoryId + "");
+                ClientLocation fragment = new ClientLocation();
+                FragmentTransaction ft = fm.beginTransaction();
+                fragment.setArguments(bundle);
+                ft.replace(R.id.fragment, fragment, "ClientLocation");
+                ft.addToBackStack("ClientLocation");
+                ft.commit();
             }
         }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.HomeVisit.MainCatApi, urlData.get());
     }
@@ -355,11 +377,11 @@ public class Main extends Fragment implements OnMapReadyCallback {
                 bundle.putDouble("lng", PlacePicker.getPlace(data, getActivity()).getLatLng().longitude);
                 bundle.putString(WebService.HomeVisit.id_user, getArguments().getString(WebService.HomeVisit.id_user));
                 bundle.putString(WebService.HomeVisit.id_main, categoryId + "");
-                Second fragment = new Second();
+                ClientLocation fragment = new ClientLocation();
                 FragmentTransaction ft = fm.beginTransaction();
                 fragment.setArguments(bundle);
-                ft.replace(R.id.fragment, fragment, "Second");
-                ft.addToBackStack("Second");
+                ft.replace(R.id.fragment, fragment, "ClientLocation");
+                ft.addToBackStack("ClientLocation");
                 ft.commit();
             }
         }

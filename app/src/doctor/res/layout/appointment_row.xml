@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/margin_Medium"
+    android:background="@drawable/shadow"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_Medium"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_Medium"
+            android:layout_marginTop="@dimen/margin_Medium"
+            android:text="@string/fromHour"
+            android:textSize="@dimen/text_Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/timeFrom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_Medium"
+            android:layout_marginStart="@dimen/margin_Medium"
+            android:layout_marginTop="@dimen/margin_Medium"
+            android:gravity="center"
+            android:padding="@dimen/margin_Medium"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_Small" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="@dimen/margin_Medium"
+            android:layout_marginStart="@dimen/margin_Medium"
+            android:layout_marginTop="@dimen/margin_Medium"
+            android:paddingStart="@dimen/margin_Medium"
+            android:text="@string/toHour"
+            android:textSize="@dimen/text_Medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/timeTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginBottom="@dimen/margin_Medium"
+            android:layout_marginStart="@dimen/margin_Medium"
+            android:layout_marginTop="@dimen/margin_Medium"
+            android:gravity="center"
+            android:padding="@dimen/margin_Medium" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_Medium"
+        android:layout_marginStart="@dimen/margin_Medium"
+        android:orientation="horizontal">
+
+
+        <Button
+            android:id="@+id/update"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_VerySmall"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_VerySmall"
+            android:background="@drawable/button_rounded"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/common_google_play_services_update_button"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_VerySmall"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_VerySmall"
+            android:background="@drawable/button_rounded"
+            android:backgroundTint="@color/red"
+            android:text="@string/com_facebook_loginview_cancel_action"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+</LinearLayout>

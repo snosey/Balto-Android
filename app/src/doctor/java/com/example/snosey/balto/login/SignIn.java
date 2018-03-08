@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
@@ -33,7 +35,6 @@ import java.util.regex.Pattern;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import com.example.snosey.balto.MainActivity;
 
 /**
  * Created by Snosey on 1/31/2018.
@@ -94,7 +95,7 @@ public class SignIn extends Fragment {
     private void check_Username_Password(final String email, final String password) {
         UrlData urlData = new UrlData();
         urlData.add(WebService.Login.email, email);
-        urlData.add("type","doctor");
+        urlData.add("type", "doctor");
         urlData.add(WebService.Login.password, password);
         urlData.add(WebService.Login.fcm_token, FirebaseInstanceId.getInstance().getToken());
 
@@ -124,6 +125,10 @@ public class SignIn extends Fragment {
     private void startNewActivity(String json) {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.putExtra("userData", json);
+        if (getActivity().getIntent().hasExtra("data")) {
+            Log.e("Notification", "HAS DATA");
+            intent.putExtra("data", getActivity().getIntent().getStringExtra("data"));
+        }
         startActivity(intent);
         getActivity().finish();
     }
