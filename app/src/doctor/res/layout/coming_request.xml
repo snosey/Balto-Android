@@ -14,7 +14,7 @@
             android:layout_height="79dp"
             android:layout_gravity="center"
             android:layout_margin="@dimen/margin_Medium"
-            android:src="@drawable/logo" />
+            android:src="@drawable/logo_profile" />
 
         <TextView
             android:id="@+id/clientName"

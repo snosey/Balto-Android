@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.snosey.balto.R;
 
@@ -34,17 +35,18 @@ public class ReservationsMain extends Fragment {
     ViewPager viewpager;
     @InjectView(R.id.main_content)
     CoordinatorLayout mainContent;
+    private ViewPagerAdapter adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.reservation_main, container, false);
+
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.GONE);
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.VISIBLE);
         ButterKnife.inject(this, view);
 
         viewpager = (ViewPager) view.findViewById(R.id.viewpager);
         setupViewPager(viewpager);
-
         tabs = (TabLayout) view.findViewById(R.id.tabs);
         tabs.setupWithViewPager(viewpager);
         return view;
@@ -56,8 +58,9 @@ public class ReservationsMain extends Fragment {
         ButterKnife.reset(this);
     }
 
+
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new ReservationComing(), getActivity().getString(R.string.coming));
         adapter.addFragment(new ReservationPast(), getActivity().getString(R.string.past));
         viewPager.setAdapter(adapter);

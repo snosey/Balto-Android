@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
@@ -28,7 +29,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -43,6 +43,8 @@ import butterknife.OnClick;
 public class Agenda extends Fragment {
 
     Button day;
+    private GregorianCalendar currentDate;
+
     @InjectView(R.id.day1)
     Button day1;
     @InjectView(R.id.day2)
@@ -73,7 +75,6 @@ public class Agenda extends Fragment {
     TextView day6text;
     @InjectView(R.id.day7text)
     TextView day7text;
-    private GregorianCalendar currentDate;
 
     JSONArray agendaJsonArray;
     AgendaAdapter agendaAdapter;
@@ -85,35 +86,7 @@ public class Agenda extends Fragment {
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.VISIBLE);
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
         ButterKnife.inject(this, view);
-        Calendar date = new GregorianCalendar();
-    
-        day1.setText(date.get(Calendar.DAY_OF_MONTH) + "");
-        day1text.setText(android.text.format.DateFormat.format("EEE", date));
-
-        date.add(Calendar.DAY_OF_MONTH, +1);
-        day2.setText(date.get(Calendar.DAY_OF_MONTH) + "");
-        day2text.setText(android.text.format.DateFormat.format("EEE", date));
-
-        date.add(Calendar.DAY_OF_MONTH, +1);
-        day3.setText(date.get(Calendar.DAY_OF_MONTH) + "");
-        day3text.setText(android.text.format.DateFormat.format("EEE", date));
-
-        date.add(Calendar.DAY_OF_MONTH, +1);
-        day4.setText(date.get(Calendar.DAY_OF_MONTH) + "");
-        day4text.setText(android.text.format.DateFormat.format("EEE", date));
-
-        date.add(Calendar.DAY_OF_MONTH, +1);
-        day5.setText(date.get(Calendar.DAY_OF_MONTH) + "");
-        day5text.setText(android.text.format.DateFormat.format("EEE", date));
-
-        date.add(Calendar.DAY_OF_MONTH, +1);
-        day6.setText(date.get(Calendar.DAY_OF_MONTH) + "");
-        day6text.setText(android.text.format.DateFormat.format("EEE", date));
-
-        date.add(Calendar.DAY_OF_MONTH, +1);
-        day7.setText(date.get(Calendar.DAY_OF_MONTH) + "");
-        day7text.setText(android.text.format.DateFormat.format("EEE", date));
-
+        setDate();
         agendaJsonArray = new JSONArray();
         agendaAdapter = new AgendaAdapter();
         recyclerViewAgenda = (RecyclerView) view.findViewById(R.id.agendaRV);
@@ -133,7 +106,7 @@ public class Agenda extends Fragment {
         public MyViewHolder onCreateViewHolder(ViewGroup parent, final int position) {
             // create a new view
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.appointment_row, parent, false);
+                    .inflate(R.layout.create_appointment_row, parent, false);
             return new MyViewHolder(view);
         }
 
@@ -169,8 +142,8 @@ public class Agenda extends Fragment {
                                 @Override
                                 public void onClick(View view) {
                                     dialog.hide();
-                                    if (((timeFrom.getCurrentHour() + timeFrom.getCurrentMinute())
-                                            >= (timeTo.getCurrentHour() + timeTo.getCurrentMinute())) ||
+                                    if (((timeFrom.getCurrentHour())
+                                            > (timeTo.getCurrentHour())) ||
                                             !DataAvailable(timeFrom.getCurrentHour(), timeTo.getCurrentHour())) {
                                         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
                                         alertDialogBuilder.setMessage(getActivity().getString(R.string.wrongAppoinment)).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -190,24 +163,13 @@ public class Agenda extends Fragment {
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
-                                        String modifiedDay = day.getText().toString();
-                                        if (day.getText().toString().length() == 1)
-                                            modifiedDay = "0" + day.getText().toString();
-                                        urlData.add(WebService.Schedule.day, modifiedDay);
-
-                                        String modifiedMonth = (((currentDate.get(Calendar.MONTH)) + 1) + "");
-                                        if (modifiedMonth.length() == 1)
-                                            modifiedMonth = "0" + modifiedMonth;
-                                        urlData.add(WebService.Schedule.month, modifiedMonth);
-
+                                        urlData.add(WebService.Schedule.day, addZeroToString(day.getText().toString()));
+                                        urlData.add(WebService.Schedule.month, addZeroToString((((currentDate.get(Calendar.MONTH)) + 1) + "")));
                                         urlData.add(WebService.Schedule.year, ((currentDate.get(Calendar.YEAR)) + ""));
-
-                                        urlData.add("type", "doctor");
-
-                                        urlData.add(WebService.Schedule.from_hour, timeFrom.getCurrentHour() + "");
-                                        urlData.add(WebService.Schedule.from_minutes, timeFrom.getCurrentMinute() + "");
-                                        urlData.add(WebService.Schedule.to_hour, timeTo.getCurrentHour() + "");
-                                        urlData.add(WebService.Schedule.to_minutes, timeTo.getCurrentMinute() + "");
+                                        urlData.add(WebService.Schedule.from_hour, addZeroToString(timeFrom.getCurrentHour() + ""));
+                                        urlData.add(WebService.Schedule.from_minutes, addZeroToString(timeFrom.getCurrentMinute() + ""));
+                                        urlData.add(WebService.Schedule.to_hour, addZeroToString(timeTo.getCurrentHour() + ""));
+                                        urlData.add(WebService.Schedule.to_minutes, addZeroToString(timeTo.getCurrentMinute() + ""));
 
                                         new GetData(new GetData.AsyncResponse() {
                                             @Override
@@ -349,6 +311,60 @@ public class Agenda extends Fragment {
         getSchedule(day, month, year);
     }
 
+    private void setColorDefault() {
+        setDefaults(day1);
+        setDefaults(day2);
+        setDefaults(day3);
+        setDefaults(day4);
+        setDefaults(day5);
+        setDefaults(day6);
+        setDefaults(day7);
+    }
+
+    private void setDate() {
+        Calendar date = new GregorianCalendar();
+
+        day1.setText(date.get(Calendar.DAY_OF_MONTH) + "");
+        day1text.setText(android.text.format.DateFormat.format("EEE", date));
+
+        date.add(Calendar.DAY_OF_MONTH, +1);
+        day2.setText(date.get(Calendar.DAY_OF_MONTH) + "");
+        day2text.setText(android.text.format.DateFormat.format("EEE", date));
+
+        date.add(Calendar.DAY_OF_MONTH, +1);
+        day3.setText(date.get(Calendar.DAY_OF_MONTH) + "");
+        day3text.setText(android.text.format.DateFormat.format("EEE", date));
+
+        date.add(Calendar.DAY_OF_MONTH, +1);
+        day4.setText(date.get(Calendar.DAY_OF_MONTH) + "");
+        day4text.setText(android.text.format.DateFormat.format("EEE", date));
+
+        date.add(Calendar.DAY_OF_MONTH, +1);
+        day5.setText(date.get(Calendar.DAY_OF_MONTH) + "");
+        day5text.setText(android.text.format.DateFormat.format("EEE", date));
+
+        date.add(Calendar.DAY_OF_MONTH, +1);
+        day6.setText(date.get(Calendar.DAY_OF_MONTH) + "");
+        day6text.setText(android.text.format.DateFormat.format("EEE", date));
+
+        date.add(Calendar.DAY_OF_MONTH, +1);
+        day7.setText(date.get(Calendar.DAY_OF_MONTH) + "");
+        day7text.setText(android.text.format.DateFormat.format("EEE", date));
+
+    }
+
+    private void setDefaults(Button defaults) {
+        defaults.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
+        defaults.setTextColor(Color.WHITE);
+        defaults.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
+    }
+
+    String addZeroToString(String s) {
+        if (s.length() == 1)
+            s = "0" + s;
+        return s;
+    }
+
     private void getSchedule(String day, String month, String year) {
         UrlData urlData = new UrlData();
         try {
@@ -397,8 +413,8 @@ public class Agenda extends Fragment {
             @Override
             public void onClick(View view) {
                 dialog.hide();
-                if (((timeFrom.getCurrentHour() + timeFrom.getCurrentMinute())
-                        >= (timeTo.getCurrentHour() + timeTo.getCurrentMinute())) ||
+                if (((timeFrom.getCurrentHour())
+                        > (timeTo.getCurrentHour())) ||
                         !DataAvailable(timeFrom.getCurrentHour(), timeTo.getCurrentHour())) {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
                     alertDialogBuilder.setMessage(getActivity().getString(R.string.wrongAppoinment)).setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -406,6 +422,10 @@ public class Agenda extends Fragment {
                         }
                     }).show();
                 } else {
+                    if (timeFrom.getCurrentHour() == timeTo.getCurrentHour() && (timeTo.getCurrentMinute() - timeFrom.getCurrentMinute()) < 20) {
+                        Toast.makeText(getActivity(), getActivity().getString(R.string.min20), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     UrlData urlData = new UrlData();
                     try {
                         urlData.add(WebService.Schedule.id_user, MainActivity.jsonObject.getString("id"));
@@ -413,25 +433,16 @@ public class Agenda extends Fragment {
                         e.printStackTrace();
                     }
 
-                    String modifiedDay = day.getText().toString();
-                    if (day.getText().toString().length() == 1)
-                        modifiedDay = "0" + day.getText().toString();
-                    urlData.add(WebService.Schedule.day, modifiedDay);
-
-                    String modifiedMonth = ((currentDate.get(Calendar.MONTH)) + 1) + "";
-                    if (modifiedMonth.length() == 1)
-                        modifiedMonth = "0" + modifiedMonth;
-                    urlData.add(WebService.Schedule.month, modifiedMonth);
-
-
+                    urlData.add(WebService.Schedule.day, addZeroToString(day.getText().toString()));
+                    urlData.add(WebService.Schedule.month, addZeroToString((((currentDate.get(Calendar.MONTH)) + 1) + "")));
                     urlData.add(WebService.Schedule.year, ((currentDate.get(Calendar.YEAR)) + ""));
+                    urlData.add(WebService.Schedule.from_hour, addZeroToString(timeFrom.getCurrentHour() + ""));
+                    urlData.add(WebService.Schedule.from_minutes, addZeroToString(timeFrom.getCurrentMinute() + ""));
+                    urlData.add(WebService.Schedule.to_hour, addZeroToString(timeTo.getCurrentHour() + ""));
+                    urlData.add(WebService.Schedule.to_minutes, addZeroToString(timeTo.getCurrentMinute() + ""));
 
                     urlData.add("type", "doctor");
 
-                    urlData.add(WebService.Schedule.from_hour, timeFrom.getCurrentHour() + "");
-                    urlData.add(WebService.Schedule.from_minutes, timeFrom.getCurrentMinute() + "");
-                    urlData.add(WebService.Schedule.to_hour, timeTo.getCurrentHour() + "");
-                    urlData.add(WebService.Schedule.to_minutes, timeTo.getCurrentMinute() + "");
 
                     new GetData(new GetData.AsyncResponse() {
                         @Override
@@ -468,21 +479,7 @@ public class Agenda extends Fragment {
         dialog.show();
     }
 
-    private void setColorDefault() {
-        setDefaults(day1);
-        setDefaults(day2);
-        setDefaults(day3);
-        setDefaults(day4);
-        setDefaults(day5);
-        setDefaults(day6);
-        setDefaults(day7);
-    }
 
-    private void setDefaults(Button defaults) {
-        defaults.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
-        defaults.setTextColor(Color.WHITE);
-        defaults.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
-    }
 }
 
 

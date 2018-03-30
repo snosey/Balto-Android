@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/whiteDark"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="@dimen/margin_Medium"
+        android:text="@string/searchResult"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_Medium" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginBottom="@dimen/margin_Medium"
+        android:background="@color/red" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/doctorsRV"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".9" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".1">
+
+        <TextView
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/margin_VerySmall"
+            android:layout_weight=".5"
+            android:background="@color/silver"
+            android:drawablePadding="@dimen/margin_Medium"
+            android:drawableStart="@drawable/sort"
+            android:gravity="center"
+            android:text="@string/filter" />
+
+        <TextView
+            android:id="@+id/sort"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="@dimen/margin_VerySmall"
+            android:layout_weight=".5"
+            android:background="@color/silver"
+            android:drawablePadding="@dimen/margin_Medium"
+            android:drawableStart="@drawable/filter"
+            android:gravity="center"
+            android:text="@string/sort" />
+    </LinearLayout>
+</LinearLayout>

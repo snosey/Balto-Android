@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:clickable="true">
+
+
+    <LinearLayout
+        android:id="@+id/doctorData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_Medium"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/fullName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="@dimen/margin_Small"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+
+        <TextView
+            android:id="@+id/type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="@dimen/margin_Small"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+
+        <TextView
+            android:id="@+id/baltoCertificate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:visibility="invisible"
+            android:padding="@dimen/margin_Small"
+            android:text="@string/baltoCertificate"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/web"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_Small"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/margin_Medium"
+        android:layout_marginTop="@dimen/dimen_Small"
+        android:background="@color/colorPrimary"
+        android:src="@drawable/doctor_balto_web" />
+
+    <ScrollView
+        android:id="@+id/medicalReport"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/web"
+        android:layout_below="@id/doctorData"
+        android:background="@color/white">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_margin="@dimen/margin_Medium"
+                android:textSize="@dimen/text_Small" />
+
+            <TextView
+                android:id="@+id/patientName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_margin="@dimen/margin_Medium"
+                android:textSize="@dimen/text_Small" />
+
+            <TextView
+                android:id="@+id/medicalReportText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/patientName"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/margin_Medium"
+                android:text="@string/medReport"
+                android:textColor="@color/black_8am2"
+                android:textSize="@dimen/text_Large" />
+
+            <LinearLayout
+                android:id="@+id/diagnosisLL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/medicalReportText"
+                android:layout_margin="@dimen/margin_Medium"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/diagnosis"
+                    android:textColor="@color/black_8am2" />
+
+                <EditText
+                    android:id="@+id/diagnosis"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:textSize="@dimen/text_Small" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/prescriptionLL"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/diagnosisLL"
+                android:layout_margin="@dimen/margin_Medium"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/prescription"
+                    android:textColor="@color/black_8am2" />
+
+                <EditText
+                    android:id="@+id/prescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    android:textSize="@dimen/text_Small" />
+            </LinearLayout>
+
+
+            <ImageButton
+                android:id="@+id/next"
+                android:layout_width="@dimen/dimen_VerySmall"
+                android:layout_height="@dimen/dimen_VerySmall"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/prescriptionLL"
+                android:layout_margin="@dimen/margin_Medium"
+                android:background="@drawable/circel"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/next"
+                android:tint="@color/white" />
+
+        </RelativeLayout>
+    </ScrollView>
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/dimen_Small"
+        android:layout_height="@dimen/dimen_Small"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dimen_Small"
+        android:background="@drawable/circel_stroked"
+        android:padding="@dimen/margin_Medium"
+        android:src="@drawable/logo_icon" />
+</RelativeLayout>

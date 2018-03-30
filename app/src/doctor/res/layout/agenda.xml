@@ -209,7 +209,7 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/margin_Medium"
             android:background="@drawable/button_rounded"
-            android:backgroundTint="@color/red"
+            android:backgroundTint="@color/colorPrimary"
             android:text="@string/newAgenda"
             android:textAllCaps="false"
             android:textColor="@color/white" />

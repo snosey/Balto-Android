@@ -23,15 +23,25 @@
             android:src="@drawable/online" />
 
         <TextView
+            android:id="@+id/onlineConsultText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:layout_margin="@dimen/margin_small"
+            android:background="@drawable/button_rounded"
+            android:backgroundTint="#94ffffff"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="@dimen/margin_small"
+            android:text="@string/onlineMain"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_VerySmall" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_gravity="top|center"
-            android:layout_weight=".2"
-            android:text="@string/onlineMain"
-            android:textColor="@color/white"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textSize="@dimen/text_Medium" />
+            android:layout_weight=".13" />
     </LinearLayout>
 
     <LinearLayout
@@ -50,15 +60,26 @@
             android:src="@drawable/home_main" />
 
         <TextView
+            android:id="@+id/homeVisitText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|center"
+            android:layout_margin="@dimen/margin_small"
+            android:background="@drawable/button_rounded"
+            android:backgroundTint="#94ffffff"
+
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:padding="@dimen/margin_small"
+            android:text="@string/homeMain"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_VerySmall" />
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_gravity="top|center"
-            android:layout_weight=".2"
-            android:text="@string/homeMain"
-            android:textColor="@color/white"
-            android:maxLines="1"
-            android:ellipsize="end"
-            android:textSize="@dimen/text_Medium" />
+            android:layout_weight=".13" />
     </LinearLayout>
 
 

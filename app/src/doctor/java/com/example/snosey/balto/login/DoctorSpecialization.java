@@ -52,7 +52,7 @@ public class DoctorSpecialization extends Fragment {
                     final NewAccountObject accountObject = (NewAccountObject) getArguments().getSerializable("object");
                     TextView special = (TextView) spinner.getSelectedView();
                     try {
-
+                        accountObject.id_sub.clear();
                         accountObject.id_sub.add(special.getTag().toString());
                         accountObject.kindDoctor = finalJsonObject.getJSONArray("category").
                                 getJSONObject(0).getJSONArray(finalSub).
@@ -70,7 +70,7 @@ public class DoctorSpecialization extends Fragment {
 
                     if (accountObject.kindDoctor.equals("1")) {
                         ChooseLocation fragment = new ChooseLocation();
-                          fragment.setArguments(bundle);
+                        fragment.setArguments(bundle);
                         ft.add(R.id.fragment, fragment);
                         ft.addToBackStack(null);
                         ft.commit();

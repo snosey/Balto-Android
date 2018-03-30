@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/firstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="@dimen/margin_Medium"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_Large"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:layout_gravity="center"
+        android:background="@color/red" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.twilio.video.VideoView
+            android:id="@+id/videoViewClient"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:id="@+id/waitingImage"
+            android:background="@drawable/login_background"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/timer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Medium"
+            android:background="@drawable/button_rounded"
+            android:backgroundTint="@color/black_shfaf"
+            android:padding="@dimen/margin_Small"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Medium" />
+
+
+
+
+        <LinearLayout
+            android:id="@+id/bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/endCall"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="@dimen/margin_Medium"
+                android:background="@drawable/circel"
+                android:backgroundTint="@color/red"
+                android:src="@drawable/end_call" />
+
+            <ImageButton
+                android:id="@+id/voice"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="@dimen/margin_Medium"
+                android:background="@drawable/circel"
+                android:src="@drawable/open_voice" />
+
+            <ImageButton
+                android:id="@+id/video"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="@dimen/margin_Medium"
+                android:background="@drawable/circel"
+                android:src="@drawable/open_video" />
+
+            <ImageButton
+                android:id="@+id/next"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="@dimen/margin_Medium"
+                android:background="@drawable/circel"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/edit"
+                android:tint="@color/white" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/myVideoViewLL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <com.twilio.video.VideoView
+                android:id="@+id/myVideoView"
+                android:layout_width="@dimen/dimen_Small"
+                android:layout_height="100dp"
+                app:overlaySurface="true"
+                android:layout_margin="@dimen/margin_Medium" />
+
+            <ImageView
+                android:id="@+id/swipe"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_margin="@dimen/margin_Small"
+                android:background="@drawable/shadow"
+                android:backgroundTint="@color/colorPrimary"
+                android:padding="@dimen/margin_VerySmall"
+                android:src="@drawable/switch_camera"
+                android:tint="@color/white" />
+
+            <ImageView
+                android:id="@+id/speaker"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_toEndOf="@id/timer"
+                android:layout_margin="@dimen/margin_Small"
+                android:background="@drawable/shadow"
+                android:backgroundTint="@color/white"
+                android:padding="@dimen/margin_VerySmall"
+                android:src="@drawable/volum"
+                android:tint="@color/black_8am2" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

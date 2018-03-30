@@ -117,7 +117,7 @@ public class SendRequest extends Fragment {
         UrlData urlData = new UrlData();
         urlData.add(WebService.HomeVisit.latitude, "" + getArguments().getDouble("lat"));
         urlData.add(WebService.HomeVisit.longitude, "" + getArguments().getDouble("lng"));
-        urlData.add(WebService.HomeVisit.distance, "30");
+        urlData.add(WebService.HomeVisit.distance, "10");
         urlData.add(WebService.HomeVisit.id_gender, getArguments().getString(WebService.HomeVisit.id_gender));
         urlData.add(WebService.HomeVisit.id_sub, getArguments().getString(WebService.HomeVisit.id_sub));
         new GetData(new GetData.AsyncResponse() {
@@ -176,20 +176,21 @@ public class SendRequest extends Fragment {
 
     private void saveBooking(final int year, final int monthOfYear, final int dayOfMonth, final int hourOfDay, final int minute, final String type) {
 
+        final int finalMonthOfYear=monthOfYear+1;
         UrlData urlData = new UrlData();
         if (getArguments().containsKey(WebService.HomeVisit.promoCode))
             urlData.add(WebService.Booking.id_coupon_client, getArguments().getString(WebService.HomeVisit.promoCode));
 
         try {
-            urlData.add(WebService.Booking.id_client, MainActivity.jsonClient.getString("id"));
+            urlData.add(WebService.Booking.id_client, MainActivity.jsonObject.getString("id"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
         urlData.add(WebService.Booking.id_sub, getArguments().getString(WebService.HomeVisit.id_sub));
         urlData.add(WebService.Booking.id_payment_way, getArguments().getString(WebService.Booking.id_payment_way));
         urlData.add(WebService.Booking.receive_year, year + "");
-        urlData.add(WebService.Booking.receive_month, monthOfYear + "");
-        urlData.add(WebService.Booking.receive_day, dayOfMonth + "");
+        urlData.add(WebService.Booking.receive_month, addZeroToString(finalMonthOfYear + ""));
+        urlData.add(WebService.Booking.receive_day, addZeroToString(dayOfMonth + ""));
         urlData.add(WebService.Booking.receive_hour, hourOfDay + "");
         urlData.add(WebService.Booking.receive_minutes, minute + "");
         urlData.add(WebService.Booking.id_doctor_kind, WebService.homeVisit);
@@ -352,4 +353,10 @@ public class SendRequest extends Fragment {
             Toast.makeText(getActivity(), getActivity().getString(R.string.noProfissional), Toast.LENGTH_LONG).show();
 
     }
+    String addZeroToString(String s) {
+        if (s.length() == 1)
+            s = "0" + s;
+        return s;
+    }
+
 }

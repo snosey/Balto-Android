@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <string name="app_name">Doctor ElBalto</string>
     <string name="accept">موافقه</string>
     <string name="visitData">موعد الزياره</string>
     <string name="newAgenda">اضافة معاد جديد</string>
     <string name="wrongAppoinment">المعاد الذي ادخلته غير متاح</string>
+    <string name="FromTo">من - الى</string>
+    <string name="min20">الوقت المتاح يجب الا يقل عن 20 دقيقه</string>
+    <string name="moneyForYou">نقود لك : </string>
+    <string name="moneyOnYou">نقود عليك : </string>
+    <string name="dueTo">تاريخ الاستحقاق : </string>
 </resources>

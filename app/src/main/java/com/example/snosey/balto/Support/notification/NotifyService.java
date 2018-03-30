@@ -31,7 +31,7 @@ public class NotifyService extends BroadcastReceiver {
 
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(context)
-                            .setSmallIcon(R.drawable.logo)
+                            .setSmallIcon(R.drawable.logo_icon)
                             .setContentTitle(context.getString(R.string.reservation))
                             .setContentText(context.getString(R.string.alarmComingReservation))
                             .setContentIntent(pendingIntent);

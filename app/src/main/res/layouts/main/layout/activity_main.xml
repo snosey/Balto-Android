@@ -40,8 +40,9 @@
 
             <ImageView
                 android:id="@+id/menu"
-                android:layout_width="wrap_content"
-                android:layout_height="23dp"
+                android:padding="@dimen/margin_Medium"
+                android:layout_width="@dimen/dimen_VerySmall"
+                android:layout_height="@dimen/dimen_VerySmall"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/margin_Medium"
                 android:onClick="menu"
@@ -111,7 +112,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/margin_Medium"
                 android:onClick="setting"
-                android:src="@drawable/logo" />
+                android:src="@drawable/logo_profile" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -272,7 +273,7 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
-                android:onClick="wallet"
+                android:onClick="Wallet"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 

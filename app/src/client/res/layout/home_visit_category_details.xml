@@ -114,19 +114,40 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_margin="@dimen/margin_Medium"
+                android:layout_marginStart="@dimen/margin_Medium"
                 android:drawablePadding="@dimen/margin_Medium"
                 android:drawableStart="@drawable/payment"
                 android:gravity="center"
-                android:text="@string/cash" />
+                android:text="@string/choose_payment_way" />
 
-            <TextView
-                android:layout_width="wrap_content"
+
+            <RadioGroup
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/margin_Medium"
-                android:gravity="center"
-                android:text="@string/change" />
+                android:layout_below="@id/paymentWay"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/cash"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_Medium"
+                    android:buttonTint="@color/black_8am2"
+                    android:checked="true"
+                    android:text="@string/cash"
+                    android:textColor="@color/black_8am2" />
+
+
+                <RadioButton
+                    android:id="@+id/credit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margin_Medium"
+                    android:buttonTint="@color/black_8am2"
+                    android:text="@string/credit"
+                    android:textColor="@color/black_8am2" />
+            </RadioGroup>
+
         </RelativeLayout>
 
         <TextView

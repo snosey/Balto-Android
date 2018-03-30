@@ -29,7 +29,7 @@ public class Reservations extends android.support.v4.app.Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.reservation, container, false);
+        View view = inflater.inflate(R.layout.reservation_main, container, false);
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.VISIBLE);
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
 
@@ -42,7 +42,7 @@ public class Reservations extends android.support.v4.app.Fragment {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new Coming(), getActivity().getString(R.string.coming));
         adapter.addFragment(new Past(), getActivity().getString(R.string.past));
         viewPager.setAdapter(adapter);

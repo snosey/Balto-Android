@@ -15,7 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.snosey.balto.R;
-import com.example.snosey.balto.login.NewAccountObject;
 import com.example.snosey.balto.login.create_account.Email;
 
 import org.json.JSONException;

@@ -15,7 +15,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -37,7 +36,9 @@ import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
 import com.example.snosey.balto.login.RegistrationActivity;
 import com.example.snosey.balto.main.HomeAndOnline;
+import com.example.snosey.balto.main.Profile;
 import com.example.snosey.balto.main.Promotions;
+import com.example.snosey.balto.main.payment.PaymentSlider;
 import com.example.snosey.balto.main.reservation.Reservations;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -61,7 +62,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 
 public class MainActivity extends FragmentActivity {
-    public static JSONObject jsonClient;
+    public static JSONObject jsonObject;
 
     @InjectView(R.id.clientName)
     TextView clientName;
@@ -113,29 +114,51 @@ public class MainActivity extends FragmentActivity {
         ButterKnife.inject(this);
 
 
-
         try {
-            jsonClient = new JSONObject(getIntent().getStringExtra("userData"));
+            jsonObject = new JSONObject(getIntent().getStringExtra("userData"));
             if (Locale.getDefault().getLanguage().equals("ar"))
-                clientName.setText(jsonClient.getString("first_name_ar"));
+                clientName.setText(jsonObject.getString("first_name_ar"));
             else
-                clientName.setText(jsonClient.getString("first_name_en"));
+                clientName.setText(jsonObject.getString("first_name_en"));
 
-            if (!jsonClient.getString("image").equals("")) {
-                String imageLink = jsonClient.getString("image");
+            if (!jsonObject.getString("image").equals("")) {
+                String imageLink = jsonObject.getString("image");
                 if (!imageLink.startsWith("https://"))
                     imageLink = WebService.Image.fullPathImage + imageLink;
                 Picasso.with(this).load(imageLink).transform(new CircleTransform()).into((ImageView) findViewById(R.id.logo));
             }
+            logo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    {
+                        Bundle bundle = new Bundle();
+                        try {
+                            bundle.putString(WebService.HomeVisit.id_user, jsonObject.getString("id"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        FragmentManager fm = getSupportFragmentManager();
+                        Profile fragment = new Profile();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        fragment.setArguments(bundle);
+                        ft.replace(R.id.fragment, fragment, "Profile");
+                        ft.addToBackStack("Profile");
+                        ft.commit();
+
+                        if (drawerLayout.isDrawerOpen(drawer))
+                            drawerLayout.closeDrawer(drawer);
+                    }
+                }
+            });
             UrlData urlData = new UrlData();
-            urlData.add(WebService.Slider.id_user, jsonClient.getString("id"));
+            urlData.add(WebService.Slider.id_user, jsonObject.getString("id"));
             new GetData(new GetData.AsyncResponse() {
                 @Override
                 public void processFinish(String output) {
                     if (output.contains("true")) {
                         try {
                             JSONObject jsonObject = new JSONObject(output);
-                            if (!jsonObject.getString(WebService.Slider.total_rate).equals("0"))
+                            if (!jsonObject.getString(WebService.Slider.total_rate).equals("0") && !jsonObject.getString(WebService.Slider.total_rate).equals("null"))
                                 clientRate.setText(jsonObject.getString(WebService.Slider.total_rate));
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -161,7 +184,7 @@ public class MainActivity extends FragmentActivity {
                         online.setText(getString(R.string.offline));
                     }
                     try {
-                        urlData.add(WebService.Slider.id_user, jsonClient.getString("id"));
+                        urlData.add(WebService.Slider.id_user, jsonObject.getString("id"));
                         new GetData(new GetData.AsyncResponse() {
                             @Override
                             public void processFinish(String output) {
@@ -192,7 +215,7 @@ public class MainActivity extends FragmentActivity {
 
         Bundle bundle = new Bundle();
         try {
-            bundle.putString(WebService.HomeVisit.id_user, jsonClient.getString("id"));
+            bundle.putString(WebService.HomeVisit.id_user, jsonObject.getString("id"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -215,7 +238,7 @@ public class MainActivity extends FragmentActivity {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
 
-        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("HomeAndOnline");
+        android.support.v4.app.Fragment myFragment = (android.support.v4.app.Fragment) getSupportFragmentManager().findFragmentByTag("HomeAndOnline");
         if (myFragment == null || !myFragment.isVisible()) {
 
 
@@ -233,13 +256,12 @@ public class MainActivity extends FragmentActivity {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
 
-        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("ReservationsMain");
+        android.support.v4.app.Fragment myFragment = (android.support.v4.app.Fragment) getSupportFragmentManager().findFragmentByTag("ReservationsMain");
         if (myFragment == null || !myFragment.isVisible()) {
-
-
             FragmentManager fm = getSupportFragmentManager();
             Reservations fragment = new Reservations();
             FragmentTransaction ft = fm.beginTransaction();
+            ft.addToBackStack(null);
             ft.replace(R.id.fragment, fragment, "ReservationsMain");
             ft.commit();
 
@@ -249,6 +271,18 @@ public class MainActivity extends FragmentActivity {
     public void payment(View view) {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
+
+        android.support.v4.app.Fragment myFragment = (android.support.v4.app.Fragment) getSupportFragmentManager().findFragmentByTag("payment");
+        if (myFragment == null || !myFragment.isVisible()) {
+
+            FragmentManager fm = getSupportFragmentManager();
+            PaymentSlider fragment = new PaymentSlider();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment, fragment, "payment");
+            ft.addToBackStack("payment");
+            ft.commit();
+        }
+
     }
 
     public void promotions(View view) {
@@ -256,14 +290,14 @@ public class MainActivity extends FragmentActivity {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
 
-        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("promo");
+        android.support.v4.app.Fragment myFragment = (android.support.v4.app.Fragment) getSupportFragmentManager().findFragmentByTag("promo");
         if (myFragment == null || !myFragment.isVisible()) {
 
 
             FragmentManager fm = getSupportFragmentManager();
             Bundle bundle = new Bundle();
             try {
-                bundle.putString(WebService.PromoCode.id_user, jsonClient.getString("id"));
+                bundle.putString(WebService.PromoCode.id_user, jsonObject.getString("id"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -279,7 +313,7 @@ public class MainActivity extends FragmentActivity {
     public void share(View view) {
         UrlData urlData = new UrlData();
         try {
-            urlData.add(WebService.PromoCode.added_by, jsonClient.getString("id"));
+            urlData.add(WebService.PromoCode.added_by, jsonObject.getString("id"));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -480,7 +514,7 @@ public class MainActivity extends FragmentActivity {
             for (Location location : locationResult.getLocations()) {
                 UrlData urlData = new UrlData();
                 try {
-                    urlData.add(WebService.Location.id, jsonClient.getString("id"));
+                    urlData.add(WebService.Location.id, jsonObject.getString("id"));
                     urlData.add(WebService.Location.latitude, location.getLatitude() + "");
                     urlData.add(WebService.Location.longitude, location.getLongitude() + "");
                     new GetData(new GetData.AsyncResponse() {

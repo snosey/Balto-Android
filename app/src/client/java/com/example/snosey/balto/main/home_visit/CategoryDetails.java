@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,10 +22,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.main.payment.PaymentSlider;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -45,6 +48,10 @@ public class CategoryDetails extends Fragment {
     TextView title;
     @InjectView(R.id.details)
     TextView details;
+    @InjectView(R.id.cash)
+    RadioButton cash;
+    @InjectView(R.id.credit)
+    RadioButton credit;
     @InjectView(R.id.baseFare)
     TextView baseFare;
     @InjectView(R.id.serviceDuration)
@@ -122,6 +129,37 @@ public class CategoryDetails extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        cash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    id_payment_way = "1";
+                }
+            }
+        });
+        credit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    try {
+                        if (MainActivity.jsonObject.getString("payment_token").equals("null") || MainActivity.jsonObject.getString("payment_token").equals("")) {
+                            FragmentManager fm = getActivity().getSupportFragmentManager();
+                            PaymentSlider fragment = new PaymentSlider();
+                            FragmentTransaction ft = fm.beginTransaction();
+                            ft.replace(R.id.fragment, fragment, "payment");
+                            ft.addToBackStack("payment");
+                            ft.commit();
+                            return;
+                        } else {
+                            id_payment_way = "2";
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
         return view;
     }
 
@@ -151,7 +189,7 @@ public class CategoryDetails extends Fragment {
         bundle.putDouble("lat", getArguments().getDouble("lat"));
         bundle.putDouble("lng", getArguments().getDouble("lng"));
         bundle.putString("name", title.getText().toString());
-        bundle.putString("logo", logoText);
+        bundle.putString("logo_icon", logoText);
         SendRequest fragment = new SendRequest();
         FragmentManager fm = getActivity().getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ElBalto</string>
+    <string name="doctorName">ادخل اسم الدكتور ( اختياري )</string>
+    <string name="SubSpecialization">تخصص فرعي</string>
+    <string name="rateSort">حسب التقييم</string>
+    <string name="nameAsc">الاسم تصاعدي</string>
+    <string name="nameDesc">الاسم تنازلي</string>
+    <string name="bookingRequestSent">تم ارسال طلب الحجز للدكتور , شكرا لك</string>
+    <string name="pleaseWaitDoctor">برجاء الانتظار حتى يدخل الطبيب غرفه المحادثه</string>
+    <string name="checkDr">فحص</string>
+</resources>

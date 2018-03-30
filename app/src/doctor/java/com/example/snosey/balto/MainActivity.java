@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -38,7 +37,9 @@ import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
 import com.example.snosey.balto.login.RegistrationActivity;
 import com.example.snosey.balto.main.Agenda;
+import com.example.snosey.balto.main.Profile;
 import com.example.snosey.balto.main.Promotions;
+import com.example.snosey.balto.main.Wallet;
 import com.example.snosey.balto.main.reservations.ReservationsMain;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -115,11 +116,17 @@ public class MainActivity extends FragmentActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
+
         ((Application) this.getApplicationContext()).setCurrentActivity(MainActivity.this);
 
-        menu.setColorFilter(Color.BLACK);
+        //menu.setColorFilter(Color.BLACK);
         try {
             jsonObject = new JSONObject(getIntent().getStringExtra("userData"));
+            try {
+                checkKind();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
             if (Locale.getDefault().getLanguage().equals("ar"))
                 clientName.setText(jsonObject.getString("first_name_ar"));
@@ -132,6 +139,29 @@ public class MainActivity extends FragmentActivity {
                     imageLink = WebService.Image.fullPathImage + imageLink;
                 Picasso.with(this).load(imageLink).transform(new CircleTransform()).into((ImageView) findViewById(R.id.logo));
             }
+            logo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle = new Bundle();
+                    try {
+                        bundle.putString(WebService.HomeVisit.id_user, jsonObject.getString("id"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    FragmentManager fm = getSupportFragmentManager();
+                    Profile fragment = new Profile();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    fragment.setArguments(bundle);
+                    ft.replace(R.id.fragment, fragment, "Profile");
+                    ft.addToBackStack("Profile");
+                    ft.commit();
+
+                    if (drawerLayout.isDrawerOpen(drawer))
+                        drawerLayout.closeDrawer(drawer);
+
+                }
+            });
+
             UrlData urlData = new UrlData();
             urlData.add(WebService.Slider.id_user, jsonObject.getString("id"));
             new GetData(new GetData.AsyncResponse() {
@@ -140,7 +170,7 @@ public class MainActivity extends FragmentActivity {
                     if (output.contains("true")) {
                         try {
                             JSONObject jsonObject = new JSONObject(output);
-                            if (!jsonObject.getString(WebService.Slider.total_rate).equals("0"))
+                            if (!jsonObject.getString(WebService.Slider.total_rate).equals("0") && !jsonObject.getString(WebService.Slider.total_rate).equals("null"))
                                 clientRate.setText(jsonObject.getString(WebService.Slider.total_rate));
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -206,6 +236,25 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    private void checkKind() throws JSONException {
+        UrlData urlData = new UrlData();
+        urlData.add(WebService.Booking.id_doctor, jsonObject.getString("id"));
+        new GetData(new GetData.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                if (!output.contains("null")) {
+                    JSONObject jsonObject = new JSONObject(output).getJSONObject("doctor_kind");
+                    if (jsonObject.getString("id").equals("1")) {
+                        agenda.setVisibility(View.GONE);
+                    } else if (jsonObject.getString("id").equals("2")) {
+                        online.setVisibility(View.GONE);
+                    }
+                }
+            }
+        }, this, false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR
+                , "http://haseboty.com/doctor/public/api/getDoctorKind?", urlData.get());
+    }
+
 
     public void setting(View view) {
         if (drawerLayout.isDrawerOpen(drawer))
@@ -252,10 +301,26 @@ public class MainActivity extends FragmentActivity {
         ft.commit();
     }
 
-    public void payment(View view) {
+
+    public void Wallet(View view) {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
+
+        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("Wallet");
+        if (myFragment != null && myFragment.isVisible())
+            return;
+
+        FragmentManager fm = getSupportFragmentManager();
+        Wallet fragment = new Wallet();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.fragment, fragment, "Wallet");
+
+        if (view != null)
+            ft.addToBackStack("Wallet");
+
+        ft.commit();
     }
+
 
     public void promotions(View view) {
 

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="@dimen/margin_Medium"
+        android:text="@string/wallet"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_Large"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:layout_width="@dimen/dimen_Small"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:background="@color/colorPrimary" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_Medium"
+        android:weightSum="2">
+
+        <TextView
+            android:id="@+id/moneyOnYou"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="@dimen/margin_Small"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+
+        <TextView
+            android:id="@+id/moneyForYou"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="@dimen/margin_Small"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+        <TextView
+            android:id="@+id/dueTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="@dimen/margin_Small"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="1"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:background="@color/red" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_Small"
+        android:background="@drawable/shadow2"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_Small">
+
+        <TextView
+            android:id="@+id/paymentWay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Small"
+            android:layout_weight=".2"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/addPayment"
+            android:textColor="@color/black_8am2"
+            android:textSize="@dimen/text_Small" />
+
+
+        <TextView
+            android:id="@+id/doctor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Small"
+            android:layout_weight=".2"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/you"
+            android:textColor="@color/black_8am2"
+            android:textSize="@dimen/text_Small" />
+
+
+        <TextView
+            android:id="@+id/admin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Small"
+            android:layout_weight=".2"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/balto"
+            android:textColor="@color/black_8am2"
+            android:textSize="@dimen/text_Small" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Small"
+            android:layout_weight=".4"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="@string/date"
+            android:textColor="@color/black_8am2"
+            android:textSize="@dimen/text_Small" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/walletRV"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/newAgenda"
+        android:layout_margin="@dimen/margin_Small" />
+
+
+</LinearLayout>

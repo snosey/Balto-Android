@@ -147,9 +147,9 @@ public class Main extends Fragment implements OnMapReadyCallback {
                         public void onClick(View view) {
                             if (choosePlaceNow) {
                                 try {
-                                    categoryId=jsonObject.getJSONArray("mainCategory").getJSONObject(0).getString("id");
+                                    categoryId = jsonObject.getJSONArray("mainCategory").getJSONObject(0).getString("id");
                                     clientLocation();
-                                  //    pickLocation(jsonObject.getJSONArray("mainCategory").getJSONObject(0).getString("id"));
+                                    //    pickLocation(jsonObject.getJSONArray("mainCategory").getJSONObject(0).getString("id"));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -161,9 +161,9 @@ public class Main extends Fragment implements OnMapReadyCallback {
                         public void onClick(View view) {
                             if (choosePlaceNow) {
                                 try {
-                                    categoryId=jsonObject.getJSONArray("mainCategory").getJSONObject(1).getString("id");
+                                    categoryId = jsonObject.getJSONArray("mainCategory").getJSONObject(1).getString("id");
                                     clientLocation();
-                                //    pickLocation(jsonObject.getJSONArray("mainCategory").getJSONObject(1).getString("id"));
+                                    //    pickLocation(jsonObject.getJSONArray("mainCategory").getJSONObject(1).getString("id"));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -175,7 +175,7 @@ public class Main extends Fragment implements OnMapReadyCallback {
                         public void onClick(View view) {
                             if (choosePlaceNow) {
                                 try {
-                                    categoryId=jsonObject.getJSONArray("mainCategory").getJSONObject(2).getString("id");
+                                    categoryId = jsonObject.getJSONArray("mainCategory").getJSONObject(2).getString("id");
                                     clientLocation();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -188,7 +188,7 @@ public class Main extends Fragment implements OnMapReadyCallback {
                         public void onClick(View view) {
                             if (choosePlaceNow) {
                                 try {
-                                    categoryId=jsonObject.getJSONArray("mainCategory").getJSONObject(3).getString("id");
+                                    categoryId = jsonObject.getJSONArray("mainCategory").getJSONObject(3).getString("id");
                                     clientLocation();
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -205,8 +205,15 @@ public class Main extends Fragment implements OnMapReadyCallback {
                 FragmentManager fm = getActivity().getSupportFragmentManager();
                 Bundle bundle = new Bundle();
                 //bundle.putString("address", PlacePicker.getPlace(data, getActivity()).getAddress().toString());
-                bundle.putDouble("lat", mCurrLocationMarker.getPosition().latitude);
-                bundle.putDouble("lng",mCurrLocationMarker.getPosition().longitude);
+                try {
+                    bundle.putDouble("lat", mCurrLocationMarker.getPosition().latitude);
+                    bundle.putDouble("lng", mCurrLocationMarker.getPosition().longitude);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    getActivity().recreate();
+                    return;
+
+                }
                 bundle.putString(WebService.HomeVisit.id_user, getArguments().getString(WebService.HomeVisit.id_user));
                 bundle.putString(WebService.HomeVisit.id_main, categoryId + "");
                 ClientLocation fragment = new ClientLocation();

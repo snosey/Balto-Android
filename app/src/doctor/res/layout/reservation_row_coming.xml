@@ -3,35 +3,53 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="@dimen/margin_Medium"
-    android:background="@drawable/button_rounded_stroked2">
+    android:background="@drawable/shadow2">
 
     <ImageView
         android:id="@+id/call"
         android:layout_width="100dp"
         android:layout_height="@dimen/dimen_VerySmall"
         android:layout_alignParentEnd="true"
-        android:layout_margin="@dimen/margin_Medium" />
+        android:layout_margin="@dimen/margin_Medium"
+        android:padding="@dimen/margin_Small" />
 
     <Button
-        android:id="@+id/details"
+        android:id="@+id/cancelOrStart"
         android:layout_width="100dp"
         android:layout_height="@dimen/dimen_VerySmall"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/call"
         android:layout_marginBottom="@dimen/margin_Medium"
         android:layout_marginEnd="@dimen/margin_Medium"
-        android:background="@drawable/button_rounded_stroked2"
-        android:text="@string/details"
+        android:background="@drawable/button_rounded"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/start"
         android:textAllCaps="false"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/white"
         android:textSize="@dimen/text_Small" />
+
+    <Button
+        android:id="@+id/done"
+        android:layout_width="100dp"
+        android:layout_height="@dimen/dimen_VerySmall"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@id/cancelOrStart"
+        android:layout_marginBottom="@dimen/margin_Medium"
+        android:layout_marginEnd="@dimen/margin_Medium"
+        android:background="@drawable/button_rounded"
+        android:backgroundTint="@color/red"
+        android:text="@string/done"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_Small" />
+
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="@dimen/dimen_VerySmall"
-        android:src="@drawable/profile"
         android:layout_height="@dimen/dimen_VerySmall"
-        android:layout_margin="@dimen/margin_Medium" />
+        android:layout_margin="@dimen/margin_Medium"
+        android:src="@drawable/logo_profile" />
 
     <TextView
         android:id="@+id/firstName"
@@ -51,10 +69,18 @@
         android:layout_toEndOf="@id/logo" />
 
     <TextView
+        android:id="@+id/price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/date"
+        android:layout_marginStart="@dimen/margin_Medium"
+        android:layout_toEndOf="@id/logo" />
+
+    <TextView
         android:id="@+id/kind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@id/details"
+        android:layout_alignBottom="@id/cancelOrStart"
         android:layout_margin="@dimen/margin_Medium"
         android:textStyle="bold" />
 

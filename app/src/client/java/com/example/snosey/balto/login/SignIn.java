@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +22,6 @@ import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
-import com.example.snosey.balto.login.ForgetPassword;
-import com.example.snosey.balto.login.NewAccountObject;
 import com.example.snosey.balto.login.create_account.Phone;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -135,6 +134,10 @@ public class SignIn extends Fragment {
     private void startNewActivity(String json) {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.putExtra("userData", json);
+        if (getActivity().getIntent().hasExtra("data")) {
+            Log.e("Notification", "HAS DATA");
+            intent.putExtra("data", getActivity().getIntent().getStringExtra("data"));
+        }
         startActivity(intent);
         getActivity().finish();
     }

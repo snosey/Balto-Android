@@ -10,10 +10,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:background="@color/white"
+        android:background="@color/colorPrimary"
         android:padding="@dimen/margin_Medium"
+        android:textSize="@dimen/text_Large"
         android:text="@string/reservation"
-        android:textColor="@color/black_8am2" />
+        android:textColor="@color/white" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/red"/>
 
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/main_content"
@@ -33,9 +38,9 @@
                 android:layout_height="wrap_content"
                 android:background="#ffffff"
                 app:tabGravity="fill"
-                app:tabIndicatorColor="@color/black_8am2"
+                app:tabIndicatorColor="@color/red"
                 app:tabSelectedTextColor="@color/black_8am2"
-                app:tabTextColor="@color/silver" />
+                app:tabTextColor="#c9c9c9" />
         </android.support.design.widget.AppBarLayout>
 
         <android.support.v4.view.ViewPager

@@ -43,7 +43,7 @@ public class RegistrationActivity extends FragmentActivity {
         );
         setContentView(R.layout.activity_registration);
         new GetHashKey(this);
-        checkLang();
+        //checkLang();
         {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -110,18 +110,20 @@ public class RegistrationActivity extends FragmentActivity {
     }
 
     public void lang(View view) {
-        recreate();
         String lang = ((TextView) view).getText().toString();
         if (lang.equals(getString(R.string.arabic)))
             lang = "ar";
         else
             lang = "en";
+
+        recreate();
         Locale locale = new Locale(lang);
         Locale.setDefault(locale);
         Configuration config = new Configuration();
         config.locale = locale;
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
         onConfigurationChanged(config);
+
 
     }
 

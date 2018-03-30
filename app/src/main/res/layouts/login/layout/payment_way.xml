@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/whiteDark"
+    android:clickable="true"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="14">
+
+        <ImageView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:background="@drawable/line" />
+
+    </LinearLayout>
+
+    <ImageButton
+        android:layout_width="@dimen/dimen_VerySmall"
+        android:layout_height="@dimen/dimen_VerySmall"
+        android:layout_alignParentStart="true"
+        android:layout_margin="@dimen/margin_Medium"
+        android:background="@android:color/transparent"
+        android:onClick="back"
+        android:visibility="invisible"
+        android:tint="@color/black_8am2"
+        android:src="@drawable/back" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_Medium"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/margin_Large"
+        android:layout_marginTop="@dimen/margin_Medium"
+        android:text="@string/choose_payment_way"
+        android:textColor="@color/black_8am2"
+        android:textSize="@dimen/text_Large" />
+
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/margin_Medium"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/cash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Medium"
+            android:buttonTint="@color/black_8am2"
+            android:checked="true"
+            android:text="@string/cash"
+            android:textColor="@color/black_8am2" />
+
+
+        <RadioButton
+            android:id="@+id/credit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Medium"
+            android:buttonTint="@color/black_8am2"
+            android:text="@string/credit"
+            android:textColor="@color/black_8am2" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/addEditCredit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/margin_Large"
+        android:paddingStart="@dimen/margin_Medium"
+        android:text="@string/addOrChangeCredit"
+        android:textColor="@color/black_8am2"
+        android:textSize="@dimen/text_Small" />
+
+    <ImageButton
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/margin_Medium"
+        android:tint="@color/white"
+        android:backgroundTint="@color/colorPrimary"
+        android:background="@drawable/circel"
+        android:src="@drawable/next" />
+
+
+</LinearLayout>

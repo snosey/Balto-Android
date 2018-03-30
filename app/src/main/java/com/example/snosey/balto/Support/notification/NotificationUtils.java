@@ -24,6 +24,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 
 import com.example.snosey.balto.Application;
@@ -57,12 +58,14 @@ public class NotificationUtils {
 
     public void showNotificationMessage(final String title, final String message, final String timeStamp, Intent intent, String imageUrl) {
         // Check for empty push message
+
+        Log.e(TAG, "isBackGround: " + "yea");
         if (TextUtils.isEmpty(message))
             return;
 
 
         // notification icon
-        final int icon = R.drawable.logo;
+        final int icon = R.drawable.logo_icon;
 
         intent.setFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
         final PendingIntent resultPendingIntent =

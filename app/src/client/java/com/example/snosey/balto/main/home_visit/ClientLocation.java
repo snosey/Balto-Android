@@ -104,8 +104,13 @@ public class ClientLocation extends Fragment {
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Bundle bundle = new Bundle();
 
+        try {
+            Log.e("address", addresses.get(0).getAddressLine(0));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
 
-        Log.e("address", addresses.get(0).getAddressLine(0));
         bundle.putString("address", addresses.get(0).getAddressLine(0));
         bundle.putDouble("lat", mGoogleMap.getCameraPosition().target.latitude);
         bundle.putDouble("lng", mGoogleMap.getCameraPosition().target.longitude);

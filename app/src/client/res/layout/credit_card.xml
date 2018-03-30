@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.cooltechworks.creditcarddesign.CreditCardView
+        android:id="@+id/credit_card"
+        app:card_expiration="01/18"
+        app:card_holder_name="Ahmed Mohamed"
+        app:card_number="38056789000000000"
+        app:cvv="522"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

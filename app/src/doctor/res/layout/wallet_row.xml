@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/whiteDark"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="@dimen/margin_Small">
+
+        <TextView
+            android:id="@+id/paymentWay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Small"
+            android:layout_weight=".2"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black_8am2"
+            android:textSize="@dimen/text_Small" />
+
+
+        <TextView
+            android:id="@+id/doctor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="@dimen/margin_Small"
+            android:layout_weight=".2"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black_8am2"
+            android:textSize="@dimen/text_Small" />
+
+
+        <TextView
+            android:id="@+id/admin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Small"
+            android:layout_weight=".2"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:gravity="center"
+            android:textColor="@color/black_8am2"
+            android:textSize="@dimen/text_Small" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Small"
+            android:layout_weight=".4"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/black_8am2"
+            android:textSize="@dimen/text_Small" />
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:background="@color/black_8am2"
+        android:layout_margin="@dimen/margin_Medium"
+        android:layout_height="1dp" />
+</LinearLayout>

@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,7 +116,7 @@ public class ComingRequest extends Fragment {
 
                         }
                     });
-                    estimatedFare.setText(booking.getString(WebService.Booking.total_price));
+                    estimatedFare.setText(booking.getString(WebService.Booking.total_price) + " " + getActivity().getString(R.string.egp));
                     visitDate.setText(booking.getString(WebService.Booking.receive_hour) + ":" + booking.getString(WebService.Booking.receive_minutes)
                             + "  /   " + booking.getString(WebService.Booking.receive_day) + "-" + booking.getString(WebService.Booking.receive_month) + "-" + booking.getString(WebService.Booking.receive_year));
 
@@ -126,7 +128,8 @@ public class ComingRequest extends Fragment {
                     requestDescription.setText(booking.getString(WebService.Booking.subCategoryName));
 
                     clientName.setText(booking.getString(WebService.Booking.firstName));
-                    if (!booking.getString(WebService.Booking.totalRate).equals("0"))
+                    if (!booking.getString(WebService.Booking.totalRate).equals("0") || !booking.getString(WebService.Booking.totalRate).equals("")
+                            || !booking.getString(WebService.Booking.totalRate).equals("null"))
                         clientRate.setText(booking.getString(WebService.Booking.totalRate));
 
                     if (!booking.getString("image").equals("")) {
@@ -135,6 +138,26 @@ public class ComingRequest extends Fragment {
                             imageLink = WebService.Image.fullPathImage + imageLink;
                         Picasso.with(getActivity()).load(imageLink).transform(new CircleTransform()).into(logo);
                     }
+
+
+                    logo.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Bundle bundle = new Bundle();
+                            try {
+                                bundle.putString(WebService.HomeVisit.id_user, booking.getString(WebService.Booking.id_client));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            FragmentManager fm = getActivity().getSupportFragmentManager();
+                            Profile fragment = new Profile();
+                            FragmentTransaction ft = fm.beginTransaction();
+                            fragment.setArguments(bundle);
+                            ft.replace(R.id.fragment, fragment, "Profile");
+                            ft.addToBackStack("Profile");
+                            ft.commit();
+                        }
+                    });
 
 
                     cancel.setVisibility(View.GONE);
