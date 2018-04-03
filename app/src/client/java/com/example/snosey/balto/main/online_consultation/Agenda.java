@@ -103,6 +103,8 @@ public class Agenda extends android.support.v4.app.Fragment {
     TextView rate;
     @InjectView(R.id.rateNumber)
     TextView rateNumber;
+    @InjectView(R.id.notAvailable)
+    TextView notAvailable;
     private GregorianCalendar currentDate;
 
 
@@ -406,20 +408,12 @@ public class Agenda extends android.support.v4.app.Fragment {
 
                 }
             }
-            if (newAgendaList.size() == 0) {
-                AlertDialog.Builder builder;
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Light_Dialog_Alert);
-                } else {
-                    builder = new AlertDialog.Builder(getContext());
-                }
-                builder.setMessage(getActivity().getString(R.string.notAvailable))
-                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                // continue with delete
-                            }
-                        }).show();
-            }
+            if (newAgendaList.size() == 0)
+                notAvailable.setVisibility(View.VISIBLE);
+            else
+                notAvailable.setVisibility(View.GONE);
+
+
         }
 
         private class TimeScheduale {

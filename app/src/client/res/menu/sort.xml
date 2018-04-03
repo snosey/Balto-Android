@@ -2,18 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
-    <item android:id="@+id/nameAsc"
-        android:title="@string/nameAsc"
-        android:orderInCategory="1"
-        android:checked="true"
-        app:showAsAction="never" />
-    <item android:id="@+id/nameDesc"
-        android:title="@string/nameDesc"
-        android:orderInCategory="2"
-        app:showAsAction="never" />
-    <item android:id="@+id/rateSort"
-        android:title="@string/rateSort"
-        android:orderInCategory="3"
-        app:showAsAction="never" />
+        <item
+            android:id="@+id/nameAsc"
+            android:checked="true"
+            android:orderInCategory="1"
+            android:title="@string/nameAsc"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/nameDesc"
+            android:orderInCategory="2"
+            android:title="@string/nameDesc"
+            app:showAsAction="never" />
+        <item
+            android:id="@+id/rateSort"
+            android:orderInCategory="3"
+            android:title="@string/rateSort"
+            app:showAsAction="never" />
     </group>
 </menu>

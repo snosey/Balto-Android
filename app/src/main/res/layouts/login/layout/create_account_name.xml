@@ -56,6 +56,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_Large"
+        android:textCursorDrawable="@null"
         android:layout_marginStart="@dimen/margin_Large"
         android:backgroundTint="@color/white"
         android:inputType="textPersonName"
@@ -77,6 +78,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_Large"
         android:layout_marginStart="@dimen/margin_Large"
+        android:textCursorDrawable="@null"
         android:backgroundTint="@color/white"
         android:inputType="textPersonName"
         android:textColor="@color/white" />

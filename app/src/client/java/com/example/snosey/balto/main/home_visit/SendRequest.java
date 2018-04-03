@@ -73,7 +73,7 @@ public class SendRequest extends Fragment {
     boolean doctorAvailable = false;
     JSONArray doctorJsonArray;
 
-    private int mInterval = 20000; // 20 seconds by default, can be changed later
+    private int mInterval = 15000; // 15 seconds by default, can be changed later
     private Handler mHandler;
     Runnable sendRequestLoop;
 
@@ -109,6 +109,11 @@ public class SendRequest extends Fragment {
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15));
             }
         });
+
+        if (getArguments().getString(WebService.Booking.id_payment_way).equals(WebService.Booking.cash))
+            paymentWay.setText(getActivity().getString(R.string.cash));
+        else
+            paymentWay.setText(getActivity().getString(R.string.credit));
 
         return view;
     }
@@ -176,7 +181,7 @@ public class SendRequest extends Fragment {
 
     private void saveBooking(final int year, final int monthOfYear, final int dayOfMonth, final int hourOfDay, final int minute, final String type) {
 
-        final int finalMonthOfYear=monthOfYear+1;
+        final int finalMonthOfYear = monthOfYear + 1;
         UrlData urlData = new UrlData();
         if (getArguments().containsKey(WebService.HomeVisit.promoCode))
             urlData.add(WebService.Booking.id_coupon_client, getArguments().getString(WebService.HomeVisit.promoCode));
@@ -353,6 +358,7 @@ public class SendRequest extends Fragment {
             Toast.makeText(getActivity(), getActivity().getString(R.string.noProfissional), Toast.LENGTH_LONG).show();
 
     }
+
     String addZeroToString(String s) {
         if (s.length() == 1)
             s = "0" + s;

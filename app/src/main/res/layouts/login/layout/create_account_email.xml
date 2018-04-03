@@ -43,13 +43,13 @@
         android:textSize="@dimen/text_Large" />
 
     <TextView
+        android:id="@+id/emailDesc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_Medium"
         android:layout_marginStart="@dimen/margin_Large"
-        android:maxLines="1"
-        android:id="@+id/emailDesc"
         android:ellipsize="end"
+        android:maxLines="2"
         android:text="@string/emailDescription"
         android:textColor="@color/white"
         android:textSize="@dimen/text_VerySmall" />
@@ -65,14 +65,15 @@
         android:textSize="@dimen/text_Medium" />
 
     <EditText
+        android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_Large"
-        android:id="@+id/email"
         android:layout_marginEnd="@dimen/margin_Large"
+        android:layout_marginStart="@dimen/margin_Large"
         android:backgroundTint="@color/white"
         android:inputType="textEmailAddress"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        android:textCursorDrawable="@null" />
 
     <ImageButton
         android:id="@+id/next"

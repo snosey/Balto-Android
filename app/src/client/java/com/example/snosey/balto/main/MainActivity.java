@@ -329,7 +329,8 @@ public class MainActivity extends FragmentActivity {
                     }
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, "Download Balto application and get offer by using this code: " + code);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.shareOffer) + code + "\nhttps://play.google.com/store/apps/details?id=" +
+                            BuildConfig.APPLICATION_ID);
                     sendIntent.setType("text/plain");
                     startActivity(sendIntent);
 

@@ -19,7 +19,7 @@
             android:layout_marginBottom="@dimen/margin_Medium"
             android:layout_marginTop="@dimen/margin_Medium"
             android:text="@string/fromHour"
-            android:textSize="@dimen/text_Medium"
+            android:textSize="@dimen/text_VerySmall"
             android:textStyle="bold" />
 
         <TextView
@@ -43,7 +43,7 @@
             android:layout_marginTop="@dimen/margin_Medium"
             android:paddingStart="@dimen/margin_Medium"
             android:text="@string/toHour"
-            android:textSize="@dimen/text_Medium"
+            android:textSize="@dimen/text_VerySmall"
             android:textStyle="bold" />
 
         <TextView

@@ -105,8 +105,8 @@ public class CategoryDetails extends Fragment {
                 durationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean b) {
-                        double value = min + (progress * 1);
-                        serviceDuration.setText((int) value);
+                        double value = min + progress;
+                        serviceDuration.setText(((int) value) + "");
                         try {
                             totalPrice = ((jsonObject.getInt("price_per_hour") * ((int) value - 1)) + "");
                         } catch (JSONException e) {
@@ -130,6 +130,21 @@ public class CategoryDetails extends Fragment {
             e.printStackTrace();
         }
 
+        try {
+            if (MainActivity.jsonObject.getString("payment_token").equals("null") || MainActivity.jsonObject.getString("payment_token").equals(""))
+            {
+                credit.setChecked(false);
+                cash.setChecked(true);
+            }
+            else {
+                cash.setChecked(false);
+                credit.setChecked(true);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         cash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -143,7 +158,9 @@ public class CategoryDetails extends Fragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     try {
+
                         if (MainActivity.jsonObject.getString("payment_token").equals("null") || MainActivity.jsonObject.getString("payment_token").equals("")) {
+
                             FragmentManager fm = getActivity().getSupportFragmentManager();
                             PaymentSlider fragment = new PaymentSlider();
                             FragmentTransaction ft = fm.beginTransaction();
@@ -160,6 +177,7 @@ public class CategoryDetails extends Fragment {
                 }
             }
         });
+
         return view;
     }
 

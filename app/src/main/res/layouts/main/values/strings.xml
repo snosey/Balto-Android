@@ -30,7 +30,7 @@
     <string name="estimatedFare">Total Fare</string>
     <string name="schedule">Schedule</string>
     <string name="requestNow">Request Now</string>
-    <string name="promoCodeRequest">Promo Code</string>
+    <string name="promoCodeRequest">Referral ID</string>
     <string name="available">Available</string>
     <string name="offline">Offline</string>
     <string name="noProfissional">No professional available</string>
@@ -77,5 +77,6 @@
     <string name="balto">Balto</string>
     <string name="certifications">Documents</string>
     <string name="date">Date</string>
+    <string name="shareOffer">Download ElBalto now! and enjoy 50% off on your 1st medical service by using this code:</string>
 
 </resources>

@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetHashKey;
@@ -43,7 +42,7 @@ public class RegistrationActivity extends FragmentActivity {
         );
         setContentView(R.layout.activity_registration);
         new GetHashKey(this);
-        //checkLang();
+        checkLang();
         {
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -124,6 +123,14 @@ public class RegistrationActivity extends FragmentActivity {
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
         onConfigurationChanged(config);
 
+        if (BuildConfig.APPLICATION_ID.contains("doctor"))
+            sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
+        else
+            sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("lang", lang);
+        editor.commit();
 
     }
 

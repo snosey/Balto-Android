@@ -218,12 +218,13 @@ public class ReservationComing extends Fragment {
                                         try {
                                             updateBooking(reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateStart);
                                             String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)",
-                                                    reservationObject.getString(WebService.Booking.client_latitude),
-                                                    reservationObject.getString(WebService.Booking.client_longitude), "");
+                                                    Double.parseDouble(reservationObject.getString(WebService.Booking.client_latitude))
+                                                    , Double.parseDouble(reservationObject.getString(WebService.Booking.client_longitude)), "");
 
                                             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
                                             intent.setPackage("com.google.android.apps.maps");
                                             startActivity(intent);
+
 
                                         } catch (JSONException e) {
                                             e.printStackTrace();

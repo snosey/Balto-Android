@@ -118,7 +118,7 @@ public class Agenda extends Fragment {
                     @Override
                     public void onClick(View view) {
                         {
-                            final Dialog dialog = new Dialog(getContext(), android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen);
+                            final Dialog dialog = new Dialog(getContext());
                             dialog.setContentView(R.layout.create_appointment);
                             final TimePicker timeFrom = (TimePicker) dialog.findViewById(R.id.timeFrom);
                             timeFrom.setIs24HourView(true);
@@ -401,7 +401,7 @@ public class Agenda extends Fragment {
 
     @OnClick(R.id.newAgenda)
     public void addSchedule() {
-        final Dialog dialog = new Dialog(getContext(), android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen);
+        final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.create_appointment);
         final TimePicker timeFrom = (TimePicker) dialog.findViewById(R.id.timeFrom);
         timeFrom.setIs24HourView(true);
@@ -413,6 +413,15 @@ public class Agenda extends Fragment {
             @Override
             public void onClick(View view) {
                 dialog.hide();
+                Calendar calendar = new GregorianCalendar();
+                if (timeFrom.getCurrentHour() < calendar.get(Calendar.HOUR_OF_DAY)) {
+                    Toast.makeText(getActivity(), getActivity().getString(R.string.wrongAppoinment), Toast.LENGTH_LONG).show();
+                    return;
+                } else if (timeFrom.getCurrentHour() == calendar.get(Calendar.HOUR_OF_DAY) &&
+                        timeFrom.getCurrentMinute() < calendar.get(Calendar.MINUTE)) {
+                    Toast.makeText(getActivity(), getActivity().getString(R.string.wrongAppoinment), Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if (((timeFrom.getCurrentHour())
                         > (timeTo.getCurrentHour())) ||
                         !DataAvailable(timeFrom.getCurrentHour(), timeTo.getCurrentHour())) {
@@ -457,6 +466,7 @@ public class Agenda extends Fragment {
             private boolean DataAvailable(Integer currentHour, Integer currentHour1) {
                 boolean valid = true;
                 //check if data is available
+
                 for (int i = 0; i < agendaJsonArray.length(); i++) {
                     try {
                         JSONObject agenda = agendaJsonArray.getJSONObject(i);

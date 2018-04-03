@@ -48,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_Large"
         android:layout_marginTop="@dimen/margin_Medium"
-        android:text="@string/lang"
+        android:text="@string/spokenLangauge"
         android:textColor="@color/white"
         android:textSize="@dimen/text_Medium" />
 

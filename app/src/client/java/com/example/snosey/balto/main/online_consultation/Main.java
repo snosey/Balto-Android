@@ -112,10 +112,14 @@ public class Main extends Fragment {
                                 TextView selected = (TextView) view;
                                 if (i == 0) {
                                     Main.this.thirdCategory.setAdapter(null);
+                                    return;
                                 }
                                 try {
                                     JSONArray thirdCategory = subCategory.getJSONObject(i).getJSONArray("Third");
-                                    Main.this.thirdCategory.setAdapter(new CustomeAdapter(getActivity(), thirdCategory, "name", "id"));
+                                    if (i == 0) {
+                                        Main.this.thirdCategory.setAdapter(null);
+                                    } else
+                                        Main.this.thirdCategory.setAdapter(new CustomeAdapter(getActivity(), thirdCategory, "name", "id"));
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
