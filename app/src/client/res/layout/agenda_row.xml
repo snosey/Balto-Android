@@ -13,27 +13,15 @@
         android:layout_gravity="center"
         android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/margin_Medium"
-            android:layout_marginTop="@dimen/margin_Medium"
-            android:text="@string/fromHour"
-            android:textSize="@dimen/text_Medium"
-            android:textStyle="bold"
-            android:visibility="gone" />
 
         <TextView
             android:id="@+id/timeFrom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_Small"
-            android:layout_marginStart="@dimen/margin_Medium"
             android:layout_marginTop="@dimen/margin_Medium"
             android:gravity="center"
             android:padding="@dimen/margin_Medium"
-            android:text="00"
             android:textColor="@color/white"
             android:textSize="@dimen/text_Small" />
 
@@ -56,7 +44,6 @@
             android:layout_marginTop="@dimen/margin_Medium"
             android:gravity="center"
             android:padding="@dimen/margin_Medium"
-            android:text="00"
             android:textColor="@color/white" />
 
 

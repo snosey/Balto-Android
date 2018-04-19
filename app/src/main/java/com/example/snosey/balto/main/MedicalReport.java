@@ -107,7 +107,7 @@ public class MedicalReport extends Fragment {
         urlData.add(WebService.Booking.id, id);
         urlData.add(WebService.Booking.diagnosis, diagnosis.getText().toString());
         urlData.add(WebService.Booking.medication, prescription.getText().toString());
-        urlData.add(WebService.Booking.id_state, WebService.Booking.bookingStateDone);
+       // urlData.add(WebService.Booking.id_state, WebService.Booking.bookingStateDone);
 
         new GetData(new GetData.AsyncResponse() {
             @Override

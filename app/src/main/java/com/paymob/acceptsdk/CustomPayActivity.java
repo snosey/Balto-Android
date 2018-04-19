@@ -20,6 +20,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -31,7 +33,7 @@ import morxander.editcard.EditCard;
  * Created by MTawfik on Aug/15/17.
  */
 
-public class PayActivity extends AppCompatActivity implements OnClickListener, AsyncResponse {
+public class CustomPayActivity extends AppCompatActivity implements OnClickListener, AsyncResponse {
 
     enum Status {IDLE, PROCESSING}
 
@@ -136,18 +138,8 @@ public class PayActivity extends AppCompatActivity implements OnClickListener, A
         String cvvString = cvvText.getText().toString();
 
 
-        SharedPreferences sharedPreferences = getSharedPreferences("payment", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("nameString", nameString);
-        editor.putString("numberString", numberString);
-        editor.putString("monthString", monthString);
-        editor.putString("yearString", yearString);
-        editor.putString("cvvString", cvvString);
-        //editor.commit();
-
-
         if (!FormChecker.checkCVV(cvvString)) {
-            AlertShower.showSweetAlert(this, "Error", "CVV must be 3 digits", SweetAlertDialog.WARNING_TYPE, "Ok");
+            CustomAlertShower.showSweetAlert(this, "Error", "CVV must be 3 digits", SweetAlertDialog.WARNING_TYPE, "Ok");
             return;
         }
 
@@ -163,15 +155,15 @@ public class PayActivity extends AppCompatActivity implements OnClickListener, A
             }
         } else {
             if (!FormChecker.checkCardName(nameString)) {
-                AlertShower.showSweetAlert(this, "Error", "Name can't be empty", SweetAlertDialog.WARNING_TYPE, "Ok");
+                CustomAlertShower.showSweetAlert(this, "Error", "Name can't be empty", SweetAlertDialog.WARNING_TYPE, "Ok");
                 return;
             }
             if (!FormChecker.checkCardNumber(numberString)) {
-                AlertShower.showSweetAlert(this, "Error", "Card Number must be 16 digits!", SweetAlertDialog.WARNING_TYPE, "Ok");
+                CustomAlertShower.showSweetAlert(this, "Error", "Card Number must be 16 digits!", SweetAlertDialog.WARNING_TYPE, "Ok");
                 return;
             }
             if (!FormChecker.checkDate(monthString, yearString)) {
-                AlertShower.showSweetAlert(this, "Error", "Invalid Date!", SweetAlertDialog.WARNING_TYPE, "Ok");
+                CustomAlertShower.showSweetAlert(this, "Error", "Invalid Date!", SweetAlertDialog.WARNING_TYPE, "Ok");
                 return;
             }
 
@@ -190,11 +182,11 @@ public class PayActivity extends AppCompatActivity implements OnClickListener, A
             payAPIRequest(cardData);
         } catch (JSONException J) {
             if (showAlerts) {
-                AlertShower.showSweetAlertAndNotify(this, "Error", "\"An error occured while handling payment response\"", SweetAlertDialog.ERROR_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
+                CustomAlertShower.showSweetAlertAndNotify(this, "Error", "\"An error occured while handling payment response\"", SweetAlertDialog.ERROR_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         sweetAlertDialog.dismiss();
-                        PayActivity.this.notifyErrorTransaction("An error occured while handling payment response");
+                        CustomPayActivity.this.notifyErrorTransaction("An error occured while handling payment response");
                     }
                 });
             } else {
@@ -242,14 +234,14 @@ public class PayActivity extends AppCompatActivity implements OnClickListener, A
                         } else {
                             dismissProgressDialog();
                             if (showAlerts) {
-                                AlertShower.showSweetAlertAndNotify(this, "Error",
+                                CustomAlertShower.showSweetAlertAndNotify(this, "Error",
                                         "An error occured while reading the 3dsecure redirection URL",
                                         SweetAlertDialog.ERROR_TYPE, "Ok",
                                         new SweetAlertDialog.OnSweetClickListener() {
                                             @Override
                                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                                 sweetAlertDialog.dismiss();
-                                                PayActivity.this.notifyErrorTransaction("An error occured while reading the 3dsecure redirection URL");
+                                                CustomPayActivity.this.notifyErrorTransaction("An error occured while reading the 3dsecure redirection URL");
                                             }
                                         });
                             } else {
@@ -262,11 +254,11 @@ public class PayActivity extends AppCompatActivity implements OnClickListener, A
                 } else {
                     dismissProgressDialog();
                     if (showAlerts) {
-                        AlertShower.showSweetAlertAndNotify(this, "Error", "An error occured when checking if the card is 3d secure", SweetAlertDialog.ERROR_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
+                        CustomAlertShower.showSweetAlertAndNotify(this, "Error", "An error occured when checking if the card is 3d secure", SweetAlertDialog.ERROR_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 sweetAlertDialog.dismiss();
-                                PayActivity.this.notifyErrorTransaction("An error occured while checking if the card is 3d secure");
+                                CustomPayActivity.this.notifyErrorTransaction("An error occured while checking if the card is 3d secure");
                             }
                         });
                     } else {
@@ -276,11 +268,11 @@ public class PayActivity extends AppCompatActivity implements OnClickListener, A
             } catch (Exception ex) {
                 dismissProgressDialog();
                 if (showAlerts) {
-                    AlertShower.showSweetAlertAndNotify(this, "Error", ex.getMessage(), SweetAlertDialog.ERROR_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
+                    CustomAlertShower.showSweetAlertAndNotify(this, "Error", ex.getMessage(), SweetAlertDialog.ERROR_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
-                            PayActivity.this.notifyErrorTransaction("An error occured while parsing payment response");
+                            CustomPayActivity.this.notifyErrorTransaction("An error occured while parsing payment response");
 
                         }
                     });
@@ -292,11 +284,11 @@ public class PayActivity extends AppCompatActivity implements OnClickListener, A
         } else if (apiName.equalsIgnoreCase(ServerUrls.API_NAME_TOKENIZE_CARD)) {
             dismissProgressDialog();
             if (showAlerts) {
-                AlertShower.showSweetAlertAndNotify(this, "Transaction successful", null, SweetAlertDialog.SUCCESS_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
+                CustomAlertShower.showSweetAlertAndNotify(this, "Transaction successful", null, SweetAlertDialog.SUCCESS_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         sweetAlertDialog.dismiss();
-                        PayActivity.this.notifySuccessfulTransactionSaveCard(output);
+                        CustomPayActivity.this.notifySuccessfulTransactionSaveCard(output);
                     }
                 });
             } else {
@@ -325,11 +317,11 @@ public class PayActivity extends AppCompatActivity implements OnClickListener, A
                 } else {
                     dismissProgressDialog();
                     if (showAlerts) {
-                        AlertShower.showSweetAlertAndNotify(this, "Transaction successful", null, SweetAlertDialog.SUCCESS_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
+                        CustomAlertShower.showSweetAlertAndNotify(this, "Transaction successful", null, SweetAlertDialog.SUCCESS_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
                             @Override
                             public void onClick(SweetAlertDialog sweetAlertDialog) {
                                 sweetAlertDialog.dismiss();
-                                PayActivity.this.notifySuccesfulTransaction();
+                                CustomPayActivity.this.notifySuccesfulTransaction();
                             }
                         });
                     } else {
@@ -339,11 +331,11 @@ public class PayActivity extends AppCompatActivity implements OnClickListener, A
             } else {
                 dismissProgressDialog();
                 if (showAlerts) {
-                    AlertShower.showSweetAlertAndNotify(this, "Error", payDict.getString(PayResponseKeys.DATA_MESSAGE), SweetAlertDialog.ERROR_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
+                    CustomAlertShower.showSweetAlertAndNotify(this, "Error", payDict.getString(PayResponseKeys.DATA_MESSAGE), SweetAlertDialog.ERROR_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismiss();
-                            PayActivity.this.notifyRejectedTransaction();
+                            CustomPayActivity.this.notifyRejectedTransaction();
                         }
                     });
                 } else {
@@ -352,11 +344,11 @@ public class PayActivity extends AppCompatActivity implements OnClickListener, A
             }
         } catch (JSONException J) {
             if (showAlerts) {
-                AlertShower.showSweetAlertAndNotify(this, "Error", "Error occured while reading returned message", SweetAlertDialog.ERROR_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
+                CustomAlertShower.showSweetAlertAndNotify(this, "Error", "Error occured while reading returned message", SweetAlertDialog.ERROR_TYPE, "Ok", new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         sweetAlertDialog.dismiss();
-                        PayActivity.this.notifyErrorTransaction("An error occured while reading returned message");
+                        CustomPayActivity.this.notifyErrorTransaction("An error occured while reading returned message");
                     }
                 });
             } else {

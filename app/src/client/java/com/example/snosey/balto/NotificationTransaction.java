@@ -8,15 +8,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.main.RateDialog;
 import com.example.snosey.balto.main.VideoCall;
+import com.example.snosey.balto.main.home_visit.ProfissionLocation;
 import com.example.snosey.balto.main.reservation.Reservations;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-/**
- * Created by Snosey on 2/26/2018.
- */
 
 public class NotificationTransaction {
     FragmentActivity activity;
@@ -31,11 +29,34 @@ public class NotificationTransaction {
                 ReservationsAlarm(data);
             } else if (kind.equals(WebService.Notification.Types.video_call)) {
                 joinVideoRoom(data);
+            } else if (kind.equals(WebService.Booking.bookingStateStart)) {
+                openDoctorLocation(data);
+            } else if (kind.equals(WebService.Booking.bookingStateWorking)) {
+                openDoctorLocation(data);
+            } else if (kind.equals(WebService.Booking.bookingStateDone)) {
+                rateDoctor(data);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void rateDoctor(String data) {
+        RateDialog rateDialog = new RateDialog(activity, data.substring(0, data.indexOf("|")), data.substring(data.indexOf("|") + 1));
+        rateDialog.show();
+    }
+
+    private void openDoctorLocation(String data) {
+        Bundle bundle = new Bundle();
+        bundle.putString(WebService.Booking.id, data);
+        FragmentManager fm = activity.getSupportFragmentManager();
+        ProfissionLocation fragment = new ProfissionLocation();
+        FragmentTransaction ft = fm.beginTransaction();
+        fragment.setArguments(bundle);
+        ft.replace(R.id.fragment, fragment, "ProfissionLocation");
+        ft.addToBackStack("ProfissionLocation");
+        ft.commit();
     }
 
     private void joinVideoRoom(String data) {
@@ -69,4 +90,5 @@ public class NotificationTransaction {
         ft.addToBackStack("ReservationsMain");
         ft.commit();
     }
+
 }

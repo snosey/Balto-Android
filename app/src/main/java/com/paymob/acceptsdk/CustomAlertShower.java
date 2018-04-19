@@ -10,8 +10,8 @@ import android.app.Activity;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog.OnSweetClickListener;
 
-class AlertShower {
-    AlertShower() {
+class CustomAlertShower {
+    CustomAlertShower() {
     }
 
     static void showSweetAlertAndNotify(Activity activity, String title, String message, int style, String buttonTitle, OnSweetClickListener listener) {

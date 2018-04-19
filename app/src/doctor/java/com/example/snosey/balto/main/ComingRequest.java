@@ -150,11 +150,11 @@ public class ComingRequest extends Fragment {
                                 e.printStackTrace();
                             }
                             FragmentManager fm = getActivity().getSupportFragmentManager();
-                            Profile fragment = new Profile();
+                            ClientProfile fragment = new ClientProfile();
                             FragmentTransaction ft = fm.beginTransaction();
                             fragment.setArguments(bundle);
-                            ft.replace(R.id.fragment, fragment, "Profile");
-                            ft.addToBackStack("Profile");
+                            ft.replace(R.id.fragment, fragment, "ClientProfile");
+                            ft.addToBackStack("ClientProfile");
                             ft.commit();
                         }
                     });

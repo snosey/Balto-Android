@@ -93,9 +93,6 @@ public class MakePayMobApi {
             @Override
             public byte[] getBody() throws AuthFailureError {
                 HashMap<String, String> MyData = new HashMap<String, String>();
-                MyData.put("username", "Elbalto"); //Add the data you'd like to send to the server.
-                MyData.put("password", "Ec0n0mics@88");
-                MyData.put("expiration", "36000");
                 return new JSONObject(MyData).toString().getBytes();
             }
 
@@ -215,86 +212,100 @@ public class MakePayMobApi {
         MyRequestQueue.add(MyStringRequest);
     }
 
-        private void payNow() {
-            RequestQueue MyRequestQueue = Volley.newRequestQueue(activity);
-            StringRequest MyStringRequest = new StringRequest(Request.Method.POST, WebService.Credit.payNowApi, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    dialog.setVisibility(View.GONE);
-                    //This code is executed if the server responds, whether or not the response contains data.
-                    //The String 'response' contains the server's response.
-                    Log.e("response:", response);
-                    Intent intent = new Intent();
-                    intent.putExtra("response", response);
-                    fragment.onActivityResult(6666, 6666, intent);
-                }
-            }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    //This code is executed if there is an error.
-                    String body;
-                    dialog.setVisibility(View.GONE);
-                    //get status code here
-                    //get response body and parse with appropriate encoding
+    private void payNow() {
+        RequestQueue MyRequestQueue = Volley.newRequestQueue(activity);
+        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, WebService.Credit.payNowApi, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                dialog.setVisibility(View.GONE);
+                //This code is executed if the server responds, whether or not the response contains data.
+                //The String 'response' contains the server's response.
+                Log.e("response:", response);
+                Intent intent = new Intent();
+                intent.putExtra("response", response);
+                fragment.onActivityResult(6666, 6666, intent);
+            }
+        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+                String body;
+                dialog.setVisibility(View.GONE);
+                //get status code here
+                //get response body and parse with appropriate encoding
+
+                try {
                     if (error.networkResponse.data != null) {
+
                         try {
                             body = new String(error.networkResponse.data, "UTF-8");
                             Log.e("Error:", body);
                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
+                            Toast.makeText(activity, activity.getString(R.string.error_null_cursor), Toast.LENGTH_SHORT).show();
+                            dialog.setVisibility(View.GONE);
                         }
+                    } else {
+                        Toast.makeText(activity, activity.getString(R.string.error_null_cursor), Toast.LENGTH_SHORT).show();
+                        dialog.setVisibility(View.GONE);
+
                     }
+                } catch (Exception e) {
                     Toast.makeText(activity, activity.getString(R.string.error_null_cursor), Toast.LENGTH_SHORT).show();
                     dialog.setVisibility(View.GONE);
+                    e.printStackTrace();
                 }
-            })
-
-            {
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-
-                    JSONObject MyData = new JSONObject();
-                    try {
-
-                        JSONObject source = new JSONObject();
-                        source.put("identifier", TOKEN);
-                        source.put("subtype", "TOKEN");
-                        source.put("cvn", "123");
-
-                        JSONObject billing = new JSONObject();
-                        billing.put("first_name", "NA");
-                        billing.put("last_name", "NA");
-                        billing.put("street", "NA");
-                        billing.put("building", "NA");
-                        billing.put("floor", "NA");
-                        billing.put("apartment", "NA");
-                        billing.put("city", "NA");
-                        billing.put("state", "NA");
-                        billing.put("country", "NA");
-                        billing.put("email", "NA");
-                        billing.put("phone_number", "NA");
-                        billing.put("postal_code", "NA");
-
-
-                        MyData.put("source", source);
-                        MyData.put("billing", billing);
-                        MyData.put("payment_token", paymentKey);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return MyData.toString().getBytes();
-
-                }
-
-
-                @Override
-                public String getBodyContentType() {
-                    return "application/json";
-                }
-
-            };
-            MyRequestQueue.add(MyStringRequest);
+            }
         }
+        )
+
+        {
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+
+                JSONObject MyData = new JSONObject();
+                try {
+
+                    JSONObject source = new JSONObject();
+                    source.put("identifier", TOKEN);
+                    source.put("subtype", "TOKEN");
+                    source.put("cvn", "123");
+
+                    JSONObject billing = new JSONObject();
+                    billing.put("first_name", "NA");
+                    billing.put("last_name", "NA");
+                    billing.put("street", "NA");
+                    billing.put("building", "NA");
+                    billing.put("floor", "NA");
+                    billing.put("apartment", "NA");
+                    billing.put("city", "NA");
+                    billing.put("state", "NA");
+                    billing.put("country", "NA");
+                    billing.put("email", "NA");
+                    billing.put("phone_number", "NA");
+                    billing.put("postal_code", "NA");
+
+
+                    MyData.put("source", source);
+                    MyData.put("billing", billing);
+                    MyData.put("payment_token", paymentKey);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                Log.e("My Data:", MyData.toString());
+                return MyData.toString().getBytes();
+
+            }
+
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+        };
+        MyRequestQueue.add(MyStringRequest);
+    }
 
     protected void startPayActivityNoToken() {
         dialog.setVisibility(View.GONE);

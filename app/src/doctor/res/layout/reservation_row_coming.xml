@@ -2,10 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="@dimen/margin_Medium"
     android:background="@drawable/shadow2">
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/call"
         android:layout_width="100dp"
         android:layout_height="@dimen/dimen_VerySmall"
@@ -13,7 +14,7 @@
         android:layout_margin="@dimen/margin_Medium"
         android:padding="@dimen/margin_Small" />
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/cancelOrStart"
         android:layout_width="100dp"
         android:layout_height="@dimen/dimen_VerySmall"
@@ -22,29 +23,48 @@
         android:layout_marginBottom="@dimen/margin_Medium"
         android:layout_marginEnd="@dimen/margin_Medium"
         android:background="@drawable/button_rounded"
-        android:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
         android:text="@string/start"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/text_Small" />
 
-    <Button
-        android:id="@+id/done"
-        android:layout_width="100dp"
-        android:layout_height="@dimen/dimen_VerySmall"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/cancelOrStart"
-        android:layout_marginBottom="@dimen/margin_Medium"
-        android:layout_marginEnd="@dimen/margin_Medium"
-        android:background="@drawable/button_rounded"
-        android:backgroundTint="@color/red"
-        android:text="@string/done"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_Small" />
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/done"
+            android:layout_width="100dp"
+            android:layout_height="@dimen/dimen_VerySmall"
+            android:layout_marginBottom="@dimen/margin_Medium"
+            android:layout_marginEnd="@dimen/margin_Medium"
+            android:background="@drawable/button_rounded"
+            app:backgroundTint="@color/red"
+            android:text="@string/done"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/arrive"
+            android:layout_width="100dp"
+            android:layout_height="@dimen/dimen_VerySmall"
+            android:layout_marginBottom="@dimen/margin_Medium"
+            android:layout_marginEnd="@dimen/margin_Medium"
+            android:background="@drawable/button_rounded"
+            app:backgroundTint="@color/black_fat7"
+            android:text="@string/arrive"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Small" />
+    </LinearLayout>
 
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/logo"
         android:layout_width="@dimen/dimen_VerySmall"
         android:layout_height="@dimen/dimen_VerySmall"

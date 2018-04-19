@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,21 +151,7 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-           /* if (requestCode == GET_NEW_CARD) {
-                String cardHolderName = data.getStringExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME);
-                String cardNumber = data.getStringExtra(CreditCardUtils.EXTRA_CARD_NUMBER);
-                String expiry = data.getStringExtra(CreditCardUtils.EXTRA_CARD_EXPIRY);
-                String cvv = data.getStringExtra(CreditCardUtils.EXTRA_CARD_CVV);
 
-                editor.putString(WebService.Credit.cardHolderName, cardHolderName);
-                editor.putString(WebService.Credit.cardNumber, cardNumber);
-                editor.putString(WebService.Credit.expiry, expiry);
-                editor.putString(WebService.Credit.cvv, cvv);
-                editor.putString(WebService.Credit.paymentWay, WebService.Credit.credit);
-                editor.commit();
-
-
-            } else*/
         if (requestCode == ACCEPT_PAYMENT_REQUEST) {
             Bundle extras = null;
             try {
@@ -232,9 +217,7 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
             @Override
             public void processFinish(String output) throws JSONException {
                 JSONObject jsonObject = new JSONObject(output);
-                Log.e("response", output);
                 MainActivity.jsonObject.put("payment_token", jsonObject.getJSONObject("user").getString("payment_token"));
-                Log.e("response main", MainActivity.jsonObject.getString("payment_token"));
                 ToastMaker.displayShortToast(getActivity(), "Saved");
             }
         }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Setting.updateUserApi, urlData.get());

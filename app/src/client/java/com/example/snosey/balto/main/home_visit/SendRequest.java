@@ -1,6 +1,7 @@
 package com.example.snosey.balto.main.home_visit;
 
 import android.app.AlarmManager;
+import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,8 +16,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.snosey.balto.MainActivity;
@@ -37,7 +40,6 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
-import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -158,17 +160,27 @@ public class SendRequest extends Fragment {
             @Override
             public void onDateSet(DatePickerDialog view, final int year, final int monthOfYear, final int dayOfMonth) {
                 {
+
                     {
-                        TimePickerDialog.newInstance(new TimePickerDialog.OnTimeSetListener() {
+                        final Dialog dialog = new Dialog(getContext());
+                        dialog.setContentView(R.layout.create_appointment);
+                        final TimePicker timeFrom = (TimePicker) dialog.findViewById(R.id.timeFrom);
+                        timeFrom.setIs24HourView(true);
+
+                        Button confirm = (Button) dialog.findViewById(R.id.confirm);
+                        confirm.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onTimeSet(TimePickerDialog view, int hourOfDay, int minute, int second) {
+                            public void onClick(View view) {
+                                dialog.hide();
                                 if (doctorAvailable) {
 
-                                    saveBooking(year, monthOfYear, dayOfMonth, hourOfDay, minute, "not now");
+                                    saveBooking(year, monthOfYear, dayOfMonth, timeFrom.getCurrentHour(), timeFrom.getCurrentMinute(), "not now");
                                 } else
                                     Toast.makeText(getActivity(), getActivity().getString(R.string.noProfissional), Toast.LENGTH_LONG).show();
                             }
-                        }, false).show(getActivity().getFragmentManager(), "");
+
+                        });
+                        dialog.show();
                     }
                 }
             }

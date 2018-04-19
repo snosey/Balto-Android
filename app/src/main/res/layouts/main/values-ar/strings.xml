@@ -41,7 +41,7 @@
     <string name="coming">القادمه</string>
     <string name="past">السابقه</string>
     <string name="alarmComingReservation">لديك حجز بعد 30 دقيقه</string>
-    <string name="ProfissionalBusy">جميع ممثلينا مشغولين الآن في خدمة عملاء</string>
+    <string name="ProfissionalBusy">جميع ممثلينا مشغولين الآن في خدمة عملاء اخرين, سيتم التواصل معك في اقرب وقت</string>
     <string name="optional">اختياري</string>
     <string name="hour">س</string>
     <string name="egp">جنيه</string>
@@ -55,7 +55,7 @@
     <string name="sort">ترتيب</string>
     <string name="reservation2">حجز</string>
     <string name="reviews">الاراء</string>
-    <string name="newReservation">حجز جديد</string>
+    <string name="newReservation">لديك حجز جديد</string>
     <string name="bookedUp">محجوز</string>
     <string name="notAvailable">غير متاح</string>
     <string name="video_room_is_created">تم انشاء غرفه المحادثه</string>
@@ -78,4 +78,10 @@
     <string name="certifications">مستندات</string>
     <string name="date">التاريخ</string>
     <string name="shareOffer">حمل تطبيق البالطو دلوقتي! و إستمتع ب50% خصم على أول إستشارة أو خدمه طبيه عن طريق الكود ده: </string>
+    <string name="chooseLang">اختر اللغه</string>
+
+    <string name="doctorStart">لقد بدأ المتخصص بالتحرك</string>
+    <string name="doctorArrive">لقد وصل المتخصص لموقعك</string>
+    <string name="doctorFinished">لقد انتهى المتخصص من الكشف</string>
+    <string name="exit">اضغط رجوع مره اخرى للخروج</string>
 </resources>

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/whiteDark"
+    android:clickable="true">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/profileData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_Medium"
+                android:layout_alignParentStart="true"
+                android:layout_margin="@dimen/margin_Small"
+                android:layout_gravity="center"
+                android:src="@drawable/logo_profile" />
+
+            <TextView
+                android:id="@+id/change"
+                android:layout_width="@dimen/dimen_Small"
+                android:backgroundTint="@color/black_fat7"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/logo"
+                android:background="@drawable/button_rounded"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:layout_margin="@dimen/margin_Medium"
+                android:gravity="center"
+                android:text="@string/change" />
+
+            <EditText
+                android:id="@+id/fisrtName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_Small"
+                android:layout_toEndOf="@id/logo"
+                android:background="@drawable/shadow2"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="@dimen/margin_Small"
+                android:textColor="@color/black_8am2"
+                android:textCursorDrawable="@null" />
+
+            <EditText
+                android:id="@+id/secondName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_Small"
+                android:layout_toEndOf="@id/fisrtName"
+                android:background="@drawable/shadow2"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:padding="@dimen/margin_Small"
+                android:textColor="@color/black_8am2" />
+
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/rate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_margin="@dimen/margin_Medium"
+                    android:drawablePadding="@dimen/margin_Medium"
+                    android:drawableStart="@drawable/star"
+                    android:drawableTint="@color/colorPrimary"
+                    android:ellipsize="end"
+                    android:gravity="end|center_vertical"
+                    android:maxLines="1"
+                    android:text="5" />
+
+                <TextView
+                    android:id="@+id/gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_margin="@dimen/margin_Medium"
+                    android:drawablePadding="@dimen/margin_Medium"
+                    android:drawableStart="@drawable/gender"
+                    android:drawableTint="@color/colorPrimary"
+                    android:ellipsize="end"
+                    android:maxLines="1" />
+            </RelativeLayout>
+
+
+            <TextView
+                android:id="@+id/phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_Medium"
+                android:drawablePadding="@dimen/margin_Medium"
+                android:drawableStart="@drawable/phone"
+                android:ellipsize="end"
+                android:maxLines="1" />
+
+
+            <TextView
+                android:id="@+id/email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_Medium"
+                android:drawablePadding="@dimen/margin_Medium"
+                android:drawableStart="@drawable/email"
+                android:ellipsize="end"
+                android:maxLines="1" />
+
+
+            <TextView
+                android:id="@+id/reviews"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_Medium"
+                android:background="@color/red"
+                android:gravity="center"
+                android:padding="@dimen/margin_VerySmall"
+                android:text="@string/reviews"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rateRV"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_Large"
+                android:layout_margin="@dimen/margin_Medium"
+                android:visibility="gone" />
+
+            <Button
+                android:id="@+id/confirm"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_VerySmall"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/margin_Medium"
+                android:background="@drawable/button_rounded"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/confirm"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

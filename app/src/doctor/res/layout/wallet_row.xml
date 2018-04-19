@@ -11,60 +11,72 @@
         android:orientation="horizontal"
         android:padding="@dimen/margin_Small">
 
-        <TextView
-            android:id="@+id/paymentWay"
+
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_Small"
-            android:layout_weight=".2"
-            android:gravity="center"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/black_8am2"
-            android:textSize="@dimen/text_Small" />
+            android:layout_height="match_parent"
+            android:layout_weight=".5"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_Small"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/black_8am2"
+                android:textSize="@dimen/text_VerySmall" />
+
+            <TextView
+                android:id="@+id/moneyOnYou"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_Small"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/black_8am2"
+                android:textSize="@dimen/text_VerySmall" />
+
+        </LinearLayout>
 
 
-        <TextView
-            android:id="@+id/doctor"
+        <LinearLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:layout_margin="@dimen/margin_Small"
-            android:layout_weight=".2"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/black_8am2"
-            android:textSize="@dimen/text_Small" />
+            android:layout_height="match_parent"
+            android:layout_weight=".5"
+            android:gravity="end"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/doctorMoney"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_Small"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/black_8am2"
+                android:textSize="@dimen/text_VerySmall" />
 
 
-        <TextView
-            android:id="@+id/admin"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_Small"
-            android:layout_weight=".2"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:gravity="center"
-            android:textColor="@color/black_8am2"
-            android:textSize="@dimen/text_Small" />
+            <TextView
+                android:id="@+id/cashReceived"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_Small"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/black_8am2"
+                android:textSize="@dimen/text_VerySmall" />
+        </LinearLayout>
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_Small"
-            android:layout_weight=".4"
-            android:gravity="center"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/black_8am2"
-            android:textSize="@dimen/text_Small" />
     </LinearLayout>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:layout_width="match_parent"
-        android:background="@color/black_8am2"
+        android:layout_height="1dp"
         android:layout_margin="@dimen/margin_Medium"
-        android:layout_height="1dp" />
+        android:background="@color/black_8am2" />
 </LinearLayout>

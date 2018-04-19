@@ -1,6 +1,8 @@
 package com.example.snosey.balto.main;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.media.AudioManager;
 import android.os.AsyncTask;
@@ -9,6 +11,7 @@ import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -175,6 +178,15 @@ public class VideoCall extends Fragment {
     }
 
     private void showMe() {
+
+        if ((ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(getActivity(),
+                Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)) {
+
+            requestPermissions(new String[]{Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA}, 55);
+            return;
+
+        }
         boolean enable = true;
         localAudioTrack = LocalAudioTrack.create(getContext(), enable);
 
@@ -644,4 +656,39 @@ public class VideoCall extends Fragment {
             audioManager.setSpeakerphoneOn(true);
         }
     }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 55: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(getContext(),
+                            Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+                            && ContextCompat.checkSelfPermission(getContext(),
+                            Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                        showMe();
+                    }
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(getActivity(), "permission denied", Toast.LENGTH_LONG).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+
+    }
+
 }

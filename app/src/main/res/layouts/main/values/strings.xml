@@ -37,11 +37,11 @@
     <string name="bookingRequestMessage">New Request</string>
     <string name="searching">Searching</string>
     <string name="credit">Credit</string>
-    <string name="requestNotAvailable">Request is not available any more !</string>
+    <string name="requestNotAvailable">This request has been taken</string>
     <string name="coming">Upcoming</string>
     <string name="past">Past</string>
     <string name="alarmComingReservation">You have reservation in 30 minute</string>
-    <string name="ProfissionalBusy">All our representatives are now engaged in customer service</string>
+    <string name="ProfissionalBusy">All our professionals are busy now with other clients, you will be contacted shortly</string>
     <string name="optional">Optional</string>
     <string name="hour">H</string>
     <string name="egp">EGP</string>
@@ -54,7 +54,7 @@
     <string name="filter">Filter</string>
     <string name="sort">Sort</string>
     <string name="reservation2">Book</string>
-    <string name="reviews">reviews</string>
+    <string name="reviews">Reviews</string>
     <string name="bookedUp">Booked up</string>
     <string name="newReservation">New Reservation</string>
     <string name="notAvailable">Not Available</string>
@@ -78,5 +78,11 @@
     <string name="certifications">Documents</string>
     <string name="date">Date</string>
     <string name="shareOffer">Download ElBalto now! and enjoy 50% off on your 1st medical service by using this code:</string>
+    <string name="chooseLang">Choose Language</string>
+
+    <string name="doctorStart">The professional is on the way</string>
+    <string name="doctorArrive">The professional has arrived to your location</string>
+    <string name="doctorFinished">Professional has finished.</string>
+    <string name="exit">Please click BACK again to exit</string>
 
 </resources>

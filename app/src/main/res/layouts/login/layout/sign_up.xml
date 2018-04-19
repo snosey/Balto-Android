@@ -3,19 +3,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
     android:clickable="true"
     android:orientation="vertical">
 
 
-        <ImageButton
+        <android.support.v7.widget.AppCompatImageButton
             android:layout_width="@dimen/dimen_VerySmall"
             android:layout_height="@dimen/dimen_VerySmall"
             android:layout_alignParentLeft="true"
             android:layout_margin="@dimen/margin_Medium"
             android:background="@android:color/transparent"
             android:onClick="back"
-            android:src="@drawable/back" />
+            app:srcCompat="@drawable/back" />
 
 
 
@@ -45,7 +46,7 @@
         <TextView
             android:id="@+id/or"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:text="@string/or"
             android:textColor="@color/white" />

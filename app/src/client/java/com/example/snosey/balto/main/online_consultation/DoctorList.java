@@ -19,7 +19,7 @@ import android.widget.TextView;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.webservice.WebService;
-import com.example.snosey.balto.main.Profile;
+import com.example.snosey.balto.main.DoctorProfile;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -130,11 +130,11 @@ public class DoctorList extends Fragment {
                             e.printStackTrace();
                         }
                         FragmentManager fm = getActivity().getSupportFragmentManager();
-                        Profile fragment = new Profile();
+                        DoctorProfile fragment = new DoctorProfile();
                         FragmentTransaction ft = fm.beginTransaction();
                         fragment.setArguments(bundle);
-                        ft.replace(R.id.fragment, fragment, "Profile");
-                        ft.addToBackStack("Profile");
+                        ft.replace(R.id.fragment, fragment, "DoctorProfile");
+                        ft.addToBackStack("DoctorProfile");
                         ft.commit();
                     }
                 });

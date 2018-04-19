@@ -30,7 +30,7 @@ import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
-import com.example.snosey.balto.main.Profile;
+import com.example.snosey.balto.main.DoctorProfile;
 import com.example.snosey.balto.main.VideoCall;
 import com.example.snosey.balto.main.home_visit.ProfissionLocation;
 import com.squareup.picasso.Picasso;
@@ -188,11 +188,11 @@ public class Coming extends Fragment {
                             e.printStackTrace();
                         }
                         FragmentManager fm = getActivity().getSupportFragmentManager();
-                        Profile fragment = new Profile();
+                        DoctorProfile fragment = new DoctorProfile();
                         FragmentTransaction ft = fm.beginTransaction();
                         fragment.setArguments(bundle);
-                        ft.replace(R.id.fragment, fragment, "Profile");
-                        ft.addToBackStack("Profile");
+                        ft.replace(R.id.fragment, fragment, "DoctorProfile");
+                        ft.addToBackStack("DoctorProfile");
                         ft.commit();
                     }
                 });

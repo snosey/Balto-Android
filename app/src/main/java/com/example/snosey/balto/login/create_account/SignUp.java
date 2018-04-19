@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.snosey.balto.BuildConfig;
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetData;
@@ -123,6 +124,10 @@ public class SignUp extends Fragment {
                         final Profile profile = Profile.getCurrentProfile();
 
                         UrlData urlData = new UrlData();
+                        if (BuildConfig.APPLICATION_ID.contains("doctor"))
+                            urlData.add(WebService.SignUp.type, WebService.Booking.doctor);
+                        else
+                            urlData.add(WebService.SignUp.type, WebService.Booking.client);
                         urlData.add(WebService.Login.id_provider, profile.getId());
                         urlData.add(WebService.Login.fcm_token, FirebaseInstanceId.getInstance().getToken());
                         new GetData(new GetData.AsyncResponse() {

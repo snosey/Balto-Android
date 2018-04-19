@@ -8,7 +8,13 @@
     <string name="FromTo">From - To</string>
     <string name="min20">Available time can\'t be less than 20 min</string>
     <string name="moneyForYou">Money for you : </string>
-    <string name="moneyOnYou">Money on you : </string>
-    <string name="dueTo">Due to : </string>
+    <string name="moneyOnYou">Outstanding:  </string>
+    <string name="dueTo">Due by : </string>
     <string name="spokenLangauge">Spoken Language</string>
+    <string name="arrive">Arrive</string>
+    <string name="cashReceived">Cash Received: </string>
+    <string name="transactionNumber"># of transactions:</string>
+    <string name="balance">Balance: </string>
+    <string name="pending">Pending: </string>
+    <string name="Settled">Settled: </string>
 </resources>

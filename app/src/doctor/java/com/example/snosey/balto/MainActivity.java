@@ -8,11 +8,13 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -37,7 +39,7 @@ import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
 import com.example.snosey.balto.login.RegistrationActivity;
 import com.example.snosey.balto.main.Agenda;
-import com.example.snosey.balto.main.Profile;
+import com.example.snosey.balto.main.DoctorProfile;
 import com.example.snosey.balto.main.Promotions;
 import com.example.snosey.balto.main.Wallet;
 import com.example.snosey.balto.main.reservations.ReservationsMain;
@@ -97,6 +99,52 @@ public class MainActivity extends FragmentActivity {
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     @InjectView(R.id.menu)
     ImageView menu;
+    private static boolean firstTime = true;
+    @InjectView(R.id.title)
+    TextView title;
+    @InjectView(R.id.HomeText)
+    TextView HomeText;
+    @InjectView(R.id.reservationText)
+    TextView reservationText;
+    @InjectView(R.id.agendaText)
+    TextView agendaText;
+    @InjectView(R.id.promotionsText)
+    TextView promotionsText;
+    @InjectView(R.id.languageText)
+    TextView languageText;
+    @InjectView(R.id.termsAndConditionsText)
+    TextView termsAndConditionsText;
+    @InjectView(R.id.shareText)
+    TextView shareText;
+    @InjectView(R.id.logoutText)
+    TextView logoutText;
+    @InjectView(R.id.walletText)
+    TextView walletText;
+
+    boolean doubleBackToExitPressedOnce = false;
+
+    @Override
+    public void onBackPressed() {
+        int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
+        if (backStackEntryCount == 0) {
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, getString(R.string.exit), Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        } else
+            super.onBackPressed();
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -115,6 +163,21 @@ public class MainActivity extends FragmentActivity {
 
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+
+
+        Typeface font = Typeface.createFromAsset(getAssets(),
+                "fonts/arial.ttf");
+        title.setTypeface(font, Typeface.BOLD);
+        clientName.setTypeface(font, Typeface.BOLD);
+        logoutText.setTypeface(font, Typeface.BOLD);
+        termsAndConditionsText.setTypeface(font, Typeface.BOLD);
+        languageText.setTypeface(font, Typeface.BOLD);
+        promotionsText.setTypeface(font, Typeface.BOLD);
+        shareText.setTypeface(font, Typeface.BOLD);
+        agendaText.setTypeface(font, Typeface.BOLD);
+        reservationText.setTypeface(font, Typeface.BOLD);
+        HomeText.setTypeface(font, Typeface.BOLD);
+        walletText.setTypeface(font, Typeface.BOLD);
 
 
         ((Application) this.getApplicationContext()).setCurrentActivity(MainActivity.this);
@@ -149,11 +212,11 @@ public class MainActivity extends FragmentActivity {
                         e.printStackTrace();
                     }
                     FragmentManager fm = getSupportFragmentManager();
-                    Profile fragment = new Profile();
+                    DoctorProfile fragment = new DoctorProfile();
                     FragmentTransaction ft = fm.beginTransaction();
                     fragment.setArguments(bundle);
-                    ft.replace(R.id.fragment, fragment, "Profile");
-                    ft.addToBackStack("Profile");
+                    ft.replace(R.id.fragment, fragment, "DoctorProfile");
+                    ft.addToBackStack("DoctorProfile");
                     ft.commit();
 
                     if (drawerLayout.isDrawerOpen(drawer))
@@ -231,7 +294,8 @@ public class MainActivity extends FragmentActivity {
 
         reservations(null);
 
-        if (getIntent().hasExtra("data")) {
+        if (firstTime && getIntent().hasExtra("data")) {
+            firstTime = false;
             new NotificationTransaction(MainActivity.this, getIntent().getStringExtra("data"));
         }
     }
@@ -314,7 +378,6 @@ public class MainActivity extends FragmentActivity {
         Wallet fragment = new Wallet();
         FragmentTransaction ft = fm.beginTransaction();
         ft.replace(R.id.fragment, fragment, "Wallet");
-
         if (view != null)
             ft.addToBackStack("Wallet");
 
@@ -327,24 +390,25 @@ public class MainActivity extends FragmentActivity {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
 
-        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("promo");
-        if (myFragment == null && !myFragment.isVisible()) {
+        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("Promotions");
+        if (myFragment != null && myFragment.isVisible())
+            return;
 
 
-            FragmentManager fm = getSupportFragmentManager();
-            Bundle bundle = new Bundle();
-            try {
-                bundle.putString(WebService.PromoCode.id_user, jsonObject.getString("id"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Promotions fragment = new Promotions();
-            FragmentTransaction ft = fm.beginTransaction();
-            fragment.setArguments(bundle);
-            ft.replace(R.id.fragment, fragment, "promo");
-            ft.addToBackStack("promo");
-            ft.commit();
+        FragmentManager fm = getSupportFragmentManager();
+        Bundle bundle = new Bundle();
+        try {
+            bundle.putString(WebService.PromoCode.id_user, jsonObject.getString("id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        Promotions fragment = new Promotions();
+        FragmentTransaction ft = fm.beginTransaction();
+        fragment.setArguments(bundle);
+        ft.replace(R.id.fragment, fragment, "Promotions");
+        ft.addToBackStack("Promotions");
+        ft.commit();
+
     }
 
     public void share(View view) {
@@ -383,16 +447,16 @@ public class MainActivity extends FragmentActivity {
             if (drawerLayout.isDrawerOpen(drawer))
                 drawerLayout.closeDrawer(drawer);
             final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setMessage(getString(R.string.areYouSure));
+            alertDialog.setMessage(getString(R.string.chooseLang));
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, ("english"),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
+                            recreate();
+                            Locale locale = new Locale("en");
                             SharedPreferences sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("lang", "en");
                             editor.commit();
-                            recreate();
-                            Locale locale = new Locale("en");
                             Locale.setDefault(locale);
                             Configuration config = new Configuration();
                             config.locale = locale;
@@ -406,12 +470,12 @@ public class MainActivity extends FragmentActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             recreate();
                             Locale locale = new Locale("ar");
-                            Locale.setDefault(locale);
-                            Configuration config = new Configuration();
                             SharedPreferences sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("lang", "ar");
                             editor.commit();
+                            Locale.setDefault(locale);
+                            Configuration config = new Configuration();
                             config.locale = locale;
                             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
                             onConfigurationChanged(config);

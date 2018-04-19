@@ -3,9 +3,9 @@
     <string name="app_name">ElBalto</string>
     <string name="doctorName">Enter doctor name ( Optional )</string>
     <string name="SubSpecialization">Sub-Specialization</string>
-    <string name="rateSort">Rate</string>
+    <string name="rateSort">By rating</string>
     <string name="nameAsc">Name ascending</string>
-    <string name="nameDesc">Name decending</string>
+    <string name="nameDesc">Name descending</string>
     <string name="bookingRequestSent">Booking request is sent to the doctor, Thank You.</string>
     <string name="pleaseWaitDoctor">Please wait untill doctor join room.</string>
     <string name="checkDr">Check</string>

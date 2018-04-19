@@ -8,6 +8,7 @@ import android.support.v4.BuildConfig;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -138,7 +139,8 @@ public class RegistrationActivity extends FragmentActivity {
     void checkLang() {
         Locale locale;
         SharedPreferences sharedPreferences;
-        if (BuildConfig.APPLICATION_ID.contains("doctor"))
+
+        if (com.example.snosey.balto.BuildConfig.APPLICATION_ID.contains("doctor"))
             sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
         else
             sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
@@ -146,6 +148,7 @@ public class RegistrationActivity extends FragmentActivity {
             locale = new Locale("ar");
         else
             locale = new Locale("en");
+
         Configuration config = new Configuration();
         config.locale = locale;
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());

@@ -131,12 +131,10 @@ public class CategoryDetails extends Fragment {
         }
 
         try {
-            if (MainActivity.jsonObject.getString("payment_token").equals("null") || MainActivity.jsonObject.getString("payment_token").equals(""))
-            {
+            if (MainActivity.jsonObject.getString("payment_token").equals("null") || MainActivity.jsonObject.getString("payment_token").equals("")) {
                 credit.setChecked(false);
                 cash.setChecked(true);
-            }
-            else {
+            } else {
                 cash.setChecked(false);
                 credit.setChecked(true);
             }
@@ -164,7 +162,7 @@ public class CategoryDetails extends Fragment {
                             FragmentManager fm = getActivity().getSupportFragmentManager();
                             PaymentSlider fragment = new PaymentSlider();
                             FragmentTransaction ft = fm.beginTransaction();
-                            ft.replace(R.id.fragment, fragment, "payment");
+                            ft.add(R.id.fragment, fragment, "payment");
                             ft.addToBackStack("payment");
                             ft.commit();
                             return;
@@ -189,6 +187,15 @@ public class CategoryDetails extends Fragment {
 
     @OnClick(R.id.next)
     public void onNextClicked() {
+        try {
+            if (MainActivity.jsonObject.getString("payment_token").equals("null") || MainActivity.jsonObject.getString("payment_token").equals(""))
+                id_payment_way = "1";
+            else if (credit.isChecked())
+                id_payment_way = "2";
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
         String genderId = "3";
         if (radioGroup.getCheckedRadioButtonId() == male.getId())
             genderId = "1";

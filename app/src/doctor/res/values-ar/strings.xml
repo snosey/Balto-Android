@@ -9,7 +9,13 @@
     <string name="FromTo">من - الى</string>
     <string name="min20">الوقت المتاح يجب الا يقل عن 20 دقيقه</string>
     <string name="moneyForYou">نقود لك : </string>
-    <string name="moneyOnYou">نقود عليك : </string>
+    <string name="moneyOnYou">معلق: </string>
     <string name="dueTo">تاريخ الاستحقاق : </string>
     <string name="spokenLangauge">لغة التحدث</string>
+    <string name="arrive">وصل</string>
+    <string name="cashReceived">المستلم نقدا: </string>
+    <string name="transactionNumber"># عدد المعاملات: </string>
+    <string name="balance">الرصيد: </string>
+    <string name="pending">المستحق: </string>
+    <string name="Settled">قيمة المعامالت: </string>
 </resources>

@@ -3,6 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
     android:clickable="true"
     android:orientation="vertical">
@@ -14,7 +15,7 @@
         android:orientation="horizontal"
         android:weightSum="14">
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
@@ -22,7 +23,7 @@
 
     </LinearLayout>
 
-    <ImageButton
+    <android.support.v7.widget.AppCompatImageButton
         android:layout_width="@dimen/dimen_VerySmall"
         android:layout_height="@dimen/dimen_VerySmall"
         android:layout_alignParentStart="true"
@@ -52,16 +53,16 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_Medium" />
 
-    <Spinner
+    <android.support.v7.widget.AppCompatSpinner
         android:id="@+id/spinner"
         android:layout_width="match_parent"
         android:popupBackground="@color/colorPrimary"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_Large"
         android:layout_marginStart="@dimen/margin_Large"
-        android:backgroundTint="@color/white" />
+        app:backgroundTint="@color/white" />
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_Large"
@@ -69,7 +70,7 @@
         android:background="@drawable/line" />
 
 
-    <ImageButton
+    <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

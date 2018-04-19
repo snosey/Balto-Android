@@ -8,13 +8,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -35,8 +38,8 @@ import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
 import com.example.snosey.balto.login.RegistrationActivity;
+import com.example.snosey.balto.main.ClientProfile;
 import com.example.snosey.balto.main.HomeAndOnline;
-import com.example.snosey.balto.main.Profile;
 import com.example.snosey.balto.main.Promotions;
 import com.example.snosey.balto.main.payment.PaymentSlider;
 import com.example.snosey.balto.main.reservation.Reservations;
@@ -63,6 +66,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class MainActivity extends FragmentActivity {
     public static JSONObject jsonObject;
+
 
     @InjectView(R.id.clientName)
     TextView clientName;
@@ -93,7 +97,52 @@ public class MainActivity extends FragmentActivity {
 
     LocationRequest mLocationRequest;
     FusedLocationProviderClient mFusedLocationClient;
+
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
+
+    boolean doubleBackToExitPressedOnce = false;
+    @InjectView(R.id.title)
+    TextView title;
+    @InjectView(R.id.HomeText)
+    TextView HomeText;
+    @InjectView(R.id.reservationText)
+    TextView reservationText;
+    @InjectView(R.id.paymentWayText)
+    TextView paymentWayText;
+    @InjectView(R.id.promotionsText)
+    TextView promotionsText;
+    @InjectView(R.id.languageText)
+    TextView languageText;
+    @InjectView(R.id.termsAndConditionsText)
+    TextView termsAndConditionsText;
+    @InjectView(R.id.shareText)
+    TextView shareText;
+    @InjectView(R.id.logoutText)
+    TextView logoutText;
+
+    @Override
+    public void onBackPressed() {
+        int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
+        if (backStackEntryCount == 0) {
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                return;
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, getString(R.string.exit), Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce = false;
+                }
+            }, 2000);
+        } else
+            super.onBackPressed();
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -112,6 +161,21 @@ public class MainActivity extends FragmentActivity {
 
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+
+        Typeface font = Typeface.createFromAsset(getAssets(),
+                "fonts/arial.ttf");
+        title.setTypeface(font, Typeface.BOLD);
+        clientName.setTypeface(font, Typeface.BOLD);
+        logoutText.setTypeface(font, Typeface.BOLD);
+        termsAndConditionsText.setTypeface(font, Typeface.BOLD);
+        languageText.setTypeface(font, Typeface.BOLD);
+        promotionsText.setTypeface(font, Typeface.BOLD);
+        shareText.setTypeface(font, Typeface.BOLD);
+        paymentWayText.setTypeface(font, Typeface.BOLD);
+        reservationText.setTypeface(font, Typeface.BOLD);
+        HomeText.setTypeface(font, Typeface.BOLD);
+
+        clientRate.setVisibility(View.GONE);
 
 
         try {
@@ -138,11 +202,11 @@ public class MainActivity extends FragmentActivity {
                             e.printStackTrace();
                         }
                         FragmentManager fm = getSupportFragmentManager();
-                        Profile fragment = new Profile();
+                        ClientProfile fragment = new ClientProfile();
                         FragmentTransaction ft = fm.beginTransaction();
                         fragment.setArguments(bundle);
-                        ft.replace(R.id.fragment, fragment, "Profile");
-                        ft.addToBackStack("Profile");
+                        ft.replace(R.id.fragment, fragment, "ClientProfile");
+                        ft.addToBackStack("ClientProfile");
                         ft.commit();
 
                         if (drawerLayout.isDrawerOpen(drawer))
@@ -238,7 +302,7 @@ public class MainActivity extends FragmentActivity {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
 
-        android.support.v4.app.Fragment myFragment = (android.support.v4.app.Fragment) getSupportFragmentManager().findFragmentByTag("HomeAndOnline");
+        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("HomeAndOnline");
         if (myFragment == null || !myFragment.isVisible()) {
 
 
@@ -256,7 +320,7 @@ public class MainActivity extends FragmentActivity {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
 
-        android.support.v4.app.Fragment myFragment = (android.support.v4.app.Fragment) getSupportFragmentManager().findFragmentByTag("ReservationsMain");
+        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("ReservationsMain");
         if (myFragment == null || !myFragment.isVisible()) {
             FragmentManager fm = getSupportFragmentManager();
             Reservations fragment = new Reservations();
@@ -272,7 +336,7 @@ public class MainActivity extends FragmentActivity {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
 
-        android.support.v4.app.Fragment myFragment = (android.support.v4.app.Fragment) getSupportFragmentManager().findFragmentByTag("payment");
+        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("payment");
         if (myFragment == null || !myFragment.isVisible()) {
 
             FragmentManager fm = getSupportFragmentManager();
@@ -290,7 +354,7 @@ public class MainActivity extends FragmentActivity {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
 
-        android.support.v4.app.Fragment myFragment = (android.support.v4.app.Fragment) getSupportFragmentManager().findFragmentByTag("promo");
+        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("promo");
         if (myFragment == null || !myFragment.isVisible()) {
 
 
@@ -347,7 +411,7 @@ public class MainActivity extends FragmentActivity {
             if (drawerLayout.isDrawerOpen(drawer))
                 drawerLayout.closeDrawer(drawer);
             final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setMessage(getString(R.string.areYouSure));
+            alertDialog.setMessage(getString(R.string.chooseLang));
             alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, ("english"),
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
@@ -442,12 +506,12 @@ public class MainActivity extends FragmentActivity {
     }
 
     private void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    android.Manifest.permission.ACCESS_FINE_LOCATION)) {
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
 
                 // Show an explanation to the user *asynchronously* -- don't block
                 // this thread waiting for the user's response! After the user
@@ -460,7 +524,7 @@ public class MainActivity extends FragmentActivity {
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //Prompt the user once explanation has been shown
                                 ActivityCompat.requestPermissions(MainActivity.this,
-                                        new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                                         MY_PERMISSIONS_REQUEST_LOCATION);
                             }
                         })
@@ -470,7 +534,7 @@ public class MainActivity extends FragmentActivity {
 
             } else {
                 // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION, android.Manifest.permission.ACCESS_COARSE_LOCATION},
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION},
                         MY_PERMISSIONS_REQUEST_LOCATION);
             }
         }
@@ -488,7 +552,7 @@ public class MainActivity extends FragmentActivity {
                     // permission was granted, yay! Do the
                     // location-related task you need to do.
                     if (ContextCompat.checkSelfPermission(this,
-                            android.Manifest.permission.ACCESS_FINE_LOCATION)
+                            Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
 
                         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());

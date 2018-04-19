@@ -1,13 +1,10 @@
 package com.example.snosey.balto.main.online_consultation;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentManager;
@@ -120,7 +117,7 @@ public class Agenda extends android.support.v4.app.Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.doctor_book, container, false);
+        View view = inflater.inflate(R.layout.agenda, container, false);
         ButterKnife.inject(this, view);
 
         try {
@@ -425,7 +422,7 @@ public class Agenda extends android.support.v4.app.Fragment {
         public MyViewHolder onCreateViewHolder(ViewGroup parent, final int position) {
             // create a new view
             View view = LayoutInflater.from(parent.getContext())
-                    .inflate(R.layout.doctor_profile_booking_row, parent, false);
+                    .inflate(R.layout.agenda_row, parent, false);
             return new MyViewHolder(view);
         }
 

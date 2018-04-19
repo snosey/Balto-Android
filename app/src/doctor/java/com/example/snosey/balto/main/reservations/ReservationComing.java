@@ -32,8 +32,9 @@ import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.main.ClientProfile;
 import com.example.snosey.balto.main.MedicalReport;
-import com.example.snosey.balto.main.Profile;
+import com.example.snosey.balto.main.RateDialog;
 import com.example.snosey.balto.main.VideoCall;
 import com.squareup.picasso.Picasso;
 
@@ -187,22 +188,49 @@ public class ReservationComing extends Fragment {
 
                 if (holder.kind.getText().toString().equals(WebService.Booking.homeVisit)) {
                     holder.done.setVisibility(View.VISIBLE);
+                    holder.arrive.setVisibility(View.VISIBLE);
+                    holder.arrive.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                            {
+                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                                alertDialogBuilder.setMessage(R.string.areYouSure).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        try {
+                                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateWorking, reservationObject.getString(WebService.Booking.id_client));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                }).show();
+
+                            }
+                        }
+                    });
                     holder.done.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Bundle bundle = new Bundle();
-                            try {
-                                bundle.putString(WebService.Booking.id, reservationObject.getString(WebService.Booking.id));
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+
+                            {
+                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                                alertDialogBuilder.setMessage(R.string.areYouSure).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        try {
+                                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                }).show();
+
                             }
-                            FragmentManager fm = getActivity().getSupportFragmentManager();
-                            MedicalReport fragment = new MedicalReport();
-                            FragmentTransaction ft = fm.beginTransaction();
-                            fragment.setArguments(bundle);
-                            ft.replace(R.id.fragment, fragment, "MedicalReport");
-                            ft.addToBackStack("MedicalReport");
-                            ft.commit();
                         }
                     });
                     holder.cancelOrStart.setText(getActivity().getString(R.string.start));
@@ -216,7 +244,7 @@ public class ReservationComing extends Fragment {
                                 alertDialogBuilder.setMessage(R.string.areYouSure).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         try {
-                                            updateBooking(reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateStart);
+                                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateStart, reservationObject.getString(WebService.Booking.id_client));
                                             String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)",
                                                     Double.parseDouble(reservationObject.getString(WebService.Booking.client_latitude))
                                                     , Double.parseDouble(reservationObject.getString(WebService.Booking.client_longitude)), "");
@@ -257,6 +285,8 @@ public class ReservationComing extends Fragment {
                         }
                     });
                 } else {
+
+                    holder.arrive.setVisibility(View.GONE);
                     holder.done.setVisibility(View.GONE);
                     holder.cancelOrStart.setText(getActivity().getString(R.string.com_facebook_loginview_cancel_action));
                     holder.cancelOrStart.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.red));
@@ -264,7 +294,7 @@ public class ReservationComing extends Fragment {
                         @Override
                         public void onClick(View view) {
                             try {
-                                updateBooking(reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateCancel);
+                                updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateCancel, reservationObject.getString(WebService.Booking.id_client));
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -272,7 +302,7 @@ public class ReservationComing extends Fragment {
                     });
                     if (currentTimeMillis >= bookTotal) {
                         Log.e("left:", currentTimeMillis + " / " + bookTotal);
-                        updateBooking(reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone);
+                        updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client));
                         return;
                     }
 
@@ -341,11 +371,11 @@ public class ReservationComing extends Fragment {
                             e.printStackTrace();
                         }
                         FragmentManager fm = getActivity().getSupportFragmentManager();
-                        Profile fragment = new Profile();
+                        ClientProfile fragment = new ClientProfile();
                         FragmentTransaction ft = fm.beginTransaction();
                         fragment.setArguments(bundle);
-                        ft.replace(R.id.fragment, fragment, "Profile");
-                        ft.addToBackStack("Profile");
+                        ft.replace(R.id.fragment, fragment, "ClientProfile");
+                        ft.addToBackStack("ClientProfile");
                         ft.commit();
                     }
                 });
@@ -362,22 +392,11 @@ public class ReservationComing extends Fragment {
 
     }
 
-    private void updateBooking(String id, String state) {
-        UrlData urlData = new UrlData();
-        urlData.add(WebService.Booking.id, id);
-        urlData.add(WebService.Booking.id_state, state);
-        new GetData(new GetData.AsyncResponse() {
-            @Override
-            public void processFinish(String output) throws JSONException {
-                getComingReservation();
-            }
-        }, getActivity(), false).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, WebService.Booking.updateBookingApi, urlData.get());
-    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView firstName, date, kind, price;
-        public Button cancelOrStart, done;
+        public Button cancelOrStart, done, arrive;
         public ImageView logo, call;
 
         public MyViewHolder(View v) {
@@ -388,9 +407,44 @@ public class ReservationComing extends Fragment {
             price = (TextView) v.findViewById(R.id.price);
             cancelOrStart = (Button) v.findViewById(R.id.cancelOrStart);
             done = (Button) v.findViewById(R.id.done);
+            arrive = (Button) v.findViewById(R.id.arrive);
             call = (ImageView) v.findViewById(R.id.call);
             logo = (ImageView) v.findViewById(R.id.logo);
         }
+    }
+
+    private void updateBooking(final String fcm_token, final String id, final String state, final String id_client) {
+        UrlData urlData = new UrlData();
+        urlData.add(WebService.Booking.id, id);
+        urlData.add(WebService.Booking.id_state, state);
+        new GetData(new GetData.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                if (state.equals(WebService.Booking.bookingStateDone)) {
+                    sendNotification(fcm_token, state, id + "|" + MainActivity.jsonObject.getString("id"));
+                    {
+                        RateDialog rateDialog = new RateDialog(getActivity(), id, id_client);
+                        rateDialog.show();
+                        rateDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                            @Override
+                            public void onDismiss(DialogInterface dialogInterface) {
+                                Bundle bundle = new Bundle();
+                                bundle.putString(WebService.Booking.id, id);
+                                FragmentManager fm = getActivity().getSupportFragmentManager();
+                                MedicalReport fragment = new MedicalReport();
+                                FragmentTransaction ft = fm.beginTransaction();
+                                fragment.setArguments(bundle);
+                                ft.replace(R.id.fragment, fragment, "MedicalReport");
+                                ft.addToBackStack("MedicalReport");
+                                ft.commit();
+                            }
+                        });
+                    }
+                } else sendNotification(fcm_token, state, MainActivity.jsonObject.getString("id"));
+
+                getComingReservation();
+            }
+        }, getActivity(), false).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, WebService.Booking.updateBookingApi, urlData.get());
     }
 
 
@@ -487,6 +541,24 @@ public class ReservationComing extends Fragment {
         if (s.length() == 1)
             s = "0" + s;
         return s;
+    }
+
+    void sendNotification(String regId, String type, String doctor_id) {
+        final UrlData urlData = new UrlData();
+
+        urlData.add(WebService.Notification.reg_id, regId);
+        urlData.add(WebService.Notification.data, doctor_id);
+        urlData.add(WebService.Notification.kind, type);
+        urlData.add(WebService.Notification.message, "");
+        urlData.add(WebService.Notification.title, "");
+
+        new GetData(new GetData.AsyncResponse() {
+            @Override
+            public void processFinish(String output) {
+
+            }
+        }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Notification.notificationApi, urlData.get());
+
     }
 
 }

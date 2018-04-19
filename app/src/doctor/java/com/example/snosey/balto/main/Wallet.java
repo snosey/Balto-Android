@@ -21,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -34,11 +35,6 @@ import butterknife.InjectView;
 
 public class Wallet extends Fragment {
 
-    @InjectView(R.id.moneyOnYou)
-    TextView moneyOnYou;
-    @InjectView(R.id.moneyForYou)
-    TextView moneyForYou;
-
     @InjectView(R.id.dueTo)
     TextView dueTo;
 
@@ -46,6 +42,18 @@ public class Wallet extends Fragment {
     JSONArray walletJsonArray;
     WalletAdapter walletAdapter;
     RecyclerView walletRV;
+    @InjectView(R.id.transactionNumber)
+    TextView transactionNumber;
+    @InjectView(R.id.Pending)
+    TextView Pending;
+    @InjectView(R.id.Balance)
+    TextView Balance;
+    @InjectView(R.id.allMoney)
+    TextView allMoney;
+    @InjectView(R.id.CashReceived)
+    TextView CashReceived;
+    private GregorianCalendar dueCalendar;
+    int currentMonth;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,15 +62,16 @@ public class Wallet extends Fragment {
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
         ButterKnife.inject(this, view);
 
-        Calendar calendar = new GregorianCalendar();
-        if (calendar.get(Calendar.DAY_OF_MONTH) > 15) {
-            calendar.add(Calendar.MONTH, 1);
-            calendar.set(Calendar.DAY_OF_MONTH, 1);
+        dueCalendar = new GregorianCalendar();
+        currentMonth = dueCalendar.get(Calendar.MONTH);
+        if (dueCalendar.get(Calendar.DAY_OF_MONTH) > 15) {
+            dueCalendar.add(Calendar.MONTH, 1);
+            dueCalendar.set(Calendar.DAY_OF_MONTH, 1);
         } else {
-            calendar.set(Calendar.DAY_OF_MONTH, 16);
+            dueCalendar.set(Calendar.DAY_OF_MONTH, 16);
         }
 
-        String date = new SimpleDateFormat("yyyy-MM-dd").format(calendar.getTime());
+        String date = new SimpleDateFormat("yyyy-MM-dd").format(dueCalendar.getTime());
         dueTo.setText(getActivity().getString(R.string.dueTo) + date);
         walletJsonArray = new JSONArray();
         walletAdapter = new WalletAdapter();
@@ -88,18 +97,40 @@ public class Wallet extends Fragment {
             @Override
             public void processFinish(String output) throws JSONException {
                 JSONObject jsonObject = new JSONObject(output);
-
-                String moneyForDoctor = "0";
-                if (jsonObject.getString(WebService.Payment.allPaymentTodoctor).contains("-"))
-                    moneyForDoctor = jsonObject.getString(WebService.Payment.allPaymentTodoctor).replace("-", "");
-
-                String moneyOnDoctor = "0";
-                if (jsonObject.getString(WebService.Payment.allPaymentToadmin).contains("-"))
-                    moneyOnDoctor = jsonObject.getString(WebService.Payment.allPaymentToadmin).replace("-", "");
-
-                moneyForYou.setText(getActivity().getString(R.string.moneyForYou) + " " + moneyForDoctor + " " + getActivity().getString(R.string.egp));
-                moneyOnYou.setText(getActivity().getString(R.string.moneyOnYou) + " " + moneyOnDoctor + " " + getActivity().getString(R.string.egp));
                 walletJsonArray = jsonObject.getJSONArray("allPayment");
+                transactionNumber.setText(getActivity().getString(R.string.transactionNumber) + walletJsonArray.length());
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                int pending = 0, balance = 0, cashReceived = 0, allInCome = 0;
+                for (int i = 0; i < walletJsonArray.length(); i++) {
+                    int docMoney = Integer.parseInt(walletJsonArray.getJSONObject(i).getString(WebService.Payment.doctor_money));
+                    if (docMoney < 0) docMoney = docMoney * -1;
+                    allInCome += docMoney;
+                    try {
+                        cal.setTime(sdf.parse(walletJsonArray.getJSONObject(i).getString("created_at").substring(0, 10)));
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                    if (dueCalendar.get(Calendar.DAY_OF_MONTH) == 16) {
+                        if (!(cal.get(Calendar.MONTH) < dueCalendar.get(Calendar.MONTH))) {
+                            pending += docMoney;
+                            if (walletJsonArray.getJSONObject(i).getString(WebService.Payment.id_payment_way).equals(WebService.Booking.cash))
+                                cashReceived += Integer.parseInt(walletJsonArray.getJSONObject(i).getString(WebService.Payment.total_money));
+                        }
+                    } else {
+                        if (!(cal.get(Calendar.MONTH) < currentMonth || (cal.get(Calendar.MONTH) == currentMonth && cal.get(Calendar.DAY_OF_MONTH) < 16))) {
+                            pending += docMoney;
+                            if (walletJsonArray.getJSONObject(i).getString(WebService.Payment.id_payment_way).equals(WebService.Booking.cash))
+                                cashReceived += Integer.parseInt(walletJsonArray.getJSONObject(i).getString(WebService.Payment.total_money));
+                        }
+                    }
+                }
+                balance = pending - cashReceived;
+                Balance.setText(getActivity().getString(R.string.balance) + balance + getActivity().getString(R.string.egp));
+                Pending.setText(getActivity().getString(R.string.pending) + pending + getActivity().getString(R.string.egp));
+                CashReceived.setText(getActivity().getString(R.string.cashReceived) + cashReceived + getActivity().getString(R.string.egp));
+                allMoney.setText(getActivity().getString(R.string.Settled) + allInCome + getActivity().getString(R.string.egp));
+
                 walletAdapter.notifyDataSetChanged();
             }
         }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.getDoctorPayment, urlData.get());
@@ -125,16 +156,52 @@ public class Wallet extends Fragment {
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             try {
                 JSONObject payment = walletJsonArray.getJSONObject(position);
-                if (payment.getString(WebService.Payment.id_payment_way).equals(WebService.Booking.cash))
-                    holder.payment.setText(getActivity().getString(R.string.cash));
-                else
-                    holder.payment.setText(getActivity().getString(R.string.credit));
+                if (payment.getString(WebService.Payment.id_payment_way).equals(WebService.Booking.cash)) {
+                    holder.doctorMoney.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.money, 0, 0, 0);
+                    holder.cashReceived.setText(
+                            getString(R.string.cashReceived) + payment.getString(WebService.Payment.total_money) +
+                                    getActivity().getString(R.string.egp));
+                    holder.moneyOnYou.setText(
+                            getString(R.string.moneyOnYou) + payment.getString(WebService.Payment.admin_money) +
+                                    getActivity().getString(R.string.egp));
 
-                holder.you.setText(payment.getString(WebService.Payment.doctor_money));
-                holder.admin.setText(payment.getString(WebService.Payment.admin_money));
-                holder.date.setText(payment.getString("created_at").substring(0, 9));
+                } else {
+                    holder.moneyOnYou.setText(
+                            getString(R.string.moneyOnYou) + 0 +
+                                    getActivity().getString(R.string.egp));
 
-            } catch (JSONException e) {
+                    holder.doctorMoney.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.payment, 0, 0, 0);
+                    holder.cashReceived.setText(getString(R.string.cashReceived) + 0 + getActivity().getString(R.string.egp));
+                }
+                holder.doctorMoney.setText(payment.getString(WebService.Payment.doctor_money).replace("-", "") + getString(R.string.egp));
+                holder.date.setText(payment.getString("created_at"));
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                Calendar cal = Calendar.getInstance();
+                try {
+                    cal.setTime(sdf.parse(payment.getString("created_at").substring(0, 10)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                if (dueCalendar.get(Calendar.DAY_OF_MONTH) == 16) {
+                    if (cal.get(Calendar.MONTH) < dueCalendar.get(Calendar.MONTH)) {
+                        holder.cashReceived.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
+                    } else {
+                        holder.cashReceived.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.not_paid, 0, 0, 0);
+                    }
+                } else {
+                    if (cal.get(Calendar.MONTH) < currentMonth || (cal.get(Calendar.MONTH) == currentMonth && cal.get(Calendar.DAY_OF_MONTH) < 16)) {
+                        holder.cashReceived.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
+                    } else {
+                        holder.cashReceived.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.not_paid, 0, 0, 0);
+                    }
+                }
+
+
+            } catch (
+                    JSONException e)
+
+            {
                 e.printStackTrace();
             }
         }
@@ -147,14 +214,14 @@ public class Wallet extends Fragment {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView date, admin, you, payment;
+        public TextView date, doctorMoney, cashReceived, moneyOnYou;
 
         public MyViewHolder(View v) {
             super(v);
             date = (TextView) v.findViewById(R.id.date);
-            you = (TextView) v.findViewById(R.id.doctor);
-            admin = (TextView) v.findViewById(R.id.admin);
-            payment = (TextView) v.findViewById(R.id.paymentWay);
+            cashReceived = (TextView) v.findViewById(R.id.cashReceived);
+            doctorMoney = (TextView) v.findViewById(R.id.doctorMoney);
+            moneyOnYou = (TextView) v.findViewById(R.id.moneyOnYou);
         }
     }
 

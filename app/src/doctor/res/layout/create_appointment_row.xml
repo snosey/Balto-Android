@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="@dimen/margin_Medium"
     android:background="@drawable/shadow2"
     android:orientation="vertical">
@@ -32,7 +33,7 @@
             android:gravity="center"
             android:padding="@dimen/margin_Medium"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/text_Small" />
+            android:textSize="@dimen/text_VerySmall" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -50,6 +51,7 @@
             android:id="@+id/timeTo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textSize="@dimen/text_VerySmall"
             android:textColor="@color/colorPrimary"
             android:layout_marginBottom="@dimen/margin_Medium"
             android:layout_marginStart="@dimen/margin_Medium"
@@ -67,27 +69,27 @@
         android:orientation="horizontal">
 
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/update"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dimen_VerySmall"
             android:layout_gravity="center"
             android:layout_margin="@dimen/margin_VerySmall"
             android:background="@drawable/button_rounded"
-            android:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="@color/colorPrimary"
             android:text="@string/common_google_play_services_update_button"
             android:textAllCaps="false"
             android:textColor="@color/white" />
 
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/cancel"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dimen_VerySmall"
             android:layout_gravity="center"
             android:layout_margin="@dimen/margin_VerySmall"
             android:background="@drawable/button_rounded"
-            android:backgroundTint="@color/red"
+            app:backgroundTint="@color/red"
             android:text="@string/com_facebook_loginview_cancel_action"
             android:textAllCaps="false"
             android:textColor="@color/white" />

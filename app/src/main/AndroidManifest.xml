@@ -59,7 +59,7 @@
 
 
         <activity
-            android:name="com.paymob.acceptsdk.PayActivity"
+            android:name="com.paymob.acceptsdk.CustomPayActivity"
             android:screenOrientation="portrait" />
 
         <activity

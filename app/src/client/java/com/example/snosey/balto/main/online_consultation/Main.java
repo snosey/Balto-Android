@@ -115,10 +115,7 @@ public class Main extends Fragment {
                                     return;
                                 }
                                 try {
-                                    JSONArray thirdCategory = subCategory.getJSONObject(i).getJSONArray("Third");
-                                    if (i == 0) {
-                                        Main.this.thirdCategory.setAdapter(null);
-                                    } else
+                                    JSONArray thirdCategory = subCategory.getJSONObject(i - 1).getJSONArray("Third");
                                         Main.this.thirdCategory.setAdapter(new CustomeAdapter(getActivity(), thirdCategory, "name", "id"));
 
                                 } catch (JSONException e) {

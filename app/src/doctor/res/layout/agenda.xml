@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <TextView
@@ -16,7 +17,7 @@
         android:textSize="@dimen/text_Large"
         android:textStyle="bold" />
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:layout_width="@dimen/dimen_Medium"
         android:layout_height="1dp"
         android:layout_gravity="center"
@@ -30,7 +31,7 @@
         android:padding="@dimen/margin_Medium"
         android:weightSum="7">
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/day1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -41,7 +42,7 @@
             android:text="1"
             android:textSize="@dimen/text_Large" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/day2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -52,7 +53,7 @@
             android:text="2"
             android:textSize="@dimen/text_Large" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/day3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -63,7 +64,7 @@
             android:text="3"
             android:textSize="@dimen/text_Large" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/day4"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -74,7 +75,7 @@
             android:text="4"
             android:textSize="@dimen/text_Large" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/day5"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -85,7 +86,7 @@
             android:text="5"
             android:textSize="@dimen/text_Large" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/day6"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -96,7 +97,7 @@
             android:text="6"
             android:textSize="@dimen/text_Large" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/day7"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -193,7 +194,7 @@
 
     </LinearLayout>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="5dp"
         android:background="@color/red" />
@@ -202,14 +203,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/newAgenda"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_VerySmall"
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/margin_Medium"
             android:background="@drawable/button_rounded"
-            android:backgroundTint="@color/colorPrimary"
+            app:backgroundTint="@color/colorPrimary"
             android:text="@string/newAgenda"
             android:textAllCaps="false"
             android:textColor="@color/white" />
