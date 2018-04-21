@@ -20,7 +20,7 @@
             android:layout_margin="@dimen/margin_Medium"
             android:background="@android:color/transparent"
             android:onClick="back"
-            android:src="@drawable/back" />
+            app:srcCompat="@drawable/back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -80,6 +80,6 @@
         android:layout_gravity="end"
         android:layout_margin="@dimen/margin_Medium"
         android:background="@drawable/circel"
-        android:src="@drawable/next" />
+        app:srcCompat="@drawable/next" />
 
 </LinearLayout>

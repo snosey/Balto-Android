@@ -19,7 +19,7 @@
         android:textSize="@dimen/text_Large"
         android:textStyle="bold" />
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:layout_gravity="center"
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:id="@+id/waitingImage"
             android:background="@drawable/login_background"
@@ -62,39 +62,39 @@
             android:layout_centerHorizontal="true"
             android:orientation="horizontal">
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/endCall"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="@dimen/margin_Medium"
                 android:background="@drawable/circel"
                 android:backgroundTint="@color/red"
-                android:src="@drawable/end_call" />
+                app:srcCompat="@drawable/end_call" />
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/voice"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="@dimen/margin_Medium"
                 android:background="@drawable/circel"
-                android:src="@drawable/open_voice" />
+                app:srcCompat="@drawable/open_voice" />
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/video"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="@dimen/margin_Medium"
                 android:background="@drawable/circel"
-                android:src="@drawable/open_video" />
+                app:srcCompat="@drawable/open_video" />
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/next"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_margin="@dimen/margin_Medium"
                 android:background="@drawable/circel"
                 android:backgroundTint="@color/colorPrimary"
-                android:src="@drawable/edit"
+                app:srcCompat="@drawable/edit"
                 android:tint="@color/white" />
 
         </LinearLayout>
@@ -115,7 +115,7 @@
                 app:overlaySurface="true"
                 android:layout_margin="@dimen/margin_Medium" />
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/swipe"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -123,10 +123,10 @@
                 android:background="@drawable/shadow"
                 android:backgroundTint="@color/colorPrimary"
                 android:padding="@dimen/margin_VerySmall"
-                android:src="@drawable/switch_camera"
+                app:srcCompat="@drawable/switch_camera"
                 android:tint="@color/white" />
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/speaker"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
@@ -135,7 +135,7 @@
                 android:background="@drawable/shadow"
                 android:backgroundTint="@color/white"
                 android:padding="@dimen/margin_VerySmall"
-                android:src="@drawable/volum"
+                app:srcCompat="@drawable/volum"
                 android:tint="@color/black_8am2" />
 
         </LinearLayout>

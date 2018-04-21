@@ -28,7 +28,7 @@
         android:padding="@dimen/margin_Small"
         android:textSize="@dimen/text_Small" />
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/thankYou"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -13,7 +13,7 @@
         android:id="@+id/lang"
         android:layout_margin="@dimen/margin_Small" />
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
@@ -27,7 +27,7 @@
         android:layout_margin="@dimen/margin_Large"
         android:layout_height="@dimen/dimen_VerySmall" />
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:layout_width="match_parent"
         android:layout_above="@id/login"
         android:layout_centerHorizontal="true"

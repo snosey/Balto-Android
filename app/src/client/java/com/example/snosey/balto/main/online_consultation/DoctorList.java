@@ -150,6 +150,8 @@ public class DoctorList extends Fragment {
                         imageLink = WebService.Image.fullPathImage + imageLink;
                     Picasso.with(getContext()).load(imageLink).transform(new CircleTransform()).into(holder.logo);
                 }
+                else
+                    holder.logo.setImageResource(R.drawable.logo_profile);
                 if (!doctorObject.getString(WebService.Slider.total_rate).equals("null") && !doctorObject.getString(WebService.Slider.total_rate).equals("0"))
                     holder.rate.setText(doctorObject.getString(WebService.Slider.total_rate));
 

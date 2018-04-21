@@ -1,6 +1,7 @@
 package com.example.snosey.balto.main;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -420,8 +422,13 @@ public class VideoCall extends Fragment {
                     }
                     break;
                 }
-                Toast.makeText(getContext(), "connect", Toast.LENGTH_SHORT).show();
-                Toast.makeText(getContext(), getActivity().getString(R.string.SuccessConnected), Toast.LENGTH_LONG).show();
+
+                try {
+                    Toast.makeText(getContext(), "connect", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), getActivity().getString(R.string.SuccessConnected), Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+
+                }
             }
 
             @Override
@@ -601,6 +608,7 @@ public class VideoCall extends Fragment {
     }
 
 
+    @SuppressLint("RestrictedApi")
     @OnClick({R.id.swipe, R.id.endCall, R.id.voice, R.id.video, R.id.speaker})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -608,11 +616,11 @@ public class VideoCall extends Fragment {
 
             case R.id.speaker:
                 if (audioManager.isSpeakerphoneOn()) {
-                    view.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.silver));
+                    ((AppCompatImageView) view).setSupportBackgroundTintList(getActivity().getResources().getColorStateList(R.color.silver));
                     setSpeaker(false);
                 } else {
                     setSpeaker(true);
-                    view.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.white));
+                    ((AppCompatImageView) view).setSupportBackgroundTintList(getActivity().getResources().getColorStateList(R.color.white));
                 }
                 break;
 

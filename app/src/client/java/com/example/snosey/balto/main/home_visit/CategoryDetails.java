@@ -155,22 +155,18 @@ public class CategoryDetails extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    try {
 
-                        if (MainActivity.jsonObject.getString("payment_token").equals("null") || MainActivity.jsonObject.getString("payment_token").equals("")) {
-
-                            FragmentManager fm = getActivity().getSupportFragmentManager();
-                            PaymentSlider fragment = new PaymentSlider();
-                            FragmentTransaction ft = fm.beginTransaction();
-                            ft.add(R.id.fragment, fragment, "payment");
-                            ft.addToBackStack("payment");
-                            ft.commit();
-                            return;
-                        } else {
-                            id_payment_way = "2";
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    //  if (MainActivity.jsonObject.getString("payment_token").equals("null") || MainActivity.jsonObject.getString("payment_token").equals("")) {
+                    if (false) {
+                        FragmentManager fm = getActivity().getSupportFragmentManager();
+                        PaymentSlider fragment = new PaymentSlider();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        ft.add(R.id.fragment, fragment, "payment");
+                        ft.addToBackStack("payment");
+                        ft.commit();
+                        return;
+                    } else {
+                        id_payment_way = "2";
                     }
                 }
             }

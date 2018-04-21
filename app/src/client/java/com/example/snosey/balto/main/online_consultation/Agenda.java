@@ -1,5 +1,6 @@
 package com.example.snosey.balto.main.online_consultation;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,7 +11,9 @@ import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -27,7 +30,6 @@ import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
-import com.example.snosey.balto.main.payment.MakePayMobApi;
 import com.example.snosey.balto.main.payment.PaymentSlider;
 import com.example.snosey.balto.main.reservation.Reservations;
 import com.paymob.acceptsdk.IntentConstants;
@@ -58,21 +60,21 @@ public class Agenda extends android.support.v4.app.Fragment {
 
     String chooseDay, chooseYear, chooseMonth;
 
-    Button day;
+    AppCompatButton day;
     @InjectView(R.id.day1)
-    Button day1;
+    AppCompatButton day1;
     @InjectView(R.id.day2)
-    Button day2;
+    AppCompatButton day2;
     @InjectView(R.id.day3)
-    Button day3;
+    AppCompatButton day3;
     @InjectView(R.id.day4)
-    Button day4;
+    AppCompatButton day4;
     @InjectView(R.id.day5)
-    Button day5;
+    AppCompatButton day5;
     @InjectView(R.id.day6)
-    Button day6;
+    AppCompatButton day6;
     @InjectView(R.id.day7)
-    Button day7;
+    AppCompatButton day7;
     RecyclerView agendaRV;
     @InjectView(R.id.day1text)
     TextView day1text;
@@ -207,13 +209,14 @@ public class Agenda extends android.support.v4.app.Fragment {
     }
 
 
+    @SuppressLint("RestrictedApi")
     @OnClick({R.id.day1, R.id.day2, R.id.day3, R.id.day4, R.id.day5, R.id.day6, R.id.day7})
     public void dayClick(View view) {
         setColorDefault();
-        this.day = ((Button) view);
+        this.day = ((AppCompatButton) view);
         this.day.setTextColor(Color.WHITE);
         view.setBackgroundResource(R.drawable.circel);
-        view.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.red));
+        ((AppCompatButton) view).setSupportBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.red));
 
         String day = ((TextView) view).getText().toString();
         String month = "";
@@ -334,8 +337,9 @@ public class Agenda extends android.support.v4.app.Fragment {
         setDefaults(day7);
     }
 
-    private void setDefaults(Button defaults) {
-        defaults.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.whiteDark));
+    @SuppressLint("RestrictedApi")
+    private void setDefaults(AppCompatButton defaults) {
+        defaults.setSupportBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.whiteDark));
         defaults.setTextColor(Color.BLACK);
         defaults.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
     }
@@ -437,40 +441,38 @@ public class Agenda extends android.support.v4.app.Fragment {
                     @Override
                     public void onClick(View view) {
                         clickAble[0] = false;
-                        try {
-                            if (MainActivity.jsonObject.getString("payment_token").equals("null") || MainActivity.jsonObject.getString("payment_token").equals("")) {
-                                FragmentManager fm = getActivity().getSupportFragmentManager();
-                                PaymentSlider fragment = new PaymentSlider();
-                                FragmentTransaction ft = fm.beginTransaction();
-                                ft.replace(R.id.fragment, fragment, "payment");
-                                ft.addToBackStack("payment");
-                                ft.commit();
-                                return;
-                            } else {
-                                final Dialog dialog = new Dialog(getActivity());
-                                dialog.setContentView(R.layout.payment_confirm);
+                        // if (MainActivity.jsonObject.getString("payment_token").equals("null")
+                        //          || MainActivity.jsonObject.getString("payment_token").equals("")) {
 
-                                TextView time = (TextView) dialog.findViewById(R.id.time);
-                                time.setText(holder.timeFrom.getText().toString() + " - " + holder.timeTo.getText().toString());
+                        if(false){    FragmentManager fm = getActivity().getSupportFragmentManager();
+                            PaymentSlider fragment = new PaymentSlider();
+                            FragmentTransaction ft = fm.beginTransaction();
+                            ft.replace(R.id.fragment, fragment, "payment");
+                            ft.addToBackStack("payment");
+                            ft.commit();
+                            return;
+                        } else {
+                            final Dialog dialog = new Dialog(getActivity());
+                            dialog.setContentView(R.layout.payment_confirm);
 
-                                TextView estimatedFare = (TextView) dialog.findViewById(R.id.estimatedFare);
-                                estimatedFare.setText(price.getText().toString());
+                            TextView time = (TextView) dialog.findViewById(R.id.time);
+                            time.setText(holder.timeFrom.getText().toString() + " - " + holder.timeTo.getText().toString());
 
-                                TextView doctorKind = (TextView) dialog.findViewById(R.id.doctorKind);
-                                doctorKind.setText(type.getText().toString());
-                                Button confirm = (Button) dialog.findViewById(R.id.confirm);
-                                confirm.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        timeSceduale = timeScheduale;
-                                        makePayment();
-                                        dialog.dismiss();
-                                    }
-                                });
-                                dialog.show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                            TextView estimatedFare = (TextView) dialog.findViewById(R.id.estimatedFare);
+                            estimatedFare.setText(price.getText().toString());
+
+                            TextView doctorKind = (TextView) dialog.findViewById(R.id.doctorKind);
+                            doctorKind.setText(type.getText().toString());
+                            Button confirm = (Button) dialog.findViewById(R.id.confirm);
+                            confirm.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    timeSceduale = timeScheduale;
+                                    makePayment();
+                                    dialog.dismiss();
+                                }
+                            });
+                            dialog.show();
                         }
 
                     }
@@ -488,15 +490,15 @@ public class Agenda extends android.support.v4.app.Fragment {
                         holder.bookedUp.setVisibility(View.VISIBLE);
                         holder.itemView.setClickable(false);
                         if (jsonObject.getString(WebService.Booking.id_client).equals(MainActivity.jsonObject.getString("id")))
-                            holder.itemView.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.black_8am2));
+                            holder.itemView.setBackgroundColor(getActivity().getResources().getColor(R.color.black_8am2));
                         else {
-                            holder.itemView.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.red));
+                            holder.itemView.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
                         }
                         break;
                     } else {
                         holder.bookedUp.setVisibility(View.GONE);
                         holder.itemView.setClickable(true);
-                        holder.itemView.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorPrimary));
+                        holder.itemView.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
                         //  holder.book.setVisibility(View.VISIBLE);
                         //  holder.bookedUp.setVisibility(View.GONE);
                     }
@@ -510,9 +512,12 @@ public class Agenda extends android.support.v4.app.Fragment {
             try {
           
                 String finalPrice = price.getText().toString().substring(0, price.getText().toString().indexOf(" ")) + "00";
-                if (!MainActivity.jsonObject.getString("payment_token").equals("null") || !MainActivity.jsonObject.getString("payment_token").equals(""))
-                    new MakePayMobApi(getActivity(), finalPrice, Agenda.this, MainActivity.jsonObject.getString("payment_token"), "241");
-                else {
+                if (!MainActivity.jsonObject.getString("payment_token").equals("null") || !MainActivity.jsonObject.getString("payment_token").equals("")) {
+
+                    confirmRequest(timeSceduale, "");
+//                    new MakePayMobApi(getActivity(), finalPrice, Agenda.this, MainActivity.jsonObject.getString("payment_token"), "241");
+
+                } else {
                     FragmentManager fm = getActivity().getSupportFragmentManager();
                     PaymentSlider fragment = new PaymentSlider();
                     FragmentTransaction ft = fm.beginTransaction();
@@ -633,7 +638,7 @@ public class Agenda extends android.support.v4.app.Fragment {
                 int doctorPrice = intTotalPrice - adminPrice;
                 addPaymentToDB(intTotalPrice, adminPrice, doctorPrice, orderId, id);
             }
-        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.doctorPercentageMoney, urlData.get());
+        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.doctorPercentageMoneyApi, urlData.get());
     }
 
     private void addPaymentToDB(int totalPrice, int adminPrice, int doctorPrice, String orderId, String id_booking) throws JSONException {

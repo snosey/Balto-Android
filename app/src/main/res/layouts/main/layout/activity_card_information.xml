@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.paymob.acceptsdk.CustomPayActivity"
     android:orientation="vertical">
 
@@ -226,7 +226,7 @@
 
                 </LinearLayout>
 
-                <Button
+                <android.support.v7.widget.AppCompatButton
                     android:id="@+id/pay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -259,12 +259,12 @@
                 android:textSize="@dimen/normal_text_size"
                 android:text="Powered by"/>
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_marginLeft="@dimen/small_padding_value"
                 android:layout_marginStart="@dimen/small_padding_value"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:src="@drawable/logo"/>
+                app:srcCompat="@drawable/logo"/>
 
         </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.example.snosey.balto.main.reservations;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,13 +16,13 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -62,19 +63,19 @@ public class ReservationComing extends Fragment {
     ReservationAdapter reservationAdapter;
     RecyclerView recyclerViewReservation;
     @InjectView(R.id.day1)
-    Button day1;
+    AppCompatButton day1;
     @InjectView(R.id.day2)
-    Button day2;
+    AppCompatButton day2;
     @InjectView(R.id.day3)
-    Button day3;
+    AppCompatButton day3;
     @InjectView(R.id.day4)
-    Button day4;
+    AppCompatButton day4;
     @InjectView(R.id.day5)
-    Button day5;
+    AppCompatButton day5;
     @InjectView(R.id.day6)
-    Button day6;
+    AppCompatButton day6;
     @InjectView(R.id.day7)
-    Button day7;
+    AppCompatButton day7;
     @InjectView(R.id.day1text)
     TextView day1text;
     @InjectView(R.id.day2text)
@@ -90,7 +91,7 @@ public class ReservationComing extends Fragment {
     @InjectView(R.id.day7text)
     TextView day7text;
 
-    Button dayClick;
+    AppCompatButton dayClick;
     private GregorianCalendar currentDate;
 
     String day;
@@ -157,6 +158,7 @@ public class ReservationComing extends Fragment {
             return new MyViewHolder(view);
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             try {
@@ -186,7 +188,7 @@ public class ReservationComing extends Fragment {
                 holder.kind.setTypeface(font, Typeface.BOLD);
 
 
-                if (holder.kind.getText().toString().equals(WebService.Booking.homeVisit)) {
+                if (reservationObject.getString(WebService.Booking.id_doctor_kind).toString().equals(WebService.homeVisit)) {
                     holder.done.setVisibility(View.VISIBLE);
                     holder.arrive.setVisibility(View.VISIBLE);
                     holder.arrive.setOnClickListener(new View.OnClickListener() {
@@ -220,6 +222,8 @@ public class ReservationComing extends Fragment {
                                 alertDialogBuilder.setMessage(R.string.areYouSure).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         try {
+                                            getPercntageDoctor("", reservationObject.getString(WebService.Booking.id), reservationObject.getString(WebService.Booking.total_price),
+                                                    reservationObject.getString(WebService.Booking.id_sub), reservationObject.getString(WebService.Booking.id_client), reservationObject.getString(WebService.Booking.id_payment_way));
                                             updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
@@ -234,7 +238,7 @@ public class ReservationComing extends Fragment {
                         }
                     });
                     holder.cancelOrStart.setText(getActivity().getString(R.string.start));
-                    holder.cancelOrStart.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorPrimary));
+                    holder.cancelOrStart.setSupportBackgroundTintList(getActivity().getResources().getColorStateList(R.color.colorPrimary));
                     holder.cancelOrStart.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -289,7 +293,7 @@ public class ReservationComing extends Fragment {
                     holder.arrive.setVisibility(View.GONE);
                     holder.done.setVisibility(View.GONE);
                     holder.cancelOrStart.setText(getActivity().getString(R.string.com_facebook_loginview_cancel_action));
-                    holder.cancelOrStart.setBackgroundTintList(getActivity().getResources().getColorStateList(R.color.red));
+                    holder.cancelOrStart.setSupportBackgroundTintList(getActivity().getResources().getColorStateList(R.color.red));
                     holder.cancelOrStart.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -396,7 +400,7 @@ public class ReservationComing extends Fragment {
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView firstName, date, kind, price;
-        public Button cancelOrStart, done, arrive;
+        public AppCompatButton cancelOrStart, done, arrive;
         public ImageView logo, call;
 
         public MyViewHolder(View v) {
@@ -405,12 +409,48 @@ public class ReservationComing extends Fragment {
             date = (TextView) v.findViewById(R.id.date);
             kind = (TextView) v.findViewById(R.id.kind);
             price = (TextView) v.findViewById(R.id.price);
-            cancelOrStart = (Button) v.findViewById(R.id.cancelOrStart);
-            done = (Button) v.findViewById(R.id.done);
-            arrive = (Button) v.findViewById(R.id.arrive);
+            cancelOrStart = (AppCompatButton) v.findViewById(R.id.cancelOrStart);
+            done = (AppCompatButton) v.findViewById(R.id.done);
+            arrive = (AppCompatButton) v.findViewById(R.id.arrive);
             call = (ImageView) v.findViewById(R.id.call);
             logo = (ImageView) v.findViewById(R.id.logo);
         }
+    }
+
+
+    private void getPercntageDoctor(final String orderId, final String id, final String totalPrice, String idSub, final String idUser, final String paymentWay) throws JSONException {
+        UrlData urlData = new UrlData();
+        urlData.add(WebService.Booking.id_sub, idSub);
+        urlData.add(WebService.Booking.id_doctor_kind, WebService.homeVisit);
+        new GetData(new GetData.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                JSONObject jsonObject = new JSONObject(output);
+                int intTotalPrice = Integer.parseInt(totalPrice);
+                int adminPrice = intTotalPrice * Integer.parseInt(jsonObject.getString(WebService.Payment.online_percentage)) / 100;
+                int doctorPrice = intTotalPrice - adminPrice;
+                addPaymentToDB(intTotalPrice, adminPrice, doctorPrice, "", id, idUser, paymentWay);
+            }
+        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.doctorPercentageMoneyApi, urlData.get());
+    }
+
+    private void addPaymentToDB(int totalPrice, int adminPrice, int doctorPrice, String orderId, String id_booking, String idUser, String paymentWay) throws JSONException {
+
+        UrlData urlData = new UrlData();
+        urlData.add(WebService.Payment.type, WebService.Payment.depet);
+        urlData.add(WebService.Payment.total_money, totalPrice + "");
+        urlData.add(WebService.Payment.doctor_money, "-" + doctorPrice);
+        urlData.add(WebService.Payment.admin_money, adminPrice + "");
+        urlData.add(WebService.Payment.payMob_id, orderId);
+        urlData.add(WebService.Payment.id_user, MainActivity.jsonObject.getString("id"));
+        urlData.add(WebService.Payment.id_payment_way, paymentWay);
+        urlData.add(WebService.Payment.id_booking, id_booking);
+        new GetData(new GetData.AsyncResponse() {
+            @Override
+            public void processFinish(final String output) throws JSONException {
+
+            }
+        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.addPayment, urlData.get());
     }
 
     private void updateBooking(final String fcm_token, final String id, final String state, final String id_client) {
@@ -448,13 +488,14 @@ public class ReservationComing extends Fragment {
     }
 
 
+    @SuppressLint("RestrictedApi")
     @OnClick({R.id.day1, R.id.day2, R.id.day3, R.id.day4, R.id.day5, R.id.day6, R.id.day7})
     public void dayClick(View view) {
         setColorDefault();
-        this.dayClick = ((Button) view);
+        this.dayClick = ((AppCompatButton) view);
         this.dayClick.setTextColor(Color.WHITE);
         view.setBackgroundResource(R.drawable.circel);
-        view.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.red));
+        ((AppCompatButton) view).setSupportBackgroundTintList(getContext().getResources().getColorStateList(R.color.red));
 
         currentDate = new GregorianCalendar();
 
@@ -531,8 +572,9 @@ public class ReservationComing extends Fragment {
         dayClick(day1);
     }
 
-    private void setDefaults(Button defaults) {
-        defaults.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
+    @SuppressLint("RestrictedApi")
+    private void setDefaults(AppCompatButton defaults) {
+        defaults.setSupportBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
         defaults.setTextColor(Color.WHITE);
         defaults.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
     }

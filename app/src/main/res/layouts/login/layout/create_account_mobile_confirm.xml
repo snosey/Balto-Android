@@ -65,32 +65,32 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="@dimen/dimen_VeryVerySmall"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/line" />
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="@dimen/dimen_VeryVerySmall"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/line" />
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="@dimen/dimen_VeryVerySmall"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/line" />
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="@dimen/dimen_VeryVerySmall"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/line" />
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="@dimen/dimen_VeryVerySmall"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/line" />
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="@dimen/dimen_VeryVerySmall"
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/line" />
@@ -106,7 +106,7 @@
             android:textColor="@color/white"
             android:textSize="11sp" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/resend"
             android:layout_width="wrap_content"
             android:layout_height="@dimen/dimen_VeryVerySmall"
@@ -161,7 +161,7 @@
                 android:textColorHint="@color/whiteDark"
                 android:textCursorDrawable="@null" />
 
-            <Button
+            <android.support.v7.widget.AppCompatButton
                 android:id="@+id/confirm"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dimen_VeryVerySmall"
@@ -202,7 +202,7 @@
                 android:textColor="@color/white" />
         </RelativeLayout>
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/register"
             android:layout_width="@dimen/dimen_Medium"
             android:layout_height="@dimen/dimen_VerySmall"

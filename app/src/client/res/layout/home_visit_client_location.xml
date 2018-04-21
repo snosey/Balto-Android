@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <fragment
@@ -12,13 +13,13 @@
         android:layout_height="match_parent"
         tools:context="com.example.snosey.balto.MainActivity" />
 
-<ImageView
+<android.support.v7.widget.AppCompatImageView
     android:layout_width="@dimen/dimen_VerySmall"
     android:layout_centerInParent="true"
     android:id="@+id/markerIcon"
-    android:src="@drawable/marker"
+    app:srcCompat="@drawable/marker"
     android:layout_height="@dimen/dimen_VerySmall" />
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/search"
         android:layout_width="40dp"
         android:layout_margin="@dimen/margin_Small"
@@ -29,10 +30,10 @@
         android:layout_alignParentEnd="true"
         android:background="@drawable/shadow"
         android:backgroundTint="#94ffffff"
-        android:src="@drawable/places_ic_search"
+        app:srcCompat="@drawable/search"
         android:tint="@color/red" />
 
-    <ImageButton
+    <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +43,7 @@
         android:layout_margin="@dimen/margin_Medium"
         android:background="@drawable/circel"
         android:backgroundTint="@color/colorPrimary"
-        android:src="@drawable/next"
+        app:srcCompat="@drawable/next"
         android:tint="@color/white" />
 
 </RelativeLayout>

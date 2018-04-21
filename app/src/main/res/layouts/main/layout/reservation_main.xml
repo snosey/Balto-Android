@@ -15,7 +15,7 @@
         android:textSize="@dimen/text_Large"
         android:text="@string/reservation"
         android:textColor="@color/white" />
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="@color/red"/>

@@ -34,7 +34,7 @@
         android:layout_width="@dimen/dimen_VerySmall"
         android:layout_height="@dimen/dimen_VerySmall"
         android:layout_margin="@dimen/margin_Medium"
-        android:src="@drawable/logo_profile" />
+        app:srcCompat="@drawable/logo_profile" />
 
     <TextView
         android:id="@+id/firstName"

@@ -3,6 +3,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/black_shfaf"
     android:clickable="true"
     android:orientation="vertical">
@@ -12,14 +13,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageButton
+        <android.support.v7.widget.AppCompatImageButton
             android:layout_width="@dimen/dimen_VerySmall"
             android:layout_height="@dimen/dimen_VerySmall"
             android:layout_alignParentStart="true"
             android:layout_margin="@dimen/margin_Medium"
             android:background="@android:color/transparent"
             android:onClick="back"
-            android:src="@drawable/back" />
+            app:srcCompat="@drawable/back" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -33,7 +34,7 @@
 
     </RelativeLayout>
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/signin_facebook"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_VerySmall"
@@ -63,7 +64,7 @@
             android:text="@string/or"
             android:textColor="@color/white" />
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -72,7 +73,7 @@
             android:layout_toStartOf="@id/or"
             android:background="@drawable/line" />
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -122,13 +123,13 @@
         android:inputType="textPassword"
         android:textColor="@color/white" />
 
-    <ImageButton
+    <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:layout_margin="@dimen/margin_Medium"
         android:background="@drawable/circel"
-        android:src="@drawable/next" />
+        app:srcCompat="@drawable/next" />
 
 </LinearLayout>

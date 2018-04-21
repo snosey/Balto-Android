@@ -1,5 +1,6 @@
 package com.example.snosey.balto.main;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -8,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -42,23 +44,23 @@ import butterknife.OnClick;
 
 public class Agenda extends Fragment {
 
-    Button day;
+    AppCompatButton day;
     private GregorianCalendar currentDate;
 
     @InjectView(R.id.day1)
-    Button day1;
+    AppCompatButton day1;
     @InjectView(R.id.day2)
-    Button day2;
+    AppCompatButton day2;
     @InjectView(R.id.day3)
-    Button day3;
+    AppCompatButton day3;
     @InjectView(R.id.day4)
-    Button day4;
+    AppCompatButton day4;
     @InjectView(R.id.day5)
-    Button day5;
+    AppCompatButton day5;
     @InjectView(R.id.day6)
-    Button day6;
+    AppCompatButton day6;
     @InjectView(R.id.day7)
-    Button day7;
+    AppCompatButton day7;
     @InjectView(R.id.agendaRV)
     RecyclerView agendaRV;
     @InjectView(R.id.day1text)
@@ -270,13 +272,14 @@ public class Agenda extends Fragment {
         ButterKnife.reset(this);
     }
 
+    @SuppressLint("RestrictedApi")
     @OnClick({R.id.day1, R.id.day2, R.id.day3, R.id.day4, R.id.day5, R.id.day6, R.id.day7})
     public void dayClick(View view) {
         setColorDefault();
-        this.day = ((Button) view);
+        this.day = ((AppCompatButton) view);
         this.day.setTextColor(Color.WHITE);
-        view.setBackgroundResource(R.drawable.circel);
-        view.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.red));
+        ((AppCompatButton)view).setBackgroundResource(R.drawable.circel);
+        ((AppCompatButton)view).setSupportBackgroundTintList(getContext().getResources().getColorStateList(R.color.red));
 
         String day = ((TextView) view).getText().toString();
         String month = "";
@@ -353,8 +356,9 @@ public class Agenda extends Fragment {
 
     }
 
-    private void setDefaults(Button defaults) {
-        defaults.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
+    @SuppressLint("RestrictedApi")
+    private void setDefaults(AppCompatButton defaults) {
+        defaults.setSupportBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
         defaults.setTextColor(Color.WHITE);
         defaults.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
     }

@@ -1,6 +1,7 @@
 package com.example.snosey.balto.main.reservation;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -13,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -59,19 +61,19 @@ public class Coming extends Fragment {
     ReservationAdapter reservationAdapter;
     RecyclerView recyclerViewReservation;
     @InjectView(R.id.day1)
-    Button day1;
+    AppCompatButton day1;
     @InjectView(R.id.day2)
-    Button day2;
+    AppCompatButton day2;
     @InjectView(R.id.day3)
-    Button day3;
+    AppCompatButton day3;
     @InjectView(R.id.day4)
-    Button day4;
+    AppCompatButton day4;
     @InjectView(R.id.day5)
-    Button day5;
+    AppCompatButton day5;
     @InjectView(R.id.day6)
-    Button day6;
+    AppCompatButton day6;
     @InjectView(R.id.day7)
-    Button day7;
+    AppCompatButton day7;
     @InjectView(R.id.day1text)
     TextView day1text;
     @InjectView(R.id.day2text)
@@ -87,7 +89,7 @@ public class Coming extends Fragment {
     @InjectView(R.id.day7text)
     TextView day7text;
 
-    Button dayClick;
+    AppCompatButton dayClick;
     private GregorianCalendar currentDate;
 
     String day;
@@ -373,13 +375,14 @@ public class Coming extends Fragment {
     }
 
 
+    @SuppressLint("RestrictedApi")
     @OnClick({R.id.day1, R.id.day2, R.id.day3, R.id.day4, R.id.day5, R.id.day6, R.id.day7})
     public void dayClick(View view) {
         setColorDefault();
-        this.dayClick = ((Button) view);
+        this.dayClick = ((AppCompatButton) view);
         this.dayClick.setTextColor(Color.WHITE);
-        view.setBackgroundResource(R.drawable.circel);
-        view.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.red));
+        this.dayClick.setBackgroundResource(R.drawable.circel);
+        this.dayClick.setSupportBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.red));
 
         currentDate = new GregorianCalendar();
 
@@ -456,8 +459,9 @@ public class Coming extends Fragment {
         dayClick(day1);
     }
 
-    private void setDefaults(Button defaults) {
-        defaults.setBackgroundTintList(getContext().getResources().getColorStateList(R.color.colorPrimary));
+    @SuppressLint("RestrictedApi")
+    private void setDefaults(AppCompatButton defaults) {
+        defaults.setSupportBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.colorPrimary));
         defaults.setTextColor(Color.WHITE);
         defaults.setBackgroundColor(ContextCompat.getColor(getContext(), android.R.color.transparent));
     }

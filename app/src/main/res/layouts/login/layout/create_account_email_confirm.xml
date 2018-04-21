@@ -81,7 +81,7 @@
         android:textSize="11sp"
         android:textColor="@color/white" />
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:layout_width="wrap_content"
         android:background="@drawable/button_rounded_stroked"
         android:textColor="@color/white"

@@ -93,6 +93,9 @@ public class MakePayMobApi {
             @Override
             public byte[] getBody() throws AuthFailureError {
                 HashMap<String, String> MyData = new HashMap<String, String>();
+                MyData.put("username", "Elbalto"); //Add the data you'd like to send to the server.
+                MyData.put("password", "Ec0n0mics@88");
+                MyData.put("expiration", "36000");
                 return new JSONObject(MyData).toString().getBytes();
             }
 

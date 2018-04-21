@@ -2,10 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="@dimen/margin_Medium"
     android:background="@drawable/shadow2">
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/call"
         android:layout_width="100dp"
         android:layout_height="@dimen/dimen_VerySmall"
@@ -13,7 +14,7 @@
         android:layout_margin="@dimen/margin_Medium"
         android:padding="@dimen/margin_Small" />
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/medicalReport"
         android:layout_width="100dp"
         android:layout_height="@dimen/dimen_VerySmall"
@@ -28,12 +29,12 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_Small" />
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/logo"
         android:layout_width="@dimen/dimen_VerySmall"
         android:layout_height="@dimen/dimen_VerySmall"
         android:layout_margin="@dimen/margin_Medium"
-        android:src="@drawable/logo_profile" />
+        app:srcCompat="@drawable/logo_profile" />
 
     <TextView
         android:id="@+id/firstName"

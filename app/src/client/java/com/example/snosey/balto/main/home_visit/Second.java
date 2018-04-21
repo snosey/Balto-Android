@@ -60,7 +60,6 @@ public class Second extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
 
 
-
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
@@ -101,7 +100,7 @@ public class Second extends Fragment {
             public void processFinish(String output) {
                 recyclerView.setAdapter(new SecondAdapter(output));
             }
-        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.HomeVisit.SubCategory, urlData.get());
+        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.HomeVisit.SubCategoryApi, urlData.get());
     }
 
     @Override

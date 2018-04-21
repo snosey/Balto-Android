@@ -44,7 +44,7 @@
             android:layout_marginEnd="@dimen/margin_Medium"
             android:background="@drawable/button_rounded"
             app:backgroundTint="@color/red"
-            android:text="@string/done"
+            android:text="@string/mdtp_done_label"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="@dimen/text_Small" />
@@ -69,7 +69,7 @@
         android:layout_width="@dimen/dimen_VerySmall"
         android:layout_height="@dimen/dimen_VerySmall"
         android:layout_margin="@dimen/margin_Medium"
-        android:src="@drawable/logo_profile" />
+        app:srcCompat="@drawable/logo_profile" />
 
     <TextView
         android:id="@+id/firstName"

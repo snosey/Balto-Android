@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <fragment
@@ -67,11 +68,11 @@
 
 
             <!-- Line -->
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_VerySmall"
-                android:src="@drawable/line"
+                app:srcCompat="@drawable/line"
                 android:tint="@color/colorPrimary" />
 
             <!-- icon and text -->
@@ -79,7 +80,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <ImageView
+                <android.support.v7.widget.AppCompatImageView
                     android:id="@+id/icon"
                     android:layout_width="@dimen/dimen_VeryVerySmall"
                     android:layout_height="@dimen/dimen_VeryVerySmall"
@@ -103,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Button
+                <android.support.v7.widget.AppCompatButton
                     android:id="@+id/schedule"
                     android:layout_width="wrap_content"
                     android:layout_height="@dimen/dimen_VerySmall"
@@ -117,7 +118,7 @@
                     android:background="@drawable/button_rounded" />
 
 
-                <Button
+                <android.support.v7.widget.AppCompatButton
                     android:id="@+id/requestNow"
                     android:text="@string/requestNow"
                     android:layout_width="wrap_content"

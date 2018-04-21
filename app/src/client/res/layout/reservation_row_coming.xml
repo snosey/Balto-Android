@@ -2,10 +2,11 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="@dimen/margin_Medium"
     android:background="@drawable/shadow2">
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/call"
         android:layout_width="100dp"
         android:layout_height="@dimen/dimen_VerySmall"
@@ -13,7 +14,7 @@
         android:layout_margin="@dimen/margin_Medium"
         android:padding="@dimen/margin_Small" />
 
-    <Button
+    <android.support.v7.widget.AppCompatButton
         android:id="@+id/track"
         android:layout_width="100dp"
         android:layout_height="@dimen/dimen_VerySmall"
@@ -38,17 +39,17 @@
         android:layout_marginEnd="@dimen/margin_Medium"
         android:layout_marginTop="@dimen/margin_Small"
         android:gravity="center"
-        android:text="@string/cast_tracks_chooser_dialog_cancel"
+        android:text="@string/com_facebook_loginview_cancel_action"
         android:textAllCaps="false"
         android:textColor="@color/red"
         android:textSize="@dimen/text_Small" />
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/logo"
         android:layout_width="@dimen/dimen_VerySmall"
         android:layout_height="@dimen/dimen_VerySmall"
         android:layout_margin="@dimen/margin_Medium"
-        android:src="@drawable/logo_profile" />
+        app:srcCompat="@drawable/logo_profile" />
 
     <TextView
         android:id="@+id/firstName"

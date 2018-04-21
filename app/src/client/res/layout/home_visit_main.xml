@@ -40,7 +40,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/doctorIcon"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -67,7 +67,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/nurseIcon"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -94,7 +94,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/nurseAidIcon"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -121,7 +121,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/tabe3yIcon"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"

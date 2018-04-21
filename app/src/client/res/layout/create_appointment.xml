@@ -30,7 +30,7 @@
                 android:textSize="@dimen/text_Medium"
                 android:textStyle="bold" />
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="@dimen/dimen_Medium"
                 android:layout_height="2dp"
                 android:layout_gravity="center"
@@ -66,7 +66,7 @@
                 android:textSize="@dimen/text_Medium"
                 android:textStyle="bold" />
 
-            <ImageView
+            <android.support.v7.widget.AppCompatImageView
                 android:layout_width="@dimen/dimen_VerySmall"
                 android:layout_height="2dp"
                 android:layout_gravity="center"
@@ -83,7 +83,7 @@
                 android:timePickerMode="spinner" />
         </LinearLayout>
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:id="@+id/confirm"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_VerySmall"

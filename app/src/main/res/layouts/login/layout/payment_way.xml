@@ -15,7 +15,7 @@
         android:orientation="horizontal"
         android:weightSum="14">
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0"
@@ -23,7 +23,7 @@
 
     </LinearLayout>
 
-    <ImageButton
+    <android.support.v7.widget.AppCompatImageButton
         android:layout_width="@dimen/dimen_VerySmall"
         android:layout_height="@dimen/dimen_VerySmall"
         android:layout_alignParentStart="true"
@@ -85,7 +85,7 @@
         android:textColor="@color/black_8am2"
         android:textSize="@dimen/text_Small" />
 
-    <ImageButton
+    <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

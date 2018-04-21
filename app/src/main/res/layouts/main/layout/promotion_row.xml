@@ -26,7 +26,7 @@
             android:textColor="@color/red"
             android:layout_height="wrap_content" />
 
-        <Button
+        <android.support.v7.widget.AppCompatButton
             android:layout_width="wrap_content"
             android:textColor="@color/white"
             android:text="@android:string/copy"

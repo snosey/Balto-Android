@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
     android:clickable="true">
 
@@ -48,7 +49,7 @@
             android:textSize="@dimen/text_Small" />
     </LinearLayout>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/web"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_Small"
@@ -56,7 +57,7 @@
         android:layout_margin="@dimen/margin_Medium"
         android:layout_marginTop="@dimen/dimen_Small"
         android:background="@color/colorPrimary"
-        android:src="@drawable/doctor_balto_web" />
+        app:srcCompat="@drawable/doctor_balto_web" />
 
     <ScrollView
         android:id="@+id/medicalReport"
@@ -142,7 +143,7 @@
             </LinearLayout>
 
 
-            <ImageButton
+            <android.support.v7.widget.AppCompatImageButton
                 android:id="@+id/next"
                 android:layout_width="@dimen/dimen_VerySmall"
                 android:layout_height="@dimen/dimen_VerySmall"
@@ -151,13 +152,13 @@
                 android:layout_margin="@dimen/margin_Medium"
                 android:background="@drawable/circel"
                 android:backgroundTint="@color/colorPrimary"
-                android:src="@drawable/next"
+                app:srcCompat="@drawable/next"
                 android:tint="@color/white" />
 
         </RelativeLayout>
     </ScrollView>
 
-    <ImageView
+    <android.support.v7.widget.AppCompatImageView
         android:id="@+id/logo"
         android:layout_width="@dimen/dimen_Small"
         android:layout_height="@dimen/dimen_Small"
@@ -165,5 +166,5 @@
         android:layout_marginTop="@dimen/dimen_Small"
         android:background="@drawable/circel_stroked"
         android:padding="@dimen/margin_Medium"
-        android:src="@drawable/logo_icon" />
+        app:srcCompat="@drawable/logo_icon" />
 </RelativeLayout>
