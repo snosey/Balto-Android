@@ -680,22 +680,6 @@ public class Agenda extends android.support.v4.app.Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-           /* if (requestCode == GET_NEW_CARD) {
-                String cardHolderName = data.getStringExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME);
-                String cardNumber = data.getStringExtra(CreditCardUtils.EXTRA_CARD_NUMBER);
-                String expiry = data.getStringExtra(CreditCardUtils.EXTRA_CARD_EXPIRY);
-                String cvv = data.getStringExtra(CreditCardUtils.EXTRA_CARD_CVV);
-
-                editor.putString(WebService.Credit.cardHolderName, cardHolderName);
-                editor.putString(WebService.Credit.cardNumber, cardNumber);
-                editor.putString(WebService.Credit.expiry, expiry);
-                editor.putString(WebService.Credit.cvv, cvv);
-                editor.putString(WebService.Credit.paymentWay, WebService.Credit.credit);
-                editor.commit();
-
-
-            } else*/
-
         if (requestCode == 6666) {
             if (resultCode == 6666) {
                 try {
