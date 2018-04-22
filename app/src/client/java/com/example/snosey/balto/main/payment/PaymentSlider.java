@@ -81,13 +81,7 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
         addEditCredit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-              /*  if (sharedPreferences.contains(WebService.Credit.cardHolderName)) {
-                    editCredit();
-                } else {
-                    Intent intent = new Intent(getActivity(), CardEditActivity.class);
-                    startActivityForResult(intent, GET_NEW_CARD);
-                }
-                */
+            
                 new MakePayMobApi(getActivity(), "100", PaymentSlider.this, "", "925");
             }
         });
