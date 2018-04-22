@@ -508,7 +508,7 @@ public class Agenda extends android.support.v4.app.Fragment {
 
         private void makePayment() {
             try {
-                Log.e("Payment Token", MainActivity.jsonObject.getString("payment_token"));
+          
                 String finalPrice = price.getText().toString().substring(0, price.getText().toString().indexOf(" ")) + "00";
                 if (!MainActivity.jsonObject.getString("payment_token").equals("null") || !MainActivity.jsonObject.getString("payment_token").equals(""))
                     new MakePayMobApi(getActivity(), finalPrice, Agenda.this, MainActivity.jsonObject.getString("payment_token"), "241");
