@@ -27,6 +27,7 @@ public class NotificationTransaction {
             JSONObject notification = new JSONObject(jsonString);
             String kind = notification.getString("kind");
             String data = notification.getString("data");
+            Log.e("Kind Notification",kind);
             if (kind.equals(WebService.Notification.Types.bookingRequest)) {
                 checkComingRequest(data);
             } else if (kind.equals(WebService.Notification.Types.newReservation)) {

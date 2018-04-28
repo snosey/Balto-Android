@@ -123,17 +123,7 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
         return view;
     }
 
-    private void editCredit() {
-        final int EDIT_CARD = 5;
-        Intent intent = new Intent(getActivity(), CardEditActivity.class);
-        intent.putExtra(CreditCardUtils.EXTRA_CARD_HOLDER_NAME, sharedPreferences.getString(WebService.Credit.cardHolderName, ""));
-        intent.putExtra(CreditCardUtils.EXTRA_CARD_NUMBER, sharedPreferences.getString(WebService.Credit.cardNumber, ""));
-        intent.putExtra(CreditCardUtils.EXTRA_CARD_EXPIRY, sharedPreferences.getString(WebService.Credit.expiry, ""));
-        intent.putExtra(CreditCardUtils.EXTRA_CARD_SHOW_CARD_SIDE, CreditCardUtils.CARD_SIDE_BACK);
-        intent.putExtra(CreditCardUtils.EXTRA_VALIDATE_EXPIRY_DATE, true); // pass "false" to discard expiry date validation.
-        startActivityForResult(intent, EDIT_CARD);
 
-    }
 
     @Override
     public void onDestroyView() {

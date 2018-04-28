@@ -324,7 +324,7 @@ public class SendRequest extends Fragment {
             public void processFinish(String output) {
 
             }
-        }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.deleteBooking, urlData.get());
+        }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.deleteBookingApi, urlData.get());
     }
 
     @Override

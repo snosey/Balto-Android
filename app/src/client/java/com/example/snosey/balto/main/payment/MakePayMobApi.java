@@ -68,7 +68,6 @@ public class MakePayMobApi {
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Log.e("response:", response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     secondStep(jsonObject.getString("token"), jsonObject.getJSONObject("profile").getString("id"));
@@ -116,7 +115,6 @@ public class MakePayMobApi {
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Log.e("response:", response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     //add id of payment in payment database
@@ -165,7 +163,6 @@ public class MakePayMobApi {
             public void onResponse(String response) {
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Log.e("response:", response);
                 try {
                     JSONObject jsonObject = new JSONObject(response);
                     //add id of payment in payment database
@@ -223,8 +220,7 @@ public class MakePayMobApi {
                 dialog.setVisibility(View.GONE);
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Log.e("response:", response);
-                Intent intent = new Intent();
+               Intent intent = new Intent();
                 intent.putExtra("response", response);
                 fragment.onActivityResult(6666, 6666, intent);
             }
@@ -242,8 +238,7 @@ public class MakePayMobApi {
 
                         try {
                             body = new String(error.networkResponse.data, "UTF-8");
-                            Log.e("Error:", body);
-                        } catch (UnsupportedEncodingException e) {
+                         } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(activity, activity.getString(R.string.error_null_cursor), Toast.LENGTH_SHORT).show();
                             dialog.setVisibility(View.GONE);
@@ -295,9 +290,7 @@ public class MakePayMobApi {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                Log.e("My Data:", MyData.toString());
                 return MyData.toString().getBytes();
-
             }
 
 

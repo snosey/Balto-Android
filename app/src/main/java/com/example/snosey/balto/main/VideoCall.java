@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -107,6 +108,8 @@ public class VideoCall extends Fragment {
 
         ButterKnife.inject(this, view);
 
+        getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
         if (!BuildConfig.APPLICATION_ID.contains("doctor")) {
             next.setVisibility(View.GONE);
         } else {
@@ -133,6 +136,10 @@ public class VideoCall extends Fragment {
         showMe();
         getToken();
         getBooking();
+        setSpeaker(true);
+
+        //onViewClicked(view.findViewById(R.id.video));
+       // onViewClicked(view.findViewById(R.id.speaker));
         return view;
     }
 
@@ -279,8 +286,6 @@ public class VideoCall extends Fragment {
     }
 
     void startVideo(String TOKEN) {
-
-        setSpeaker(true);
         List<LocalAudioTrack> localAudioTracks = new ArrayList<>();
         localAudioTracks.add(localAudioTrack);
 
@@ -632,9 +637,11 @@ public class VideoCall extends Fragment {
                 break;
             case R.id.voice:
                 if (localAudioTrack.isEnabled()) {
+                    audioManager.setMicrophoneMute(false);
                     voice.setImageResource(R.drawable.voice_off);
                     localAudioTrack.enable(false);
                 } else {
+                    audioManager.setMicrophoneMute(true);
                     voice.setImageResource(R.drawable.open_voice);
                     localAudioTrack.enable(true);
                 }
@@ -656,11 +663,11 @@ public class VideoCall extends Fragment {
     private void setSpeaker(boolean isEnable) {
         if (!isEnable) {
             audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
-            audioManager.setMode(AudioManager.MODE_IN_CALL);
+            //audioManager.setMode(AudioManager.MODE_IN_CALL);
             audioManager.setSpeakerphoneOn(false);
         } else {
             audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
-            audioManager.setMode(AudioManager.MODE_IN_CALL);
+           // audioManager.setMode(AudioManager.MODE_IN_CALL);
             audioManager.setSpeakerphoneOn(true);
         }
     }

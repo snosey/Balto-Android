@@ -124,7 +124,7 @@ public class RegistrationActivity extends FragmentActivity {
         getResources().updateConfiguration(config, getResources().getDisplayMetrics());
         onConfigurationChanged(config);
 
-        if (BuildConfig.APPLICATION_ID.contains("doctor"))
+        if (com.example.snosey.balto.BuildConfig.APPLICATION_ID.contains("doctor"))
             sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
         else
             sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
@@ -144,6 +144,7 @@ public class RegistrationActivity extends FragmentActivity {
             sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
         else
             sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
+
         if (sharedPreferences.getString("lang", "en").equals("ar"))
             locale = new Locale("ar");
         else

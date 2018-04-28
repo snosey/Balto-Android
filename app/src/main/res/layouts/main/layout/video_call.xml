@@ -126,19 +126,21 @@
                 app:srcCompat="@drawable/switch_camera"
                 android:tint="@color/white" />
 
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/speaker"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_toEndOf="@id/timer"
-                android:layout_margin="@dimen/margin_Small"
-                android:background="@drawable/shadow"
-                android:backgroundTint="@color/white"
-                android:padding="@dimen/margin_VerySmall"
-                app:srcCompat="@drawable/volum"
-                android:tint="@color/black_8am2" />
+
 
         </LinearLayout>
+
+        <android.support.v7.widget.AppCompatImageView
+            android:id="@+id/speaker"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_margin="@dimen/margin_Medium"
+            android:layout_toEndOf="@id/timer"
+            android:background="@drawable/shadow"
+            android:backgroundTint="@color/white"
+            android:padding="@dimen/margin_VerySmall"
+            app:srcCompat="@drawable/volum"
+            android:tint="@color/black_8am2" />
 
     </RelativeLayout>
 

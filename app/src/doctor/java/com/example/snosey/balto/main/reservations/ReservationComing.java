@@ -305,6 +305,10 @@ public class ReservationComing extends Fragment {
                         }
                     });
                     if (currentTimeMillis >= bookTotal) {
+                        Calendar calendar1 = new GregorianCalendar();
+                        if (!addZeroToString(calendar1.get(Calendar.DAY_OF_MONTH) + "").equals(reservationObject.getString(WebService.Booking.receive_day)))
+                            return;
+
                         Log.e("left:", currentTimeMillis + " / " + bookTotal);
                         updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client));
                         return;

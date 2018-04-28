@@ -8,53 +8,60 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:padding="@dimen/margin_Small">
 
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight=".5"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/date"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_Small"
+                android:layout_weight=".5"
                 android:ellipsize="end"
+                android:gravity="start"
                 android:maxLines="1"
                 android:textColor="@color/black_8am2"
                 android:textSize="@dimen/text_VerySmall" />
 
             <TextView
-                android:id="@+id/moneyOnYou"
-                android:layout_width="wrap_content"
+                android:id="@+id/doctorMoney"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_Small"
+                android:layout_weight=".5"
                 android:ellipsize="end"
+                android:gravity="start|center_vertical"
                 android:maxLines="1"
                 android:textColor="@color/black_8am2"
                 android:textSize="@dimen/text_VerySmall" />
+
 
         </LinearLayout>
 
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight=".5"
             android:gravity="end"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
 
             <TextView
-                android:id="@+id/doctorMoney"
-                android:layout_width="wrap_content"
+                android:id="@+id/moneyOnYou"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_Small"
+                android:layout_weight=".5"
                 android:ellipsize="end"
-                android:gravity="center"
+                android:gravity="start"
                 android:maxLines="1"
                 android:textColor="@color/black_8am2"
                 android:textSize="@dimen/text_VerySmall" />
@@ -62,11 +69,12 @@
 
             <TextView
                 android:id="@+id/cashReceived"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_Small"
+                android:layout_weight=".5"
                 android:ellipsize="end"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:maxLines="1"
                 android:textColor="@color/black_8am2"
                 android:textSize="@dimen/text_VerySmall" />
@@ -77,6 +85,5 @@
     <android.support.v7.widget.AppCompatImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_margin="@dimen/margin_Medium"
         android:background="@color/black_8am2" />
 </LinearLayout>

@@ -418,13 +418,15 @@ public class Agenda extends Fragment {
             public void onClick(View view) {
                 dialog.hide();
                 Calendar calendar = new GregorianCalendar();
-                if (timeFrom.getCurrentHour() < calendar.get(Calendar.HOUR_OF_DAY)) {
-                    Toast.makeText(getActivity(), getActivity().getString(R.string.wrongAppoinment), Toast.LENGTH_LONG).show();
-                    return;
-                } else if (timeFrom.getCurrentHour() == calendar.get(Calendar.HOUR_OF_DAY) &&
-                        timeFrom.getCurrentMinute() < calendar.get(Calendar.MINUTE)) {
-                    Toast.makeText(getActivity(), getActivity().getString(R.string.wrongAppoinment), Toast.LENGTH_LONG).show();
-                    return;
+                if((calendar.get(Calendar.DAY_OF_MONTH)+"").equals(day.getText().toString())) {
+                    if (timeFrom.getCurrentHour() < calendar.get(Calendar.HOUR_OF_DAY)) {
+                        Toast.makeText(getActivity(), getActivity().getString(R.string.wrongAppoinment), Toast.LENGTH_LONG).show();
+                        return;
+                    } else if (timeFrom.getCurrentHour() == calendar.get(Calendar.HOUR_OF_DAY) &&
+                            timeFrom.getCurrentMinute() < calendar.get(Calendar.MINUTE)) {
+                        Toast.makeText(getActivity(), getActivity().getString(R.string.wrongAppoinment), Toast.LENGTH_LONG).show();
+                        return;
+                    }
                 }
                 if (((timeFrom.getCurrentHour())
                         > (timeTo.getCurrentHour())) ||

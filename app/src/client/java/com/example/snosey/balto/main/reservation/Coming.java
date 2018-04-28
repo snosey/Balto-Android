@@ -291,10 +291,8 @@ public class Coming extends Fragment {
                                     Toast.makeText(getContext(), getActivity().getString(R.string.waitToBookTime), Toast.LENGTH_LONG).show();
                                     return;
                                 }
-                                if (reservationObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStateProcessing)) {
-                                    Toast.makeText(getActivity(), getActivity().getString(R.string.pleaseWaitDoctor), Toast.LENGTH_LONG).show();
-                                    return;
-                                }
+
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -309,20 +307,44 @@ public class Coming extends Fragment {
 
                             }
 
-                            FragmentManager fm = getActivity().getSupportFragmentManager();
-                            Bundle bundle = new Bundle();
+
                             try {
-                                bundle.putString(WebService.Booking.id, reservationObject.getString(WebService.Booking.id));
+                                checkVideoRoom();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
-                            VideoCall fragment = new VideoCall();
-                            FragmentTransaction ft = fm.beginTransaction();
-                            fragment.setArguments(bundle);
-                            ft.replace(R.id.fragment, fragment, "VideoCall");
-                            ft.addToBackStack("VideoCall");
-                            ft.commit();
                         }
+
+                        private void checkVideoRoom() throws JSONException {
+                            UrlData urlData = new UrlData();
+                            urlData.add(WebService.Booking.id_booking, reservationObject.getString(WebService.Booking.id));
+                            new GetData(new GetData.AsyncResponse() {
+                                @Override
+                                public void processFinish(String output) throws JSONException {
+                                    JSONObject jsonObject = new JSONObject(output).getJSONObject("booking");
+                                    if (!jsonObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStateProcessing)) {
+                                        FragmentManager fm = getActivity().getSupportFragmentManager();
+                                        Bundle bundle = new Bundle();
+                                        try {
+                                            bundle.putString(WebService.Booking.id, reservationObject.getString(WebService.Booking.id));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                        VideoCall fragment = new VideoCall();
+                                        FragmentTransaction ft = fm.beginTransaction();
+                                        fragment.setArguments(bundle);
+                                        ft.replace(R.id.fragment, fragment, "VideoCall");
+                                        ft.addToBackStack("VideoCall");
+                                        ft.commit();
+
+                                    } else {
+                                        Toast.makeText(getActivity(), getActivity().getString(R.string.pleaseWaitDoctor), Toast.LENGTH_SHORT).show();
+                                    }
+
+                                }
+                            }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.getBookDataApi, urlData.get());
+                        }
+
                     });
                 }
 
