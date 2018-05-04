@@ -486,6 +486,44 @@
             </LinearLayout>
 
 
+            <!-- Help -->
+            <LinearLayout
+                android:id="@+id/help"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginStart="@dimen/margin_Medium"
+                android:layout_marginTop="@dimen/margin_Small"
+                android:background="@drawable/shadow"
+                android:onClick="help"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/margin_Small">
+
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="@dimen/dimen_VeryVerySmall"
+                    android:layout_height="@dimen/dimen_VeryVerySmall"
+                    android:layout_margin="@dimen/margin_Small"
+                    android:tint="@color/colorPrimary"
+                    app:srcCompat="@drawable/ic_help_black_24dp" />
+
+                <TextView
+                    android:id="@+id/helpText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/margin_VerySmall"
+                    android:text="@string/help"
+                    android:textColor="@color/black_8am2"
+                    android:textSize="@dimen/text_Small" />
+
+
+            </LinearLayout>
+
+
             <!-- Logout -->
             <LinearLayout
                 android:id="@+id/logout"

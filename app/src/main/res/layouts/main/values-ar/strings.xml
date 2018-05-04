@@ -84,4 +84,7 @@
     <string name="doctorArrive">لقد وصل المتخصص لموقعك</string>
     <string name="doctorFinished">لقد انتهى المتخصص من الكشف</string>
     <string name="exit">اضغط رجوع مره اخرى للخروج</string>
+    <string name="help">مساعده</string>
+    <string name="contactYou">سيتم التواصل معك في اقرب وقت ممكن !</string>
+    <string name="powerdBy">مشغل بواسطة</string>
 </resources>

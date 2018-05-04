@@ -101,7 +101,7 @@ public class Wallet extends Fragment {
                 transactionNumber.setText(getActivity().getString(R.string.transactionNumber) + walletJsonArray.length());
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 Calendar cal = Calendar.getInstance();
-                int pending = 0, balance = 0, cashReceived = 0, allInCome = 0;
+                int pending = 0, balance = 0, cashReceived = 0, allInCome = 0, docMoneyMonthly = 0;
                 for (int i = 0; i < walletJsonArray.length(); i++) {
                     int docMoney = Integer.parseInt(walletJsonArray.getJSONObject(i).getString(WebService.Payment.doctor_money));
                     if (docMoney < 0) docMoney = docMoney * -1;
@@ -113,23 +113,27 @@ public class Wallet extends Fragment {
                     }
                     if (dueCalendar.get(Calendar.DAY_OF_MONTH) == 16) {
                         if (!(cal.get(Calendar.MONTH) < dueCalendar.get(Calendar.MONTH))) {
-                            pending += docMoney;
-                            if (walletJsonArray.getJSONObject(i).getString(WebService.Payment.id_payment_way).equals(WebService.Booking.cash))
+                            docMoneyMonthly += docMoney;
+                            if (walletJsonArray.getJSONObject(i).getString(WebService.Payment.id_payment_way).equals(WebService.Booking.cash)) {
                                 cashReceived += Integer.parseInt(walletJsonArray.getJSONObject(i).getString(WebService.Payment.total_money));
+                                pending += Integer.parseInt(walletJsonArray.getJSONObject(i).getString(WebService.Payment.doctor_money));
+                            }
                         }
                     } else {
                         if (!(cal.get(Calendar.MONTH) < currentMonth || (cal.get(Calendar.MONTH) == currentMonth && cal.get(Calendar.DAY_OF_MONTH) < 16))) {
-                            pending += docMoney;
-                            if (walletJsonArray.getJSONObject(i).getString(WebService.Payment.id_payment_way).equals(WebService.Booking.cash))
+                            docMoneyMonthly += docMoney;
+                            if (walletJsonArray.getJSONObject(i).getString(WebService.Payment.id_payment_way).equals(WebService.Booking.cash)) {
                                 cashReceived += Integer.parseInt(walletJsonArray.getJSONObject(i).getString(WebService.Payment.total_money));
+                                pending += Integer.parseInt(walletJsonArray.getJSONObject(i).getString(WebService.Payment.doctor_money));
+                            }
                         }
                     }
                 }
-                balance = pending - cashReceived;
-                Balance.setText(getActivity().getString(R.string.balance) + balance + getActivity().getString(R.string.egp));
-                Pending.setText(getActivity().getString(R.string.pending) + pending + getActivity().getString(R.string.egp));
-                CashReceived.setText(getActivity().getString(R.string.cashReceived) + cashReceived + getActivity().getString(R.string.egp));
-                allMoney.setText(getActivity().getString(R.string.Settled) + allInCome + getActivity().getString(R.string.egp));
+                balance = docMoneyMonthly - pending;
+                Balance.setText(getActivity().getString(R.string.balance) + balance + " " + getActivity().getString(R.string.egp));
+                Pending.setText(getActivity().getString(R.string.pending) + pending + " " + getActivity().getString(R.string.egp));
+                CashReceived.setText(getActivity().getString(R.string.cashReceived) + cashReceived + " " + getActivity().getString(R.string.egp));
+                allMoney.setText(getActivity().getString(R.string.Settled) + allInCome + " " + getActivity().getString(R.string.egp));
 
                 walletAdapter.notifyDataSetChanged();
             }

@@ -136,10 +136,11 @@ public class VideoCall extends Fragment {
         showMe();
         getToken();
         getBooking();
+        audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
         setSpeaker(true);
 
         //onViewClicked(view.findViewById(R.id.video));
-       // onViewClicked(view.findViewById(R.id.speaker));
+        // onViewClicked(view.findViewById(R.id.speaker));
         return view;
     }
 
@@ -405,7 +406,7 @@ public class VideoCall extends Fragment {
                         @Override
                         public void onVideoTrackEnabled(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
                             try {
-                                waitingImage.setVisibility(View.VISIBLE);
+                                waitingImage.setVisibility(View.GONE);
                             } catch (Exception e) {
 
                             }
@@ -414,14 +415,14 @@ public class VideoCall extends Fragment {
                         @Override
                         public void onVideoTrackDisabled(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
                             try {
-                                waitingImage.setVisibility(View.GONE);
+                                waitingImage.setVisibility(View.VISIBLE);
                             } catch (Exception e) {
 
                             }
                         }
                     });
                     try {
-                        waitingImage.setVisibility(View.GONE);
+                        waitingImage.setVisibility(View.VISIBLE);
                     } catch (Exception e) {
 
                     }
@@ -559,7 +560,7 @@ public class VideoCall extends Fragment {
                     @Override
                     public void onVideoTrackEnabled(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
                         try {
-                            waitingImage.setVisibility(View.VISIBLE);
+                            waitingImage.setVisibility(View.GONE);
                         } catch (Exception e) {
 
                         }
@@ -568,7 +569,7 @@ public class VideoCall extends Fragment {
                     @Override
                     public void onVideoTrackDisabled(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
                         try {
-                            waitingImage.setVisibility(View.GONE);
+                            waitingImage.setVisibility(View.VISIBLE);
                         } catch (Exception e) {
 
                         }
@@ -580,9 +581,9 @@ public class VideoCall extends Fragment {
             @Override
             public void onParticipantDisconnected(Room room, RemoteParticipant participant) {
                 try {
-                    waitingImage.setVisibility(View.GONE);
+                    waitingImage.setVisibility(View.VISIBLE);
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
                 Toast.makeText(getContext(), getActivity().getString(R.string.Disconnected), Toast.LENGTH_LONG).show();
             }
@@ -636,14 +637,12 @@ public class VideoCall extends Fragment {
                 getActivity().onBackPressed();
                 break;
             case R.id.voice:
-                if (localAudioTrack.isEnabled()) {
-                    audioManager.setMicrophoneMute(false);
-                    voice.setImageResource(R.drawable.voice_off);
-                    localAudioTrack.enable(false);
-                } else {
+                if (!audioManager.isMicrophoneMute()) {
                     audioManager.setMicrophoneMute(true);
+                    voice.setImageResource(R.drawable.voice_off);
+                } else {
+                    audioManager.setMicrophoneMute(false);
                     voice.setImageResource(R.drawable.open_voice);
-                    localAudioTrack.enable(true);
                 }
                 break;
             case R.id.video:
@@ -662,12 +661,10 @@ public class VideoCall extends Fragment {
 
     private void setSpeaker(boolean isEnable) {
         if (!isEnable) {
-            audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
             //audioManager.setMode(AudioManager.MODE_IN_CALL);
             audioManager.setSpeakerphoneOn(false);
         } else {
-            audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
-           // audioManager.setMode(AudioManager.MODE_IN_CALL);
+            // audioManager.setMode(AudioManager.MODE_IN_CALL);
             audioManager.setSpeakerphoneOn(true);
         }
     }

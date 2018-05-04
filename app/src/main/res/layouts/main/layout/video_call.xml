@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
@@ -32,13 +32,14 @@
         <com.twilio.video.VideoView
             android:id="@+id/videoViewClient"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:overlaySurface="false" />
 
         <android.support.v7.widget.AppCompatImageView
-            android:layout_width="match_parent"
             android:id="@+id/waitingImage"
-            android:background="@drawable/login_background"
-            android:layout_height="match_parent" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/login_background" />
 
         <TextView
             android:id="@+id/timer"
@@ -50,8 +51,6 @@
             android:padding="@dimen/margin_Small"
             android:textColor="@color/white"
             android:textSize="@dimen/text_Medium" />
-
-
 
 
         <LinearLayout
@@ -94,8 +93,8 @@
                 android:layout_margin="@dimen/margin_Medium"
                 android:background="@drawable/circel"
                 android:backgroundTint="@color/colorPrimary"
-                app:srcCompat="@drawable/edit"
-                android:tint="@color/white" />
+                android:tint="@color/white"
+                app:srcCompat="@drawable/edit" />
 
         </LinearLayout>
 
@@ -112,8 +111,8 @@
                 android:id="@+id/myVideoView"
                 android:layout_width="@dimen/dimen_Small"
                 android:layout_height="100dp"
-                app:overlaySurface="true"
-                android:layout_margin="@dimen/margin_Medium" />
+                android:layout_margin="@dimen/margin_Medium"
+                app:overlaySurface="true" />
 
             <android.support.v7.widget.AppCompatImageView
                 android:id="@+id/swipe"
@@ -123,9 +122,8 @@
                 android:background="@drawable/shadow"
                 android:backgroundTint="@color/colorPrimary"
                 android:padding="@dimen/margin_VerySmall"
-                app:srcCompat="@drawable/switch_camera"
-                android:tint="@color/white" />
-
+                android:tint="@color/white"
+                app:srcCompat="@drawable/switch_camera" />
 
 
         </LinearLayout>
@@ -139,8 +137,8 @@
             android:background="@drawable/shadow"
             android:backgroundTint="@color/white"
             android:padding="@dimen/margin_VerySmall"
-            app:srcCompat="@drawable/volum"
-            android:tint="@color/black_8am2" />
+            android:tint="@color/black_8am2"
+            app:srcCompat="@drawable/volum" />
 
     </RelativeLayout>
 

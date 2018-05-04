@@ -3,16 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     flavorDimensions "default"
-    defaultConfig {
-        applicationId "com.elbalto"
-        minSdkVersion 17
-        targetSdkVersion 27
-        vectorDrawables.useSupportLibrary = true
-        versionCode 2
-        multiDexEnabled true
-        versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-    }
+
 
 
     lintOptions {
@@ -41,7 +32,7 @@ android {
             minSdkVersion 17
             targetSdkVersion 27
             vectorDrawables.useSupportLibrary = true
-            versionCode 2
+            versionCode 3
             multiDexEnabled true
             versionName "1.0"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -50,7 +41,7 @@ android {
 
             targetSdkVersion 27
             vectorDrawables.useSupportLibrary = true
-            versionCode 3
+            versionCode 4
             versionName "1.0"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
             minSdkVersion 17

@@ -275,7 +275,9 @@ public class Coming extends Fragment {
                     holder.tracking.setVisibility(View.GONE);
                     if (currentTimeMillis >= bookTotal) {
                         Log.e("left:", currentTimeMillis + " / " + bookTotal);
-                        moveToPast(reservationObject.getString(WebService.Booking.id));
+                        Calendar calendar1 = new GregorianCalendar();
+                        if (addZeroToString(calendar1.get(Calendar.DAY_OF_MONTH) + "").equals(reservationObject.getString(WebService.Booking.receive_day)))
+                            moveToPast(reservationObject.getString(WebService.Booking.id));
                         return;
                     }
                     holder.call.setImageResource(R.drawable.video_call);

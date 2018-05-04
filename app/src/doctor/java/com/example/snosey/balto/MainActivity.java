@@ -40,6 +40,7 @@ import com.example.snosey.balto.Support.webservice.WebService;
 import com.example.snosey.balto.login.RegistrationActivity;
 import com.example.snosey.balto.main.Agenda;
 import com.example.snosey.balto.main.DoctorProfile;
+import com.example.snosey.balto.main.Help;
 import com.example.snosey.balto.main.Promotions;
 import com.example.snosey.balto.main.Wallet;
 import com.example.snosey.balto.main.reservations.ReservationsMain;
@@ -120,6 +121,8 @@ public class MainActivity extends FragmentActivity {
     TextView logoutText;
     @InjectView(R.id.walletText)
     TextView walletText;
+    @InjectView(R.id.helpText)
+    TextView helpText;
 
     boolean doubleBackToExitPressedOnce = false;
 
@@ -178,6 +181,7 @@ public class MainActivity extends FragmentActivity {
         reservationText.setTypeface(font, Typeface.BOLD);
         HomeText.setTypeface(font, Typeface.BOLD);
         walletText.setTypeface(font, Typeface.BOLD);
+        helpText.setTypeface(font, Typeface.BOLD);
 
 
         ((Application) this.getApplicationContext()).setCurrentActivity(MainActivity.this);
@@ -361,6 +365,25 @@ public class MainActivity extends FragmentActivity {
 
         if (view != null)
             ft.addToBackStack("ReservationsMain");
+
+        ft.commit();
+    }
+
+
+    public void help(View view) {
+        if (drawerLayout.isDrawerOpen(drawer))
+            drawerLayout.closeDrawer(drawer);
+
+        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("Help");
+        if (myFragment != null && myFragment.isVisible())
+            return;
+
+        FragmentManager fm = getSupportFragmentManager();
+        Help fragment = new Help();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.fragment, fragment, "Help");
+        if (view != null)
+            ft.addToBackStack("Help");
 
         ft.commit();
     }

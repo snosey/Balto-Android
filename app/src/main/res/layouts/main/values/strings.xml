@@ -84,5 +84,8 @@
     <string name="doctorArrive">The professional has arrived to your location</string>
     <string name="doctorFinished">Professional has finished.</string>
     <string name="exit">Please click BACK again to exit</string>
+    <string name="help">Help</string>
+    <string name="contactYou">Our team will contact you as soon as possible!</string>
+    <string name="powerdBy">Powerd By</string>
 
 </resources>

@@ -39,6 +39,7 @@ import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
 import com.example.snosey.balto.login.RegistrationActivity;
 import com.example.snosey.balto.main.ClientProfile;
+import com.example.snosey.balto.main.Help;
 import com.example.snosey.balto.main.HomeAndOnline;
 import com.example.snosey.balto.main.Promotions;
 import com.example.snosey.balto.main.payment.PaymentSlider;
@@ -121,6 +122,9 @@ public class MainActivity extends FragmentActivity {
     @InjectView(R.id.logoutText)
     TextView logoutText;
 
+    @InjectView(R.id.helpText)
+    TextView helpText;
+
     @Override
     public void onBackPressed() {
         int backStackEntryCount = getSupportFragmentManager().getBackStackEntryCount();
@@ -174,6 +178,7 @@ public class MainActivity extends FragmentActivity {
         paymentWayText.setTypeface(font, Typeface.BOLD);
         reservationText.setTypeface(font, Typeface.BOLD);
         HomeText.setTypeface(font, Typeface.BOLD);
+        helpText.setTypeface(font, Typeface.BOLD);
 
         clientRate.setVisibility(View.GONE);
 
@@ -494,6 +499,24 @@ public class MainActivity extends FragmentActivity {
         else
             drawerLayout.openDrawer(drawer);
 
+    }
+
+    public void help(View view) {
+        if (drawerLayout.isDrawerOpen(drawer))
+            drawerLayout.closeDrawer(drawer);
+
+        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("Help");
+        if (myFragment != null && myFragment.isVisible())
+            return;
+
+        FragmentManager fm = getSupportFragmentManager();
+        Help fragment = new Help();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.replace(R.id.fragment, fragment, "Help");
+        if (view != null)
+            ft.addToBackStack("Help");
+
+        ft.commit();
     }
 
     public void back(View view) {

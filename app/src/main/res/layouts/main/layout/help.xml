@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@color/colorPrimary"
+            android:gravity="center"
+            android:padding="@dimen/margin_Medium"
+            android:text="@string/help"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_Large"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_Medium"
+            android:src="@drawable/help" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/margin_Large"
+            android:gravity="center"
+            android:text="@string/contactYou"
+            android:textColor="@color/black_8am2"
+            android:textSize="@dimen/text_Large" />
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/call"
+                android:layout_width="@dimen/dimen_VerySmall"
+                android:layout_height="@dimen/dimen_VerySmall"
+                android:layout_margin="@dimen/margin_Medium"
+                android:background="@drawable/circel"
+                android:padding="@dimen/margin_Small"
+                app:backgroundTint="@color/colorPrimary"
+                app:srcCompat="@drawable/phone"
+                app:tint="@color/white" />
+
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/mail"
+                android:layout_width="@dimen/dimen_VerySmall"
+                android:layout_height="@dimen/dimen_VerySmall"
+                android:layout_margin="@dimen/margin_Medium"
+                android:background="@drawable/circel"
+                android:padding="@dimen/margin_Small"
+                app:backgroundTint="@color/colorPrimary"
+                app:srcCompat="@drawable/ic_mail_black_24dp"
+                app:tint="@color/white" />
+
+
+            <android.support.v7.widget.AppCompatImageView
+                android:id="@+id/web"
+                android:layout_width="@dimen/dimen_VerySmall"
+                android:layout_height="@dimen/dimen_VerySmall"
+                android:layout_margin="@dimen/margin_Medium"
+                android:background="@drawable/circel"
+                android:padding="@dimen/margin_Small"
+                app:backgroundTint="@color/colorPrimary"
+                app:srcCompat="@drawable/web"
+                app:tint="@color/white" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/PoweredByLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/small_padding_value">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="end"
+            android:text="@string/powerdBy"
+            android:textColor="@color/colorText"
+            android:textSize="@dimen/normal_text_size" />
+
+        <android.support.v7.widget.AppCompatImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="@dimen/small_padding_value"
+            android:layout_marginStart="@dimen/small_padding_value"
+            app:srcCompat="@drawable/logo_icon" />
+
+    </LinearLayout>
+
+</RelativeLayout>

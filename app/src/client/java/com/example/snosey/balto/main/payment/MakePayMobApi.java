@@ -95,6 +95,7 @@ public class MakePayMobApi {
                 MyData.put("username", "Elbalto"); //Add the data you'd like to send to the server.
                 MyData.put("password", "Ec0n0mics@88");
                 MyData.put("expiration", "36000");
+                Log.e("MyData", MyData.toString());
                 return new JSONObject(MyData).toString().getBytes();
             }
 
@@ -142,6 +143,7 @@ public class MakePayMobApi {
                 HashMap<String, String> MyData = new HashMap<String, String>();
                 MyData.put("merchant_id", merchant_id);
                 MyData.put("amount_cents", price);
+                Log.e("MyData", MyData.toString());
                 return new JSONObject(MyData).toString().getBytes();
             }
 
@@ -200,6 +202,10 @@ public class MakePayMobApi {
                 MyData.put("integration_id", integrationId);
                 MyData.put("currency", "EGP");
                 MyData.put("amount_cents", price);
+
+
+                Log.e("MyData", MyData.toString());
+
                 return new JSONObject(MyData).toString().getBytes();
             }
 
@@ -220,7 +226,7 @@ public class MakePayMobApi {
                 dialog.setVisibility(View.GONE);
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-               Intent intent = new Intent();
+                Intent intent = new Intent();
                 intent.putExtra("response", response);
                 fragment.onActivityResult(6666, 6666, intent);
             }
@@ -234,11 +240,13 @@ public class MakePayMobApi {
                 //get response body and parse with appropriate encoding
 
                 try {
+                    error.printStackTrace();
+
                     if (error.networkResponse.data != null) {
 
                         try {
                             body = new String(error.networkResponse.data, "UTF-8");
-                         } catch (UnsupportedEncodingException e) {
+                        } catch (UnsupportedEncodingException e) {
                             e.printStackTrace();
                             Toast.makeText(activity, activity.getString(R.string.error_null_cursor), Toast.LENGTH_SHORT).show();
                             dialog.setVisibility(View.GONE);
@@ -287,6 +295,8 @@ public class MakePayMobApi {
                     MyData.put("source", source);
                     MyData.put("billing", billing);
                     MyData.put("payment_token", paymentKey);
+
+                    Log.e("MyData", MyData.toString());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -314,16 +324,6 @@ public class MakePayMobApi {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public void startPayActivityToken() {
-        Intent pay_intent = new Intent(activity, PayActivity.class);
-
-        putNormalExtras(pay_intent);
-        // replace this with your actual card token
-        pay_intent.putExtra(PayActivityIntentKeys.TOKEN, TOKEN);
-        pay_intent.putExtra(PayActivityIntentKeys.MASKED_PAN_NUMBER, "xxxx-xxxx-xxxx-1234");
-        fragment.startActivityForResult(pay_intent, 10);
     }
 
     private void putNormalExtras(Intent pay_intent) {

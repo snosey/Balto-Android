@@ -13,7 +13,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +29,7 @@ import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.main.payment.MakePayMobApi;
 import com.example.snosey.balto.main.payment.PaymentSlider;
 import com.example.snosey.balto.main.reservation.Reservations;
 import com.paymob.acceptsdk.IntentConstants;
@@ -444,7 +444,8 @@ public class Agenda extends android.support.v4.app.Fragment {
                         // if (MainActivity.jsonObject.getString("payment_token").equals("null")
                         //          || MainActivity.jsonObject.getString("payment_token").equals("")) {
 
-                        if(false){    FragmentManager fm = getActivity().getSupportFragmentManager();
+                        if (false) {
+                            FragmentManager fm = getActivity().getSupportFragmentManager();
                             PaymentSlider fragment = new PaymentSlider();
                             FragmentTransaction ft = fm.beginTransaction();
                             ft.replace(R.id.fragment, fragment, "payment");
@@ -510,12 +511,12 @@ public class Agenda extends android.support.v4.app.Fragment {
 
         private void makePayment() {
             try {
-          
+
                 String finalPrice = price.getText().toString().substring(0, price.getText().toString().indexOf(" ")) + "00";
                 if (!MainActivity.jsonObject.getString("payment_token").equals("null") || !MainActivity.jsonObject.getString("payment_token").equals("")) {
 
-                    confirmRequest(timeSceduale, "");
-//                    new MakePayMobApi(getActivity(), finalPrice, Agenda.this, MainActivity.jsonObject.getString("payment_token"), "241");
+                    //   confirmRequest(timeSceduale, "");
+                    new MakePayMobApi(getActivity(), finalPrice, Agenda.this, MainActivity.jsonObject.getString("payment_token"), "241");
 
                 } else {
                     FragmentManager fm = getActivity().getSupportFragmentManager();

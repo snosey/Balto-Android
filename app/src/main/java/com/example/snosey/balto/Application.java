@@ -1,5 +1,7 @@
 package com.example.snosey.balto;
 
+import android.content.Context;
+import android.support.multidex.MultiDex;
 import android.support.v4.app.FragmentActivity;
 
 import java.util.TimeZone;
@@ -13,7 +15,11 @@ public class Application extends android.app.Application {
         super.onCreate();
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+2"));
     }
-
+    @Override
+    protected void attachBaseContext(Context context) {
+        super.attachBaseContext(context);
+        MultiDex.install(this);
+    }
     private FragmentActivity mCurrentActivity = null;
 
     public FragmentActivity getCurrentActivity() {
