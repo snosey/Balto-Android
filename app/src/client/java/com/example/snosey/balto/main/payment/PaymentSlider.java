@@ -144,6 +144,9 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
 
+        if (data == null)
+            return;
+
         if (requestCode == ACCEPT_PAYMENT_REQUEST) {
             Bundle extras = null;
             try {
