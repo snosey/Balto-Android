@@ -9,4 +9,5 @@
     <string name="bookingRequestSent">Booking request is sent to the doctor, Thank You.</string>
     <string name="pleaseWaitDoctor">Please wait untill doctor join room.</string>
     <string name="checkDr">Check</string>
+    <string name="confirmService">Confirm service location</string>
 </resources>

@@ -157,14 +157,13 @@
                     android:ellipsize="end"
                     android:maxLines="1" />
 
-                <TextView
+                <android.support.v7.widget.AppCompatTextView
                     android:id="@+id/gender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_Medium"
                     android:drawablePadding="@dimen/margin_Medium"
-                    android:drawableStart="@drawable/gender"
-                    android:drawableTint="@color/colorPrimary"
+                    android:drawableStart="@drawable/gender_blue"
                     android:ellipsize="end"
                     android:maxLines="1" />
 

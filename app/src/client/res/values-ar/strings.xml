@@ -9,4 +9,5 @@
     <string name="bookingRequestSent">تم ارسال طلب الحجز للدكتور , شكرا لك</string>
     <string name="pleaseWaitDoctor">برجاء الانتظار حتى يدخل الطبيب غرفه المحادثه</string>
     <string name="checkDr">فحص</string>
+    <string name="confirmService">تأكيد مكان الخدمه</string>
 </resources>

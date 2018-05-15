@@ -40,7 +40,7 @@
     <string name="requestNotAvailable">هذا الطلب لم يعد متاح !</string>
     <string name="coming">القادمه</string>
     <string name="past">السابقه</string>
-    <string name="alarmComingReservation">لديك حجز بعد 30 دقيقه</string>
+    <string name="alarmComingReservation">لديك حجز بعد 15 دقيقه</string>
     <string name="ProfissionalBusy">جميع ممثلينا مشغولين الآن في خدمة عملاء اخرين, سيتم التواصل معك في اقرب وقت</string>
     <string name="optional">اختياري</string>
     <string name="hour">س</string>
@@ -77,7 +77,7 @@
     <string name="balto">بالطو</string>
     <string name="certifications">مستندات</string>
     <string name="date">التاريخ</string>
-    <string name="shareOffer">حمل تطبيق البالطو دلوقتي! و إستمتع ب50% خصم على أول إستشارة أو خدمه طبيه عن طريق الكود ده: </string>
+    <string name="shareOffer">حمل تطبيق البالطو دلوقتي! و إستمتع ب20% خصم على أول إستشارة أو خدمه طبيه عن طريق الكود ده: </string>
     <string name="chooseLang">اختر اللغه</string>
 
     <string name="doctorStart">لقد بدأ المتخصص بالتحرك</string>
@@ -87,4 +87,5 @@
     <string name="help">مساعده</string>
     <string name="contactYou">سيتم التواصل معك في اقرب وقت ممكن !</string>
     <string name="powerdBy">مشغل بواسطة</string>
+    <string name="reservationCancel">تم الغاء الحجز</string>
 </resources>

@@ -1,12 +1,17 @@
 package com.example.snosey.balto.main;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +24,7 @@ import android.widget.Toast;
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.image.CircleTransform;
+import com.example.snosey.balto.Support.notification.NotifyService;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
@@ -27,10 +33,14 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+
+import static android.content.Context.ALARM_SERVICE;
 
 /**
  * Created by Snosey on 2/26/2018.
@@ -68,6 +78,7 @@ public class ComingRequest extends Fragment {
 
     @InjectView(R.id.cancel)
     TextView cancel;
+    private String receive_hour, receive_minutes, receive_day, receive_year, receive_month;
 
 
     @Override
@@ -116,9 +127,13 @@ public class ComingRequest extends Fragment {
 
                         }
                     });
+                    receive_hour = booking.getString(WebService.Booking.receive_hour);
+                    receive_minutes = booking.getString(WebService.Booking.receive_minutes);
+                    receive_day = booking.getString(WebService.Booking.receive_day);
+                    receive_month = booking.getString(WebService.Booking.receive_month);
+                    receive_year = booking.getString(WebService.Booking.receive_year);
                     estimatedFare.setText(booking.getString(WebService.Booking.total_price) + " " + getActivity().getString(R.string.egp));
-                    visitDate.setText(booking.getString(WebService.Booking.receive_hour) + ":" + booking.getString(WebService.Booking.receive_minutes)
-                            + "  /   " + booking.getString(WebService.Booking.receive_day) + "-" + booking.getString(WebService.Booking.receive_month) + "-" + booking.getString(WebService.Booking.receive_year));
+                    visitDate.setText(receive_hour + ":" + receive_minutes + "  /   " + receive_day + "-" + receive_month + "-" + receive_year);
 
                     if (booking.getString(WebService.Booking.id_payment_way).equals("1"))
                         paymentWay.setText(getActivity().getString(R.string.cash));
@@ -221,6 +236,7 @@ public class ComingRequest extends Fragment {
             @Override
             public void processFinish(String output) {
                 if (output.contains("true")) {
+                    saveAlarm(Integer.parseInt(receive_year), Integer.parseInt(receive_month), Integer.parseInt(receive_day), Integer.parseInt(receive_hour), Integer.parseInt(receive_minutes));
                     getActivity().onBackPressed();
                     //   sendNotification(booking.getString(WebService.Booking.fcm_token), getArguments().getString(WebService.Booking.id));
                 }
@@ -228,6 +244,39 @@ public class ComingRequest extends Fragment {
         }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.updateBookingApi, updateData.get());
 
     }
+
+
+    private void saveAlarm(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minute) {
+
+
+        Calendar now = new GregorianCalendar();
+        Calendar calendar = new GregorianCalendar();
+        calendar.set(year, monthOfYear, dayOfMonth, hourOfDay, minute);
+        calendar.add(Calendar.MINUTE, -15);
+
+        if (now.getTime().getTime() > calendar.getTime().getTime())
+            return;
+//        long delay = SystemClock.elapsedRealtime() + (calendar.getTimeInMillis() - now.getTimeInMillis());
+
+        Log.e("Save Alarm", calendar.getTime().toString());
+
+        // Enable a receiver
+        ComponentName receiver = new ComponentName(getActivity(), NotifyService.class);
+        PackageManager pm = getActivity().getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        Intent intent1 = new Intent(getActivity(), NotifyService.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),
+                22, intent1,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
+
+    }
+
 
     private void sendNotification(String fcm_token, String bookingId) {
         UrlData urlData = new UrlData();

@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
-import com.cooltechworks.creditcarddesign.CardEditActivity;
-import com.cooltechworks.creditcarddesign.CreditCardUtils;
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetData;
@@ -55,6 +54,7 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    private boolean joinAgain = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -81,8 +81,17 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
         addEditCredit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            
-                new MakePayMobApi(getActivity(), "100", PaymentSlider.this, "", "925");
+                if (joinAgain) {
+                    joinAgain = false;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            joinAgain = true;
+                        }
+                    }, 5000);
+                    new MakePayMobApi(getActivity(), "100", PaymentSlider.this, "", "925");
+                }
+
             }
         });
 
@@ -122,7 +131,6 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
         });
         return view;
     }
-
 
 
     @Override

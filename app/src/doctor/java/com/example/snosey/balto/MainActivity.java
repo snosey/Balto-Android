@@ -298,8 +298,7 @@ public class MainActivity extends FragmentActivity {
 
         reservations(null);
 
-        if (firstTime && getIntent().hasExtra("data")) {
-            firstTime = false;
+        if (getIntent().hasExtra("data")) {
             new NotificationTransaction(MainActivity.this, getIntent().getStringExtra("data"));
         }
     }

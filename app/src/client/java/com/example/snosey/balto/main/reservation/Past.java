@@ -223,11 +223,7 @@ public class Past extends Fragment {
                     @Override
                     public void onClick(View view) {
                         Bundle bundle = new Bundle();
-                        try {
-                            bundle.putString(WebService.Booking.id, reservationObject.getString(WebService.Booking.id));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        bundle.putString("json", reservationObject.toString());
                         FragmentManager fm = getActivity().getSupportFragmentManager();
                         MedicalReport fragment = new MedicalReport();
                         FragmentTransaction ft = fm.beginTransaction();

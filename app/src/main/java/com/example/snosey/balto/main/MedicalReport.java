@@ -21,8 +21,6 @@ import com.example.snosey.balto.Support.webservice.WebService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Locale;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -54,7 +52,7 @@ public class MedicalReport extends Fragment {
 
         ButterKnife.inject(this, view);
         try {
-            setData(getArguments().getString(WebService.Booking.id));
+            setData();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -62,52 +60,44 @@ public class MedicalReport extends Fragment {
     }
 
 
-    private void setData(final String id) throws JSONException {
-        UrlData urlData = new UrlData();
+    private void setData() throws JSONException {
+        final JSONObject bookingObject = new JSONObject(getArguments().getString("json"));
         if (BuildConfig.APPLICATION_ID.contains("doctor")) {
             diagnosis.setEnabled(true);
             prescription.setEnabled(true);
-            urlData.add(WebService.Booking.id_doctor, MainActivity.jsonObject.getString("id"));
-            urlData.add(WebService.Booking.type, WebService.Booking.doctor);
             next.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    updateData(id);
+                    try {
+                        updateData(bookingObject.getString(WebService.Booking.id));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         } else {
-            urlData.add(WebService.Booking.id_client, MainActivity.jsonObject.getString("id"));
-            urlData.add(WebService.Booking.type, WebService.Booking.client);
             next.setVisibility(View.GONE);
         }
-        urlData.add(WebService.Booking.id_booking, id);
-        urlData.add(WebService.Booking.type, Locale.getDefault().getLanguage());
-
-        new GetData(new GetData.AsyncResponse() {
-            @Override
-            public void processFinish(String output) throws JSONException {
-                JSONObject bookingObject = new JSONObject(output).getJSONObject("booking");
-                if (BuildConfig.APPLICATION_ID.contains("doctor")) {
-                    patientName.setText(bookingObject.getString(WebService.Booking.firstName) + " " + bookingObject.getString(WebService.Booking.lastName));
-                    fullName.setText(MainActivity.jsonObject.getString(WebService.SignUp.first_name_ar) + " " + MainActivity.jsonObject.getString(WebService.SignUp.last_name_ar));
-                } else {
-                    patientName.setText(MainActivity.jsonObject.getString(WebService.SignUp.first_name_ar) + " " + MainActivity.jsonObject.getString(WebService.SignUp.last_name_ar));
-                    fullName.setText(bookingObject.getString(WebService.Booking.firstName) + " " + bookingObject.getString(WebService.Booking.lastName));
-                }
-                diagnosis.setText(bookingObject.getString(WebService.Booking.diagnosis));
-                prescription.setText(bookingObject.getString(WebService.Booking.medication));
-                type.setText(bookingObject.getString(WebService.Booking.subCategoryName));
-                date.setText(bookingObject.getString(WebService.Booking.receive_day) + "/" + bookingObject.getString(WebService.Booking.receive_month) + "/" + bookingObject.getString(WebService.Booking.receive_year));
-            }
-        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.getBookDataApi, urlData.get());
+        if (BuildConfig.APPLICATION_ID.contains("doctor")) {
+            patientName.setText(bookingObject.getString(WebService.Booking.firstName) + " " + bookingObject.getString(WebService.Booking.lastName));
+            fullName.setText(MainActivity.jsonObject.getString(WebService.SignUp.first_name_ar) + " " + MainActivity.jsonObject.getString(WebService.SignUp.last_name_ar));
+        } else {
+            patientName.setText(MainActivity.jsonObject.getString(WebService.SignUp.first_name_ar) + " " + MainActivity.jsonObject.getString(WebService.SignUp.last_name_ar));
+            fullName.setText(bookingObject.getString(WebService.Booking.firstName) + " " + bookingObject.getString(WebService.Booking.lastName));
+        }
+        diagnosis.setText(bookingObject.getString(WebService.Booking.diagnosis));
+        prescription.setText(bookingObject.getString(WebService.Booking.medication));
+        type.setText(bookingObject.getString(WebService.Booking.subCategoryName));
+        date.setText(bookingObject.getString(WebService.Booking.receive_day) + "/" + bookingObject.getString(WebService.Booking.receive_month) + "/" + bookingObject.getString(WebService.Booking.receive_year));
     }
+
 
     private void updateData(String id) {
         UrlData urlData = new UrlData();
         urlData.add(WebService.Booking.id, id);
         urlData.add(WebService.Booking.diagnosis, diagnosis.getText().toString());
         urlData.add(WebService.Booking.medication, prescription.getText().toString());
-       // urlData.add(WebService.Booking.id_state, WebService.Booking.bookingStateDone);
+        // urlData.add(WebService.Booking.id_state, WebService.Booking.bookingStateDone);
 
         new GetData(new GetData.AsyncResponse() {
             @Override

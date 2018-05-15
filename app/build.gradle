@@ -29,7 +29,7 @@ android {
 
         client {
             applicationId "com.elbalto"
-            minSdkVersion 17
+            minSdkVersion 19
             targetSdkVersion 27
             vectorDrawables.useSupportLibrary = true
             versionCode 3
@@ -44,7 +44,7 @@ android {
             versionCode 4
             versionName "1.0"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-            minSdkVersion 17
+            minSdkVersion 19
             applicationId "com.elbalto.doctor"
             multiDexEnabled true
 

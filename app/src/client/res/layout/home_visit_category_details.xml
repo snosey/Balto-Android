@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -38,8 +38,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/margin_Large"
-            app:srcCompat="@drawable/line"
-            android:tint="@color/colorPrimary" />
+            android:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/line" />
 
         <!-- base fare -->
         <RelativeLayout
@@ -76,6 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
                 android:layout_margin="@dimen/margin_Medium"
                 android:drawablePadding="@dimen/margin_Medium"
                 android:drawableStart="@drawable/time"
@@ -84,18 +85,38 @@
 
 
             <TextView
-                android:id="@+id/serviceDuration"
+                android:id="@+id/hour"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_margin="@dimen/margin_Medium"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="@dimen/margin_Medium"
+                android:layout_marginEnd="10dp"
+                android:layout_marginLeft="@dimen/margin_Medium"
+                android:layout_marginRight="@dimen/margin_Medium"
+                android:layout_marginStart="@dimen/margin_Medium"
+                android:layout_marginTop="@dimen/margin_Medium"
+                android:text="@string/hour"
+                android:textColor="@color/black_8am2" />
+
+            <TextView
+                android:id="@+id/serviceDuration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginBottom="@dimen/margin_Medium"
+                android:layout_marginLeft="@dimen/margin_Medium"
+                android:layout_marginStart="@dimen/margin_Medium"
+                android:layout_marginTop="@dimen/margin_Medium"
+                android:layout_toStartOf="@id/hour"
                 android:text="1"
                 android:textColor="@color/black_8am2" />
 
+
             <SeekBar
                 android:id="@+id/durationSeekBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dimen_VerySmall"
                 android:layout_centerInParent="true"
                 android:layout_margin="@dimen/margin_Medium"
                 android:layout_toEndOf="@id/serviceDurationText"
@@ -103,7 +124,6 @@
                 android:thumbTint="@color/colorPrimary" />
 
         </RelativeLayout>
-
 
 
         <RelativeLayout
@@ -186,11 +206,11 @@
 
             <RadioButton
                 android:id="@+id/both"
-                android:checked="true"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin_Medium"
                 android:buttonTint="@color/red"
+                android:checked="true"
                 android:text="@string/Both" />
         </RadioGroup>
 
@@ -216,10 +236,10 @@
             <EditText
                 android:id="@+id/promoCode"
                 android:layout_width="0dp"
-                android:hint="@string/optional"
                 android:layout_height="wrap_content"
                 android:layout_weight=".7"
                 android:backgroundTint="@color/red"
+                android:hint="@string/optional"
                 android:inputType="textEmailAddress"
                 android:textColor="@color/red" />
 
@@ -246,8 +266,8 @@
             android:layout_margin="@dimen/margin_Medium"
             android:background="@drawable/circel"
             android:backgroundTint="@color/colorPrimary"
-            app:srcCompat="@drawable/next"
-            android:tint="@color/white" />
+            android:tint="@color/white"
+            app:srcCompat="@drawable/next" />
 
 
     </LinearLayout>

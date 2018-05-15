@@ -62,11 +62,16 @@ public class ProfissionLocation extends Fragment {
     ImageButton next;
     @InjectView(R.id.markerIcon)
     ImageView markerIcon;
+
+    @InjectView(R.id.confirmService)
+    ImageView confirmService;
+
     private Geocoder geocoder;
     private int mInterval = 10000; // 5 seconds by default, can be changed later
     private Handler mHandler;
 
     Marker mCurrLocationMarker;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.home_visit_client_location, container, false);
@@ -75,6 +80,7 @@ public class ProfissionLocation extends Fragment {
         search.setVisibility(View.GONE);
         next.setVisibility(View.GONE);
         markerIcon.setVisibility(View.GONE);
+        confirmService.setVisibility(View.GONE);
 
         geocoder = new Geocoder(getActivity(), Locale.getDefault());
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()

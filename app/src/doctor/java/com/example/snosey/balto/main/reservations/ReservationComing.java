@@ -472,7 +472,7 @@ public class ReservationComing extends Fragment {
                         rateDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialogInterface) {
-                                Bundle bundle = new Bundle();
+                             /*   Bundle bundle = new Bundle();
                                 bundle.putString(WebService.Booking.id, id);
                                 FragmentManager fm = getActivity().getSupportFragmentManager();
                                 MedicalReport fragment = new MedicalReport();
@@ -480,7 +480,7 @@ public class ReservationComing extends Fragment {
                                 fragment.setArguments(bundle);
                                 ft.replace(R.id.fragment, fragment, "MedicalReport");
                                 ft.addToBackStack("MedicalReport");
-                                ft.commit();
+                                ft.commit();*/
                             }
                         });
                     }

@@ -14,11 +14,14 @@
         tools:context="com.example.snosey.balto.MainActivity" />
 
 <android.support.v7.widget.AppCompatImageView
-    android:layout_width="@dimen/dimen_VerySmall"
+    android:layout_width="@dimen/dimen_Small"
     android:layout_centerInParent="true"
     android:id="@+id/markerIcon"
     app:srcCompat="@drawable/marker"
-    android:layout_height="@dimen/dimen_VerySmall" />
+    android:layout_height="@dimen/dimen_Small" />
+
+
+
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/search"
         android:layout_width="40dp"
@@ -32,6 +35,17 @@
         android:backgroundTint="#94ffffff"
         app:srcCompat="@drawable/search"
         android:tint="@color/red" />
+
+    <android.support.v7.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_Medium"
+        android:layout_centerHorizontal="true"
+        android:text="@string/confirmService"
+        android:id="@+id/confirmService"
+        android:padding="@dimen/margin_Small"
+        android:background="@drawable/shadow"
+        android:backgroundTint="#94ffffff" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/next"

@@ -4,11 +4,12 @@ import android.app.AlarmManager;
 import android.app.Dialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -255,7 +256,7 @@ public class SendRequest extends Fragment {
                                     if (!jsonObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStateSearch)) {
                                         Log.e("state", "doctor accepted");
                                         if (type.equals("not now")) {
-                                            //      saveAlarm(year, monthOfYear, dayOfMonth, hourOfDay, minute);
+                                            saveAlarm(year, monthOfYear, dayOfMonth, hourOfDay, minute);
                                         }
                                         FragmentManager fm = getActivity().getSupportFragmentManager();
                                         FragmentTransaction ft = fm.beginTransaction();
@@ -303,16 +304,29 @@ public class SendRequest extends Fragment {
         Calendar now = new GregorianCalendar();
         Calendar calendar = new GregorianCalendar();
         calendar.set(year, monthOfYear, dayOfMonth, hourOfDay, minute);
-        //calendar.add(Calendar.MINUTE, -1);
-        long delay = SystemClock.elapsedRealtime() + (calendar.getTimeInMillis() - now.getTimeInMillis());
+        calendar.add(Calendar.MINUTE, -15);
 
-        Intent myIntent = new Intent(getActivity(), NotifyService.class);
-        myIntent.putExtra("kind", WebService.Notification.Types.alarm);
+        if (now.getTime().getTime() > calendar.getTime().getTime())
+            return;
 
-        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 0, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, delay, pendingIntent);
-        Log.e("time in second", (calendar.getTimeInMillis() - now.getTimeInMillis()) / 1000 + "");
+        //        long delay = SystemClock.elapsedRealtime() + (calendar.getTimeInMillis() - now.getTimeInMillis());
+
+        Log.e("Save Alarm", calendar.getTime().toString());
+
+        // Enable a receiver
+        ComponentName receiver = new ComponentName(getActivity(), NotifyService.class);
+        PackageManager pm = getActivity().getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        Intent intent1 = new Intent(getActivity(), NotifyService.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),
+                22, intent1,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
 
     }
 

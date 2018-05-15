@@ -29,19 +29,22 @@
         android:textSize="@dimen/text_Small" />
 
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/cancel"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/track"
         android:layout_marginBottom="@dimen/margin_Medium"
+        android:backgroundTint="@color/red"
         android:layout_marginEnd="@dimen/margin_Medium"
         android:layout_marginTop="@dimen/margin_Small"
+        android:background="@drawable/button_rounded_stroked"
+        android:padding="@dimen/margin_Small"
         android:gravity="center"
         android:text="@string/com_facebook_loginview_cancel_action"
         android:textAllCaps="false"
-        android:textColor="@color/red"
+        android:textColor="@color/white"
         android:textSize="@dimen/text_Small" />
 
     <android.support.v7.widget.AppCompatImageView

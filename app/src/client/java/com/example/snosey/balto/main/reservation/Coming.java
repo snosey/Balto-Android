@@ -207,7 +207,7 @@ public class Coming extends Fragment {
                     @Override
                     public void onClick(View view) {
                         try {
-                            updateBooking(reservationObject.getString("id"), WebService.Booking.bookingStateCancel);
+                            updateBooking(reservationObject.getString("id"), WebService.Booking.bookingStateCancel, reservationObject.getString(WebService.Booking.fcm_token));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -496,7 +496,10 @@ public class Coming extends Fragment {
         return s;
     }
 
-    private void updateBooking(String id, String state) {
+    private void updateBooking(String id, String state, String regId) {
+        if (state.equals(WebService.Booking.bookingStateCancel)) {
+            sendNotification(regId, state);
+        }
         UrlData urlData = new UrlData();
         urlData.add(WebService.Booking.id, id);
         urlData.add(WebService.Booking.id_state, state);
@@ -508,4 +511,21 @@ public class Coming extends Fragment {
         }, getActivity(), false).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, WebService.Booking.updateBookingApi, urlData.get());
     }
 
+    void sendNotification(String regId, String state) {
+        final UrlData urlData = new UrlData();
+
+        urlData.add(WebService.Notification.reg_id, regId);
+        urlData.add(WebService.Notification.data, " ");
+        urlData.add(WebService.Notification.kind, state);
+        urlData.add(WebService.Notification.message, " ");
+        urlData.add(WebService.Notification.title, " ");
+
+        new GetData(new GetData.AsyncResponse() {
+            @Override
+            public void processFinish(String output) {
+
+            }
+        }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Notification.notificationApi, urlData.get());
+
+    }
 }
