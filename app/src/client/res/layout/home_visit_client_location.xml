@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
 
     <fragment
@@ -13,39 +13,39 @@
         android:layout_height="match_parent"
         tools:context="com.example.snosey.balto.MainActivity" />
 
-<android.support.v7.widget.AppCompatImageView
-    android:layout_width="@dimen/dimen_Small"
-    android:layout_centerInParent="true"
-    android:id="@+id/markerIcon"
-    app:srcCompat="@drawable/marker"
-    android:layout_height="@dimen/dimen_Small" />
-
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/markerIcon"
+        android:layout_width="@dimen/dimen_Small"
+        android:layout_height="@dimen/dimen_Small"
+        android:layout_centerInParent="true"
+        app:srcCompat="@drawable/marker" />
 
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/search"
         android:layout_width="40dp"
-        android:layout_margin="@dimen/margin_Small"
         android:layout_height="40dp"
-        android:layout_gravity="center"
-        android:padding="@dimen/margin_Small"
-        android:onClick="back"
         android:layout_alignParentEnd="true"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/margin_Small"
         android:background="@drawable/shadow"
-        android:backgroundTint="#94ffffff"
-        app:srcCompat="@drawable/search"
-        android:tint="@color/red" />
+        android:clickable="true"
+        android:focusable="true"
+        android:padding="@dimen/margin_Small"
+        android:tint="@color/red"
+        app:backgroundTint="#94ffffff"
+        app:srcCompat="@drawable/search" />
 
-    <android.support.v7.widget.AppCompatTextView
+    <com.example.snosey.balto.Support.CustomTextView
+        android:id="@+id/confirmService"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margin_Medium"
         android:layout_centerHorizontal="true"
-        android:text="@string/confirmService"
-        android:id="@+id/confirmService"
-        android:padding="@dimen/margin_Small"
+        android:layout_margin="@dimen/margin_Medium"
         android:background="@drawable/shadow"
-        android:backgroundTint="#94ffffff" />
+        android:padding="@dimen/margin_Small"
+        android:text="@string/confirmService"
+        app:backgroundTint="#94ffffff" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/next"
@@ -56,8 +56,8 @@
         android:layout_gravity="end"
         android:layout_margin="@dimen/margin_Medium"
         android:background="@drawable/circel"
-        android:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@drawable/next"
-        android:tint="@color/white" />
+        android:tint="@color/white"
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@drawable/next" />
 
 </RelativeLayout>

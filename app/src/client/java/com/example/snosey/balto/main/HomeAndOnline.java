@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
@@ -29,9 +28,9 @@ import butterknife.OnClick;
 public class HomeAndOnline extends Fragment {
 
     @InjectView(R.id.onlineConsultText)
-    TextView onlineConsultText;
+    com.example.snosey.balto.Support.CustomTextView onlineConsultText;
     @InjectView(R.id.homeVisitText)
-    TextView homeVisitText;
+    com.example.snosey.balto.Support.CustomTextView homeVisitText;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -40,7 +39,7 @@ public class HomeAndOnline extends Fragment {
 
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.GONE);
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.VISIBLE);
-        ((TextView) getActivity().getWindow().getDecorView().findViewById(R.id.title)).setText("");
+        ((com.example.snosey.balto.Support.CustomTextView) getActivity().getWindow().getDecorView().findViewById(R.id.title)).setText("");
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.right_icon)).setVisibility(View.GONE);
 
         ButterKnife.inject(this, view);
@@ -49,7 +48,7 @@ public class HomeAndOnline extends Fragment {
                 getActivity().getAssets(),
                 "fonts/arial.ttf");
 
-         homeVisitText.setTypeface(font, Typeface.BOLD);
+        homeVisitText.setTypeface(font, Typeface.BOLD);
         /// homeVisitText.setPaintFlags(homeVisitText.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         onlineConsultText.setTypeface(font, Typeface.BOLD);
@@ -83,6 +82,9 @@ public class HomeAndOnline extends Fragment {
 
     @OnClick(R.id.homeVisiting)
     public void onHomeVisitingClicked() {
+        if (true)
+            return;
+
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Bundle bundle = new Bundle();
         try {

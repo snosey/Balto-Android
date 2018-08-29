@@ -1,5 +1,6 @@
 package com.example.snosey.balto.login;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,6 +20,8 @@ import org.json.JSONObject;
 
 import java.util.Locale;
 
+import static android.content.Context.MODE_PRIVATE;
+
 /**
  * Created by Snosey on 1/31/2018.
  */
@@ -37,7 +40,12 @@ public class DoctorSpecialization extends Fragment {
             final String output = getArguments().getString("json");
             jsonObject = new JSONObject(output);
             String sub = "";
-            if (Locale.getDefault().getLanguage().equals("ar"))
+            SharedPreferences sharedPreferences;
+
+
+
+            sharedPreferences = getActivity().getSharedPreferences("login_doctor", MODE_PRIVATE);
+            if (sharedPreferences.getString("lang", "en").equals("ar"))
                 sub = "sub_ar";
             else
                 sub = "sub_en";
@@ -50,7 +58,7 @@ public class DoctorSpecialization extends Fragment {
                 public void onClick(View view) {
                     final Bundle bundle = new Bundle();
                     final NewAccountObject accountObject = (NewAccountObject) getArguments().getSerializable("object");
-                    TextView special = (TextView) spinner.getSelectedView();
+                    com.example.snosey.balto.Support.CustomTextView special = (com.example.snosey.balto.Support.CustomTextView) spinner.getSelectedView();
                     try {
                         accountObject.id_sub.clear();
                         accountObject.id_sub.add(special.getTag().toString());

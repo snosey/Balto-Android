@@ -1,8 +1,11 @@
 package com.example.snosey.balto.main.online_consultation;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -10,18 +13,19 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.login.RegistrationActivity;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONArray;
@@ -29,7 +33,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -49,7 +52,7 @@ public class Main extends Fragment {
     @InjectView(R.id.doctorName)
     EditText doctorName;
     @InjectView(R.id.date)
-    TextView date;
+    com.example.snosey.balto.Support.CustomTextView date;
     @InjectView(R.id.language)
     Spinner language;
 
@@ -72,7 +75,7 @@ public class Main extends Fragment {
         languageLL = (LinearLayout) view.findViewById(R.id.languageLL);
 
         languageLL.setVisibility(View.GONE);
-        dateLl.setVisibility(View.GONE);
+        dateLl.setVisibility(View.VISIBLE);
         genderLL.setVisibility(View.GONE);
         setData();
         thirdCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -93,9 +96,10 @@ public class Main extends Fragment {
 
     private void setData() {
         UrlData urlData = new UrlData();
-        urlData.add(WebService.OnlineConsult.type, Locale.getDefault().getLanguage());
+        urlData.add(WebService.OnlineConsult.type, RegistrationActivity.sharedPreferences.getString("lang", "en"));
 
         new GetData(new GetData.AsyncResponse() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void processFinish(String output) {
                 if (output.length() != 0) {
@@ -109,14 +113,14 @@ public class Main extends Fragment {
                         Main.this.secondCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                TextView selected = (TextView) view;
+                                com.example.snosey.balto.Support.CustomTextView selected = (com.example.snosey.balto.Support.CustomTextView) view;
                                 if (i == 0) {
                                     Main.this.thirdCategory.setAdapter(null);
                                     return;
                                 }
                                 try {
                                     JSONArray thirdCategory = subCategory.getJSONObject(i - 1).getJSONArray("Third");
-                                        Main.this.thirdCategory.setAdapter(new CustomeAdapter(getActivity(), thirdCategory, "name", "id"));
+                                    Main.this.thirdCategory.setAdapter(new CustomeAdapter(getActivity(), thirdCategory, "name", "id"));
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -142,7 +146,7 @@ public class Main extends Fragment {
                                                 chooseDay = addZero(dayOfMonth + "");
                                                 chooseMonth = addZero(monthOfYear + "");
                                                 chooseYear = addZero(year + "");
-                                                date.setText(year + "/" + monthOfYear + "/" + dayOfMonth);
+                                                date.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
                                             }
                                         },
                                         now.get(Calendar.YEAR),
@@ -199,10 +203,15 @@ public class Main extends Fragment {
     @OnClick(R.id.next)
     public void onViewClicked() {
 
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
 
         UrlData urlData = new UrlData();
         try {
-            urlData.add(WebService.OnlineConsult.type, Locale.getDefault().getLanguage());
+            urlData.add(WebService.OnlineConsult.type, RegistrationActivity.sharedPreferences.getString("lang", "en"));
 
             if (doctorName.getText().toString().length() != 0)
                 urlData.add(WebService.OnlineConsult.name, doctorName.getText().toString());
@@ -213,14 +222,14 @@ public class Main extends Fragment {
                 urlData.add(WebService.OnlineConsult.year, chooseYear);
             }
             if (secondCategory.getSelectedItemPosition() != 0)
-                urlData.add(WebService.OnlineConsult.id_sub, ((TextView) secondCategory.getSelectedView()).getTag().toString());
+                urlData.add(WebService.OnlineConsult.id_sub, ((com.example.snosey.balto.Support.CustomTextView) secondCategory.getSelectedView()).getTag().toString());
 
 
             if (gender.getSelectedItemPosition() != 0)
-                urlData.add(WebService.OnlineConsult.id_gender, ((TextView) gender.getSelectedView()).getTag().toString());
+                urlData.add(WebService.OnlineConsult.id_gender, ((com.example.snosey.balto.Support.CustomTextView) gender.getSelectedView()).getTag().toString());
 
             if (language.getSelectedItemPosition() != 0)
-                urlData.add(WebService.OnlineConsult.id_language, ((TextView) language.getSelectedView()).getTag().toString());
+                urlData.add(WebService.OnlineConsult.id_language, ((com.example.snosey.balto.Support.CustomTextView) language.getSelectedView()).getTag().toString());
         } catch (Exception e) {
             return;
         }
@@ -245,7 +254,6 @@ public class Main extends Fragment {
                             @Override
                             public void run() {
                                 languageLL.setVisibility(View.GONE);
-                                dateLl.setVisibility(View.GONE);
                                 genderLL.setVisibility(View.GONE);
                             }
                         }, 300);

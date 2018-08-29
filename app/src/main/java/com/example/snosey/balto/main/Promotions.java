@@ -113,14 +113,14 @@ public class Promotions extends Fragment {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         Button copy;
-        TextView title, code;
+        com.example.snosey.balto.Support.CustomTextView title, code;
 
 
         public MyViewHolder(View v) {
             super(v);
             copy = (Button) v.findViewById(R.id.copy);
-            title = (TextView) v.findViewById(R.id.title);
-            code = (TextView) v.findViewById(R.id.code);
+            title = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.title);
+            code = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.code);
         }
     }
 

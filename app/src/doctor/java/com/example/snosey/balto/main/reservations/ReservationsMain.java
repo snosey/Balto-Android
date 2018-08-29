@@ -12,9 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.snosey.balto.R;
+import com.example.snosey.balto.Support.webservice.WebService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,7 +61,11 @@ public class ReservationsMain extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ReservationComing(), getActivity().getString(R.string.coming));
+        ReservationComing reservationComing = new ReservationComing();
+        if (getArguments() != null && getArguments().containsKey(WebService.Booking.receive_day)) {
+            reservationComing.setArguments(getArguments());
+        }
+        adapter.addFragment(reservationComing, getActivity().getString(R.string.coming));
         adapter.addFragment(new ReservationPast(), getActivity().getString(R.string.past));
         viewPager.setAdapter(adapter);
     }

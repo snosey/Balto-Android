@@ -44,7 +44,7 @@ public class Help extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = null;
-                intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "01006442600"));
+                intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + "01201146214"));
                 if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, 1);
                     return;

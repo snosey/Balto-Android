@@ -32,9 +32,9 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/margin_Small"
                 android:background="@drawable/shadow"
-                android:backgroundTint="#94ffffff"
-                android:onClick="back"
-                android:tint="@color/red"
+                app:backgroundTint="#94ffffff"
+                app:tint="@color/red"
+                android:clickable="true"  android:focusable="true"
                 android:visibility="gone"
                 app:srcCompat="@drawable/back" />
 
@@ -47,11 +47,13 @@
                 android:layout_margin="@dimen/margin_Small"
                 android:onClick="menu"
                 android:paddingTop="@dimen/margin_VerySmall"
+                android:clickable="true"
+                android:focusable="true"
                 android:tint="@color/white"
                 android:visibility="visible"
                 app:srcCompat="@drawable/menu" />
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -112,6 +114,7 @@
                 android:layout_height="@dimen/dimen_Small"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/margin_Medium"
+                android:clickable="true"  android:focusable="true"
                 android:onClick="setting"
                 app:srcCompat="@drawable/logo_profile" />
 
@@ -124,7 +127,7 @@
                 android:background="@drawable/shadow"
                 android:paddingBottom="@dimen/margin_Medium">
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/clientName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -134,14 +137,14 @@
                     android:text="ahmed"
                     android:textSize="@dimen/text_Medium" />
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/clientRate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignStart="@id/clientName"
                     android:layout_below="@id/clientName"
                     android:layout_gravity="center"
-                    android:drawableEnd="@drawable/star"
+                    app:drawableEndCompat="@drawable/star"
                     android:drawablePadding="@dimen/margin_Medium"
                     android:text="5"
                     android:textSize="@dimen/text_VerySmall" />
@@ -170,6 +173,7 @@
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:onClick="home"
+                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -181,7 +185,7 @@
                     android:tint="@color/colorPrimary"
                     app:srcCompat="@drawable/home" />
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/HomeText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -206,6 +210,7 @@
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:onClick="agenda"
+                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -217,7 +222,7 @@
                     android:tint="@color/colorPrimary"
                     app:srcCompat="@drawable/agenda" />
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/agendaText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -242,6 +247,7 @@
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:onClick="reservations"
+                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -253,7 +259,7 @@
                     android:tint="@color/colorPrimary"
                     app:srcCompat="@drawable/reservation" />
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/reservationText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -278,6 +284,7 @@
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:onClick="Wallet"
+                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -289,7 +296,7 @@
                     android:tint="@color/colorPrimary"
                     app:srcCompat="@drawable/payment" />
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/walletText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -314,6 +321,7 @@
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:onClick="payment"
+                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -325,7 +333,7 @@
                     android:tint="@color/colorPrimary"
                     app:srcCompat="@drawable/payment" />
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/paymentWayText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -350,6 +358,7 @@
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:onClick="promotions"
+                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -361,7 +370,7 @@
                     android:tint="@color/colorPrimary"
                     app:srcCompat="@drawable/offer" />
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/promotionsText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -386,6 +395,7 @@
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:onClick="share"
+                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -397,7 +407,7 @@
                     android:tint="@color/colorPrimary"
                     app:srcCompat="@drawable/share" />
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/shareText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -422,6 +432,7 @@
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:onClick="langauge"
+                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -433,7 +444,7 @@
                     android:tint="@color/colorPrimary"
                     app:srcCompat="@drawable/langauge" />
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/languageText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -459,6 +470,7 @@
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:onClick="termAndConditions"
+                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -470,7 +482,7 @@
                     android:tint="@color/colorPrimary"
                     app:srcCompat="@drawable/error" />
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/termsAndConditionsText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -497,6 +509,7 @@
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:onClick="help"
+                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -508,7 +521,7 @@
                     android:tint="@color/colorPrimary"
                     app:srcCompat="@drawable/ic_help_black_24dp" />
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/helpText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -535,6 +548,7 @@
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:onClick="logout"
+                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -546,7 +560,7 @@
                     android:tint="@color/red"
                     app:srcCompat="@drawable/logout" />
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/logoutText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

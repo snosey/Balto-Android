@@ -56,7 +56,7 @@ public class MobileConfirm extends Fragment {
     @InjectView(R.id.promoCode)
     EditText code;
     @InjectView(R.id.text)
-    TextView textAgreement;
+    com.example.snosey.balto.Support.CustomTextView textAgreement;
     @InjectView(R.id.checkbox)
     CheckBox checkbox;
 
@@ -67,6 +67,7 @@ public class MobileConfirm extends Fragment {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private String codeConfirm = "";
+    private boolean codeSent = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -84,7 +85,7 @@ public class MobileConfirm extends Fragment {
             @Override
             public void onClick(View view) {
                 String url = "";
-                if (Locale.getDefault().getLanguage().equals("ar"))
+                if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
                     url = "https://drive.google.com/open?id=1eSaJK6ZJS4N8BRCpiwIwki0DZqkJZ6UY";
                 else
                     url = "https://drive.google.com/open?id=1EsOM9r5vDV-QYLb_nCvZNbWonv1L6xeA";
@@ -107,9 +108,16 @@ public class MobileConfirm extends Fragment {
                     new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                         @Override
                         public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+                            Log.e("Code", phoneAuthCredential.getSmsCode());
                             codeConfirm = phoneAuthCredential.getSmsCode();
                             // Log.e("Code:", code);
                             stopResend();
+                        }
+
+                        @Override
+                        public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                             codeSent = true;
+                               stopResend();
                         }
 
                         @Override
@@ -338,8 +346,12 @@ public class MobileConfirm extends Fragment {
     @OnClick(R.id.register)
     public void onViewClicked() {
         if (checkbox.isChecked()) {
-            if (codeConfirm.equals(phoneCode.getText().toString()))
+            Log.e("codeConfirm", codeConfirm);
+            if (phoneCode.getText().toString().length() == 6 && codeSent)
                 regNewAccount();
+            else
+                Toast.makeText(getActivity(), getActivity().getString(R.string.codeIsInvalid), Toast.LENGTH_SHORT).show();
+
         } else
             Toast.makeText(getActivity(), getActivity().getString(R.string.agreeConditions), Toast.LENGTH_SHORT).show();
     }

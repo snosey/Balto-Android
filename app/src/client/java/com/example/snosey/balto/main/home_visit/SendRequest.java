@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -48,7 +47,6 @@ import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -63,13 +61,13 @@ import static android.content.Context.ALARM_SERVICE;
 public class SendRequest extends Fragment {
 
     @InjectView(R.id.estimatedFare)
-    TextView estimatedFare;
+    com.example.snosey.balto.Support.CustomTextView estimatedFare;
     @InjectView(R.id.paymentWay)
-    TextView paymentWay;
+    com.example.snosey.balto.Support.CustomTextView paymentWay;
     @InjectView(R.id.icon)
     ImageView icon;
     @InjectView(R.id.iconText)
-    TextView iconText;
+    com.example.snosey.balto.Support.CustomTextView iconText;
 
     private Marker mCurrLocationMarker;
 
@@ -256,7 +254,8 @@ public class SendRequest extends Fragment {
                                     if (!jsonObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStateSearch)) {
                                         Log.e("state", "doctor accepted");
                                         if (type.equals("not now")) {
-                                            saveAlarm(year, monthOfYear, dayOfMonth, hourOfDay, minute);
+                                            saveAlarmNow(year, monthOfYear, dayOfMonth, hourOfDay, minute);
+                                            saveAlarm15Min(year, monthOfYear, dayOfMonth, hourOfDay, minute, Integer.parseInt(jsonObject.getString(WebService.Booking.id)));
                                         }
                                         FragmentManager fm = getActivity().getSupportFragmentManager();
                                         FragmentTransaction ft = fm.beginTransaction();
@@ -298,22 +297,20 @@ public class SendRequest extends Fragment {
         mHandler.postDelayed(sendRequestLoop, mInterval);
     }
 
-    private void saveAlarm(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minute) {
+    private void saveAlarm15Min(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minute, int bookingId) {
 
 
-        Calendar now = new GregorianCalendar();
-        Calendar calendar = new GregorianCalendar();
+        Calendar now = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.set(year, monthOfYear, dayOfMonth, hourOfDay, minute);
         calendar.add(Calendar.MINUTE, -15);
+        calendar.add(Calendar.MONTH, -1);
 
-        if (now.getTime().getTime() > calendar.getTime().getTime())
+        if (now.getTimeInMillis() > calendar.getTimeInMillis())
             return;
-
-        //        long delay = SystemClock.elapsedRealtime() + (calendar.getTimeInMillis() - now.getTimeInMillis());
 
         Log.e("Save Alarm", calendar.getTime().toString());
 
-        // Enable a receiver
         ComponentName receiver = new ComponentName(getActivity(), NotifyService.class);
         PackageManager pm = getActivity().getPackageManager();
         pm.setComponentEnabledSetting(receiver,
@@ -321,12 +318,48 @@ public class SendRequest extends Fragment {
                 PackageManager.DONT_KILL_APP);
 
         Intent intent1 = new Intent(getActivity(), NotifyService.class);
+        intent1.putExtra("now", false);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),
-                22, intent1,
+                bookingId, intent1,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
         am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, pendingIntent);
+                0, pendingIntent);
+
+
+    }
+
+    private void saveAlarmNow(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minute) {
+
+
+        if (true)
+            return;
+
+        Calendar now = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, monthOfYear, dayOfMonth, hourOfDay, minute);
+        calendar.add(Calendar.MONTH, -1);
+
+        if (now.getTimeInMillis() > calendar.getTimeInMillis())
+            return;
+
+        Log.e("Save Alarm", calendar.getTime().toString());
+
+        ComponentName receiver = new ComponentName(getActivity(), NotifyService.class);
+        PackageManager pm = getActivity().getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        Intent intent1 = new Intent(getActivity(), NotifyService.class);
+        intent1.putExtra("now", true);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),
+                55, intent1,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                0, pendingIntent);
+
 
     }
 
@@ -360,8 +393,8 @@ public class SendRequest extends Fragment {
 
             urlData.add(WebService.Notification.data, bookingId);
             urlData.add(WebService.Notification.kind, WebService.Notification.Types.bookingRequest);
-            urlData.add(WebService.Notification.message, "");
-            urlData.add(WebService.Notification.title, "");
+            urlData.add(WebService.Notification.message, " ");
+            urlData.add(WebService.Notification.title, getActivity().getString(R.string.newReservation));
             new GetData(new GetData.AsyncResponse() {
                 @Override
                 public void processFinish(String output) {

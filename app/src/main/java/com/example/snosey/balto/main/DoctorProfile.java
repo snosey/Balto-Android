@@ -1,6 +1,7 @@
 package com.example.snosey.balto.main;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -16,7 +17,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.snosey.balto.BuildConfig;
 import com.example.snosey.balto.MainActivity;
@@ -29,6 +31,7 @@ import com.example.snosey.balto.Support.image.UploadImage;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.login.RegistrationActivity;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -40,7 +43,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -60,17 +62,17 @@ public class DoctorProfile extends Fragment {
     @InjectView(R.id.logo)
     ImageView logo;
     @InjectView(R.id.change)
-    TextView change;
+    com.example.snosey.balto.Support.CustomTextView change;
     @InjectView(R.id.gender)
-    TextView gender;
+    com.example.snosey.balto.Support.CustomTextView gender;
     @InjectView(R.id.fisrtName)
     EditText fisrtName;
     @InjectView(R.id.secondName)
     EditText secondName;
     @InjectView(R.id.type)
-    TextView doctorKind;
+    com.example.snosey.balto.Support.CustomTextView doctorKind;
     @InjectView(R.id.rate)
-    TextView rate;
+    com.example.snosey.balto.Support.CustomTextView rate;
     @InjectView(R.id.confirm)
     Button confirm;
     @InjectView(R.id.newCer)
@@ -78,11 +80,11 @@ public class DoctorProfile extends Fragment {
     @InjectView(R.id.wallet)
     Button wallet;
     @InjectView(R.id.phone)
-    TextView phone;
+    com.example.snosey.balto.Support.CustomTextView phone;
     @InjectView(R.id.email)
-    TextView email;
+    com.example.snosey.balto.Support.CustomTextView email;
     @InjectView(R.id.certification)
-    TextView certification;
+    com.example.snosey.balto.Support.CustomTextView certification;
 
     JSONArray rateJsonArray;
     RateAdapter rateAdapter;
@@ -100,12 +102,47 @@ public class DoctorProfile extends Fragment {
 
     List<String> deleteImages, addImages;
 
+
+    @InjectView(R.id.changePassword)
+    com.example.snosey.balto.Support.CustomTextView changePassword;
+
+
+    @InjectView(R.id.passwordLayout)
+    LinearLayout passwordLayout;
+
+    @InjectView(R.id.newPassword)
+    EditText newPassword;
+
+    @InjectView(R.id.oldPassword)
+    EditText oldPassword;
+
+
+    private String tempOldPassword = "";
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.doctor_profile, container, false);
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.VISIBLE);
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
         ButterKnife.inject(this, view);
+
+
+        oldPassword.setVisibility(View.GONE);
+        newPassword.setVisibility(View.GONE);
+        changePassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (oldPassword.getVisibility() == View.GONE) {
+                    oldPassword.setVisibility(View.VISIBLE);
+                    newPassword.setVisibility(View.VISIBLE);
+                } else {
+                    oldPassword.setVisibility(View.GONE);
+                    newPassword.setVisibility(View.GONE);
+                }
+
+            }
+        });
 
         rateJsonArray = new JSONArray();
         rateAdapter = new RateAdapter();
@@ -160,12 +197,34 @@ public class DoctorProfile extends Fragment {
                 }
             }
         });
+
+     /*   wallet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                {
+
+                    Fragment myFragment = (Fragment) getActivity().getSupportFragmentManager().findFragmentByTag("Wallet");
+                    if (myFragment != null && myFragment.isVisible())
+                        return;
+
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    Wallet fragment = new Wallet();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.fragment, fragment, "Wallet");
+                    if (view != null)
+                        ft.addToBackStack("Wallet");
+
+                    ft.commit();
+                }
+            }
+        });*/
         return view;
     }
 
     private void setRate(String id_user) {
         UrlData urlData = new UrlData();
         urlData.add(WebService.Booking.id_user, id_user);
+        urlData.add(WebService.Booking.type, WebService.Booking.doctor);
         new GetData(new GetData.AsyncResponse() {
             @Override
             public void processFinish(String output) throws JSONException {
@@ -216,14 +275,14 @@ public class DoctorProfile extends Fragment {
 
     public class MyViewHolderRate extends RecyclerView.ViewHolder {
 
-        public TextView rate, firstName, review;
+        public com.example.snosey.balto.Support.CustomTextView rate, firstName, review;
         public ImageView logo;
 
         public MyViewHolderRate(View v) {
             super(v);
-            firstName = (TextView) v.findViewById(R.id.firstName);
-            review = (TextView) v.findViewById(R.id.review);
-            rate = (TextView) v.findViewById(R.id.rate);
+            firstName = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.firstName);
+            review = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.review);
+            rate = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.rate);
             logo = (ImageView) v.findViewById(R.id.logo);
 
             Typeface font = Typeface.createFromAsset(
@@ -347,6 +406,7 @@ public class DoctorProfile extends Fragment {
         try {
             if (!MainActivity.jsonObject.getString("id").equals(id_user)) {
                 email.setVisibility(View.GONE);
+                passwordLayout.setVisibility(View.GONE);
                 phone.setVisibility(View.GONE);
                 confirm.setVisibility(View.GONE);
                 change.setVisibility(View.GONE);
@@ -363,7 +423,7 @@ public class DoctorProfile extends Fragment {
                     doctorKind.setVisibility(View.GONE);
                     setData(id_user, WebService.Booking.client);
                 } else {
-                    rateRV.setVisibility(View.GONE);
+                    // rateRV.setVisibility(View.GONE);
                     setData(id_user, WebService.Booking.doctor);
                 }
             } else {
@@ -386,7 +446,7 @@ public class DoctorProfile extends Fragment {
 
         String requestApi = "";
         UrlData urlData = new UrlData();
-        urlData.add(WebService.Booking.type, Locale.getDefault().getLanguage());
+        urlData.add(WebService.Booking.type, RegistrationActivity.sharedPreferences.getString("lang", "en"));
         if (type.equals(WebService.Booking.doctor)) {
             urlData.add(WebService.Booking.id_doctor, id_user);
             requestApi = WebService.Setting.getDoctorApi;
@@ -412,8 +472,10 @@ public class DoctorProfile extends Fragment {
                 fisrtName.setText(user.getString(WebService.Booking.firstName));
                 secondName.setText(user.getString(WebService.Booking.lastName));
                 phone.setText(user.getString(WebService.Booking.phone));
+                tempOldPassword = user.getString(WebService.SignUp.password);
                 if (user.getString(WebService.SignUp.email).equals("")) {
                     email.setText("facebook");
+                    passwordLayout.setVisibility(View.GONE);
                     email.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.com_facebook_button_icon_blue, 0, 0, 0);
                 } else
                     email.setText(user.getString(WebService.SignUp.email));
@@ -453,6 +515,17 @@ public class DoctorProfile extends Fragment {
         urlData.add(WebService.SignUp.first_name_en, fisrtName.getText().toString());
         urlData.add(WebService.SignUp.last_name_ar, secondName.getText().toString());
         urlData.add(WebService.SignUp.last_name_en, secondName.getText().toString());
+
+        if (newPassword.getText().toString().length() != 0) {
+
+            if (!oldPassword.getText().toString().equals(tempOldPassword)) {
+                Toast.makeText(getActivity(), getActivity().getString(R.string.WrongPassword), Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            urlData.add(WebService.SignUp.password, newPassword.getText().toString());
+        }
+
         if (!newLogo.equals("")) {
             List<Uri> uris = new ArrayList<>();
             uris.add(Uri.parse(newLogo));
@@ -485,8 +558,17 @@ public class DoctorProfile extends Fragment {
         new GetData(new GetData.AsyncResponse() {
             @Override
             public void processFinish(String output) throws JSONException {
-                if (addImages.size() == 0)
-                    getActivity().onBackPressed();
+
+                if (newPassword.getText().toString().length() != 0) {
+                    SharedPreferences.Editor editor = RegistrationActivity.sharedPreferences.edit();
+                    editor.putString("password", newPassword.getText().toString());
+                    editor.commit();
+                }
+
+                if (addImages.size() == 0) {
+                    getActivity().startActivity(new Intent(getActivity(), RegistrationActivity.class));
+                    getActivity().finish();
+                }
             }
         }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Setting.updateUserApi, urlData.get());
 

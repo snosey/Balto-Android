@@ -18,10 +18,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.snosey.balto.BuildConfig;
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.image.GetFileName;
@@ -29,7 +27,6 @@ import com.example.snosey.balto.Support.image.UploadImage;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
-import com.example.snosey.balto.login.NewAccountObject;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
@@ -40,7 +37,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
@@ -62,7 +58,7 @@ public class MobileConfirm extends Fragment {
     @InjectView(R.id.checkbox)
     CheckBox checkbox;
     @InjectView(R.id.text)
-    TextView textAgreement;
+    com.example.snosey.balto.Support.CustomTextView textAgreement;
 
     private String couponIdAnother = "";
     private String couponIdCurrent = "";
@@ -71,6 +67,7 @@ public class MobileConfirm extends Fragment {
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private String codeConfirm = "";
+    private boolean codeSent = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -88,7 +85,7 @@ public class MobileConfirm extends Fragment {
             @Override
             public void onClick(View view) {
                 String url = "";
-                if (Locale.getDefault().getLanguage().equals("ar"))
+                if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
                     url = "https://drive.google.com/open?id=1eSaJK6ZJS4N8BRCpiwIwki0DZqkJZ6UY";
                 else
                     url = "https://drive.google.com/open?id=1EsOM9r5vDV-QYLb_nCvZNbWonv1L6xeA";
@@ -127,6 +124,12 @@ public class MobileConfirm extends Fragment {
                                     }
                                 }
                             });
+                        }
+
+                        @Override
+                        public void onCodeSent(String verificationId, PhoneAuthProvider.ForceResendingToken token) {
+                            codeSent = true;
+                            stopResend();
                         }
 
                         @Override
@@ -194,13 +197,16 @@ public class MobileConfirm extends Fragment {
         urlData.add(WebService.SignUp.phone, accountObject.phone);
         urlData.add(WebService.SignUp.image, accountObject.logo);
         urlData.add(WebService.SignUp.provider_kind, accountObject.provider_kind);
-        urlData.add(WebService.SignUp.id_gender, accountObject.gender);
+        if (accountObject.gender.equals(""))
+            urlData.add(WebService.SignUp.id_gender, "1");
+        else
+            urlData.add(WebService.SignUp.id_gender, accountObject.gender);
         urlData.add(WebService.SignUp.email, accountObject.email);
         urlData.add(WebService.SignUp.password, accountObject.password);
         new GetData(new GetData.AsyncResponse() {
             @Override
             public void processFinish(String output) {
-              //  Toast.makeText(getActivity(), output, Toast.LENGTH_SHORT).show();
+                //  Toast.makeText(getActivity(), output, Toast.LENGTH_SHORT).show();
                 if (output.contains("true")) {
                     try {
                         String userId = new JSONObject(output).getJSONObject("user").getString("id");
@@ -223,7 +229,7 @@ public class MobileConfirm extends Fragment {
                         e.printStackTrace();
                     }
 
-                }
+                } else Toast.makeText(getActivity(), output, Toast.LENGTH_SHORT).show();
             }
         }, getActivity(), true).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, WebService.SignUp.signUpRequestApi, urlData.get());
 
@@ -347,8 +353,13 @@ public class MobileConfirm extends Fragment {
     @OnClick(R.id.register)
     public void onViewClicked() {
         if (checkbox.isChecked()) {
-            if (codeConfirm.equals(phoneCode.getText().toString()))
+            Log.e("codeConfirm", codeConfirm);
+            if (phoneCode.getText().toString().length() == 6 && codeSent) {
+                Toast.makeText(getActivity(), getActivity().getString(R.string.login), Toast.LENGTH_SHORT).show();
                 regNewAccount();
+            } else
+                Toast.makeText(getActivity(), getActivity().getString(R.string.codeIsInvalid), Toast.LENGTH_SHORT).show();
+
         } else
             Toast.makeText(getActivity(), getActivity().getString(R.string.agreeConditions), Toast.LENGTH_SHORT).show();
     }

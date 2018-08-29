@@ -22,21 +22,21 @@
         android:layout_below="@id/call"
         android:layout_marginEnd="@dimen/margin_Medium"
         android:background="@drawable/button_rounded"
-        android:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
         android:text="@string/checkDr"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="@dimen/text_Small" />
 
 
-    <android.support.v7.widget.AppCompatTextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/cancel"
         android:layout_width="100dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dimen_VerySmall"
         android:layout_alignParentEnd="true"
         android:layout_below="@id/track"
         android:layout_marginBottom="@dimen/margin_Medium"
-        android:backgroundTint="@color/red"
+        app:backgroundTint="@color/red"
         android:layout_marginEnd="@dimen/margin_Medium"
         android:layout_marginTop="@dimen/margin_Small"
         android:background="@drawable/button_rounded_stroked"
@@ -54,7 +54,7 @@
         android:layout_margin="@dimen/margin_Medium"
         app:srcCompat="@drawable/logo_profile" />
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/firstName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -64,7 +64,7 @@
         android:textStyle="bold" />
 
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/doctorType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
         android:ellipsize="end"
         android:maxLines="1" />
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
         android:layout_toEndOf="@id/logo" />
 
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
         android:layout_marginStart="@dimen/margin_Medium"
         android:layout_toEndOf="@id/logo" />
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/kind"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

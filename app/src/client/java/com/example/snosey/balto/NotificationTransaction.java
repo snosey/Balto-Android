@@ -25,7 +25,7 @@ public class NotificationTransaction {
             JSONObject notification = new JSONObject(jsonString);
             String kind = notification.getString("kind");
             String data = notification.getString("data");
-            if (kind.equals(WebService.Notification.Types.alarm)||kind.equals(WebService.Booking.bookingStateCancel)) {
+            if (kind.equals(WebService.Notification.Types.alarm)||kind.equals(WebService.Booking.bookingStateDoctorCancel)) {
                 ReservationsAlarm(data);
             } else if (kind.equals(WebService.Notification.Types.video_call)) {
                 joinVideoRoom(data);

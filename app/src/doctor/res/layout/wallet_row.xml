@@ -18,7 +18,7 @@
             android:layout_weight=".5"
             android:orientation="horizontal">
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:id="@+id/date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
                 android:textColor="@color/black_8am2"
                 android:textSize="@dimen/text_VerySmall" />
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:id="@+id/doctorMoney"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
             android:orientation="horizontal">
 
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:id="@+id/moneyOnYou"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                 android:textSize="@dimen/text_VerySmall" />
 
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:id="@+id/cashReceived"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

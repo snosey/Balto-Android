@@ -1,7 +1,9 @@
 package com.example.snosey.balto;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,10 +32,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.snosey.balto.Support.image.CircleTransform;
+import com.example.snosey.balto.Support.notification.NotifyService;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
@@ -42,8 +44,8 @@ import com.example.snosey.balto.main.ClientProfile;
 import com.example.snosey.balto.main.Help;
 import com.example.snosey.balto.main.HomeAndOnline;
 import com.example.snosey.balto.main.Promotions;
-import com.example.snosey.balto.main.payment.PaymentSlider;
 import com.example.snosey.balto.main.reservation.Reservations;
+import com.example.snosey.balto.payment.PaymentSlider;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -58,6 +60,7 @@ import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -70,9 +73,9 @@ public class MainActivity extends FragmentActivity {
 
 
     @InjectView(R.id.clientName)
-    TextView clientName;
+    com.example.snosey.balto.Support.CustomTextView clientName;
     @InjectView(R.id.clientRate)
-    TextView clientRate;
+    com.example.snosey.balto.Support.CustomTextView clientRate;
 
     @InjectView(R.id.drawer)
     ScrollView drawer;
@@ -82,6 +85,9 @@ public class MainActivity extends FragmentActivity {
     ProgressBar progress;
     @InjectView(R.id.logo)
     ImageView logo;
+
+    @InjectView(R.id.menu)
+    ImageView menu;
 
 
     @InjectView(R.id.home)
@@ -104,26 +110,26 @@ public class MainActivity extends FragmentActivity {
 
     boolean doubleBackToExitPressedOnce = false;
     @InjectView(R.id.title)
-    TextView title;
+    com.example.snosey.balto.Support.CustomTextView title;
     @InjectView(R.id.HomeText)
-    TextView HomeText;
+    com.example.snosey.balto.Support.CustomTextView HomeText;
     @InjectView(R.id.reservationText)
-    TextView reservationText;
+    com.example.snosey.balto.Support.CustomTextView reservationText;
     @InjectView(R.id.paymentWayText)
-    TextView paymentWayText;
+    com.example.snosey.balto.Support.CustomTextView paymentWayText;
     @InjectView(R.id.promotionsText)
-    TextView promotionsText;
+    com.example.snosey.balto.Support.CustomTextView promotionsText;
     @InjectView(R.id.languageText)
-    TextView languageText;
+    com.example.snosey.balto.Support.CustomTextView languageText;
     @InjectView(R.id.termsAndConditionsText)
-    TextView termsAndConditionsText;
+    com.example.snosey.balto.Support.CustomTextView termsAndConditionsText;
     @InjectView(R.id.shareText)
-    TextView shareText;
+    com.example.snosey.balto.Support.CustomTextView shareText;
     @InjectView(R.id.logoutText)
-    TextView logoutText;
+    com.example.snosey.balto.Support.CustomTextView logoutText;
 
     @InjectView(R.id.helpText)
-    TextView helpText;
+    com.example.snosey.balto.Support.CustomTextView helpText;
 
     @Override
     public void onBackPressed() {
@@ -157,6 +163,16 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        Intent intent = new Intent(MainActivity.this, NotifyService.class);
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                22, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        manager.cancel(pendingIntent);
+
+        checkLang();
+
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/arial.ttf")
                 .setFontAttrId(R.attr.fontPath)
@@ -185,7 +201,7 @@ public class MainActivity extends FragmentActivity {
 
         try {
             jsonObject = new JSONObject(getIntent().getStringExtra("userData"));
-            if (Locale.getDefault().getLanguage().equals("ar"))
+            if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
                 clientName.setText(jsonObject.getString("first_name_ar"));
             else
                 clientName.setText(jsonObject.getString("first_name_en"));
@@ -278,6 +294,14 @@ public class MainActivity extends FragmentActivity {
         if (getIntent().hasExtra("data")) {
             new NotificationTransaction(MainActivity.this, getIntent().getStringExtra("data"));
         }
+
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menu();
+            }
+        });
+
     }
 
     private void MainHomeOfClient() {
@@ -335,6 +359,21 @@ public class MainActivity extends FragmentActivity {
             ft.commit();
 
         }
+    }
+
+    void checkLang() {
+        Locale locale;
+
+        if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
+            locale = new Locale("ar");
+        else
+            locale = new Locale("en");
+
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        onConfigurationChanged(config);
     }
 
     public void payment(View view) {
@@ -398,7 +437,7 @@ public class MainActivity extends FragmentActivity {
                     }
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.shareOffer) + code + "\nhttps://play.google.com/store/apps/details?id=" +
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.shareOfferPatient) + code + "\nhttps://play.google.com/store/apps/details?id=" +
                             BuildConfig.APPLICATION_ID);
                     sendIntent.setType("text/plain");
                     startActivity(sendIntent);
@@ -461,7 +500,7 @@ public class MainActivity extends FragmentActivity {
             drawerLayout.closeDrawer(drawer);
 
         String url = "";
-        if (Locale.getDefault().getLanguage().equals("ar"))
+        if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
             url = "https://drive.google.com/open?id=1eSaJK6ZJS4N8BRCpiwIwki0DZqkJZ6UY";
         else
             url = "https://drive.google.com/open?id=1EsOM9r5vDV-QYLb_nCvZNbWonv1L6xeA";
@@ -470,12 +509,12 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void logout(View view) {
-
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setMessage(getString(R.string.areYouSure));
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(android.R.string.yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+
                         SharedPreferences sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.clear();
@@ -493,7 +532,7 @@ public class MainActivity extends FragmentActivity {
         alertDialog.show();
     }
 
-    public void menu(View view) {
+    public void menu() {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
         else
@@ -638,6 +677,12 @@ public class MainActivity extends FragmentActivity {
         } else {
             mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.myLooper());
         }
+    }
+
+
+    @OnClick(R.id.back)
+    public void onViewClicked() {
+        onBackPressed();
     }
 
 }

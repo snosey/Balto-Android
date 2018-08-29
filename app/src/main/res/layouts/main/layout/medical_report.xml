@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:clickable="true">
+    android:clickable="true"  android:focusable="true">
 
 
     <LinearLayout
@@ -16,7 +16,7 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/fullName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_Small" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_Small" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/baltoCertificate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,7 +71,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:id="@+id/date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -79,7 +79,7 @@
                 android:layout_margin="@dimen/margin_Medium"
                 android:textSize="@dimen/text_Small" />
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:id="@+id/patientName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
                 android:layout_margin="@dimen/margin_Medium"
                 android:textSize="@dimen/text_Small" />
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:id="@+id/medicalReportText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -100,19 +100,19 @@
 
             <LinearLayout
                 android:id="@+id/diagnosisLL"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/medicalReportText"
                 android:layout_margin="@dimen/margin_Medium"
                 android:orientation="horizontal">
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/diagnosis"
                     android:textColor="@color/black_8am2" />
 
-                <EditText
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/diagnosis"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -123,19 +123,19 @@
 
             <LinearLayout
                 android:id="@+id/prescriptionLL"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/diagnosisLL"
                 android:layout_margin="@dimen/margin_Medium"
                 android:orientation="horizontal">
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/prescription"
                     android:textColor="@color/black_8am2" />
 
-                <EditText
+                <android.support.v7.widget.AppCompatEditText
                     android:id="@+id/prescription"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -153,7 +153,7 @@
                 android:layout_below="@id/prescriptionLL"
                 android:layout_margin="@dimen/margin_Medium"
                 android:background="@drawable/circel"
-                android:backgroundTint="@color/colorPrimary"
+                app:backgroundTint="@color/colorPrimary"
                 android:tint="@color/white"
                 app:srcCompat="@drawable/next" />
 

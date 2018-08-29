@@ -25,28 +25,10 @@ public class NotifyService extends BroadcastReceiver {
         String json = "{\"data\":\"" +
                 "\",\"kind\":\"" + WebService.Notification.Types.alarm + "\"}";
         myIntent.putExtra("data", json);
-        notificationUtils.showNotificationMessage(context.getString(R.string.reservation), context.getString(R.string.alarmComingReservation), Calendar.getInstance().getTime().toString(), myIntent);
+        if (intent.getBooleanExtra("now", true))
+            notificationUtils.showNotificationMessage(context.getString(R.string.reservation), context.getString(R.string.alarmComingReservationNow), Calendar.getInstance().getTime().toString(), myIntent);
+        else
+            notificationUtils.showNotificationMessage(context.getString(R.string.reservation), context.getString(R.string.alarmComingReservation), Calendar.getInstance().getTime().toString(), myIntent);
 
-
-        /*{
-
-            Log.e("Notification", ":alarm");
-            Intent myIntent = new Intent(context, RegistrationActivity.class);
-            String json = "{\"data\":\"" + intent.getStringExtra("data") +
-                    "\",\"kind\":\"\"}";
-            myIntent.putExtra("data", json);
-            PendingIntent pendingIntent = PendingIntent.getActivity(context, NOTIFICATION, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(context)
-                            .setSmallIcon(R.drawable.logo_icon)
-                            .setContentTitle(context.getString(R.string.reservation))
-                            .setContentText(context.getString(R.string.alarmComingReservation))
-                            .setContentIntent(pendingIntent);
-
-            mBuilder.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION));
-            NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(NOTIFICATION, mBuilder.build());
-        }*/
     }
 }

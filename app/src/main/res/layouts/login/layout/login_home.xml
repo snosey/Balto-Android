@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/login_background"
     android:layout_height="match_parent">
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:layout_width="wrap_content"
-        android:onClick="lang"
         android:layout_alignParentEnd="true"
         android:textColor="@color/black_8am2"
         android:layout_height="wrap_content"
         android:id="@+id/lang"
+        android:clickable="true"  android:focusable="true"
         android:layout_margin="@dimen/margin_Small" />
 
     <android.support.v7.widget.AppCompatButton
@@ -19,9 +20,9 @@
         android:layout_centerHorizontal="true"
         android:text="@string/login"
         android:id="@+id/login"
-        android:onClick="signin"
+        android:clickable="true"  android:focusable="true"
         android:textColor="@color/white"
-        android:backgroundTint="@color/black_fat7"
+        app:backgroundTint="@color/black_fat7"
         android:textAllCaps="false"
         android:background="@drawable/button_rounded"
         android:layout_margin="@dimen/margin_Large"
@@ -32,11 +33,11 @@
         android:layout_above="@id/login"
         android:layout_centerHorizontal="true"
         android:text="@string/signup"
-        android:onClick="signup"
         android:textColor="@color/white"
         android:id="@+id/signup"
         android:textAllCaps="false"
-        android:backgroundTint="@color/red"
+        app:backgroundTint="@color/red"
+        android:clickable="true"  android:focusable="true"
         android:background="@drawable/button_rounded"
         android:layout_marginStart="@dimen/margin_Large"
         android:layout_marginEnd="@dimen/margin_Large"

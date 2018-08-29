@@ -49,7 +49,7 @@ public class CustomeAdapter extends BaseAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         view = inflter.inflate(R.layout.spinner_text, null);
-        TextView textView = (TextView) view.findViewById(R.id.text);
+        com.example.snosey.balto.Support.CustomTextView textView = (com.example.snosey.balto.Support.CustomTextView) view.findViewById(R.id.text);
         try {
             if (i == 0) {
                 textView.setText(context.getString(R.string.Both));

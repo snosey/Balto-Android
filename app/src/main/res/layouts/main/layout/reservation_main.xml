@@ -6,7 +6,7 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical">
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"

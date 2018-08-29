@@ -43,7 +43,7 @@ public class DoctorKind extends Fragment {
                 public void onClick(View view) {
                     Bundle bundle = new Bundle();
                     NewAccountObject accountObject = (NewAccountObject) getArguments().getSerializable("object");
-                    TextView kindId = (TextView) spinner.getSelectedView();
+                    com.example.snosey.balto.Support.CustomTextView kindId = (com.example.snosey.balto.Support.CustomTextView) spinner.getSelectedView();
                     if (kindId.getTag().toString().equals("1")) {
                         bundle.putString("json", output);
                         bundle.putSerializable("object", accountObject);
@@ -58,7 +58,7 @@ public class DoctorKind extends Fragment {
                         accountObject.kindDoctor = "1";
                         try {
                             String sub = "";
-                            if (Locale.getDefault().getLanguage().equals("ar"))
+                            if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
                                 sub = "sub_ar";
                             else
                                 sub = "sub_en";

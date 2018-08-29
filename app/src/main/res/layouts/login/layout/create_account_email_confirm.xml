@@ -5,14 +5,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
-    android:clickable="true"
+    android:clickable="true"  android:focusable="true"
     android:orientation="vertical">
 
 
 
 
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_Medium"
@@ -23,7 +23,7 @@
         android:textColor="@color/white" />
 
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -32,7 +32,7 @@
         android:textColor="@color/white"
         android:textSize="13sp" />
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/code"
             android:layout_width="85dp"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
             android:layout_marginEnd="@dimen/margin_Medium"
             android:layout_marginStart="@dimen/margin_Medium"
             android:layout_marginTop="@dimen/margin_Medium"
-            android:backgroundTint="@android:color/transparent"
+            app:backgroundTint="@android:color/transparent"
             android:inputType="number"
             android:maxLength="4"
             android:textCursorDrawable="@color/white"
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_Medium"
@@ -92,7 +92,7 @@
         android:layout_gravity="center"
         android:layout_height="@dimen/dimen_VeryVerySmall" />
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:layout_width="wrap_content"
         android:layout_marginTop="@dimen/margin_Medium"
         android:layout_height="wrap_content"

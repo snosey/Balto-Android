@@ -12,12 +12,12 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -45,7 +45,7 @@ import butterknife.OnClick;
 public class Agenda extends Fragment {
 
     AppCompatButton day;
-    private GregorianCalendar currentDate;
+    private Calendar currentDate;
 
     @InjectView(R.id.day1)
     AppCompatButton day1;
@@ -64,19 +64,19 @@ public class Agenda extends Fragment {
     @InjectView(R.id.agendaRV)
     RecyclerView agendaRV;
     @InjectView(R.id.day1text)
-    TextView day1text;
+    com.example.snosey.balto.Support.CustomTextView day1text;
     @InjectView(R.id.day2text)
-    TextView day2text;
+    com.example.snosey.balto.Support.CustomTextView day2text;
     @InjectView(R.id.day3text)
-    TextView day3text;
+    com.example.snosey.balto.Support.CustomTextView day3text;
     @InjectView(R.id.day4text)
-    TextView day4text;
+    com.example.snosey.balto.Support.CustomTextView day4text;
     @InjectView(R.id.day5text)
-    TextView day5text;
+    com.example.snosey.balto.Support.CustomTextView day5text;
     @InjectView(R.id.day6text)
-    TextView day6text;
+    com.example.snosey.balto.Support.CustomTextView day6text;
     @InjectView(R.id.day7text)
-    TextView day7text;
+    com.example.snosey.balto.Support.CustomTextView day7text;
 
     JSONArray agendaJsonArray;
     AgendaAdapter agendaAdapter;
@@ -124,6 +124,7 @@ public class Agenda extends Fragment {
                             dialog.setContentView(R.layout.create_appointment);
                             final TimePicker timeFrom = (TimePicker) dialog.findViewById(R.id.timeFrom);
                             timeFrom.setIs24HourView(true);
+
                             final TimePicker timeTo = (TimePicker) dialog.findViewById(R.id.timeTo);
                             timeTo.setIs24HourView(true);
 
@@ -212,8 +213,8 @@ public class Agenda extends Fragment {
                         }
                     }
                 });
-                holder.timeFrom.setText(agenda.getString(WebService.Schedule.from_hour) + ":" + agenda.getString(WebService.Schedule.from_minutes));
-                holder.timeTo.setText(agenda.getString(WebService.Schedule.to_hour) + ":" + agenda.getString(WebService.Schedule.to_minutes));
+                holder.timeFrom.setText(addZeroToString(agenda.getString(WebService.Schedule.from_hour)) + ":" + addZeroToString(agenda.getString(WebService.Schedule.from_minutes)));
+                holder.timeTo.setText(addZeroToString(agenda.getString(WebService.Schedule.to_hour)) + ":" + addZeroToString(agenda.getString(WebService.Schedule.to_minutes)));
                 holder.cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -253,13 +254,13 @@ public class Agenda extends Fragment {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView timeFrom, timeTo;
+        public com.example.snosey.balto.Support.CustomTextView timeFrom, timeTo;
         public Button update, cancel;
 
         public MyViewHolder(View v) {
             super(v);
-            timeFrom = (TextView) v.findViewById(R.id.timeFrom);
-            timeTo = (TextView) v.findViewById(R.id.timeTo);
+            timeFrom = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.timeFrom);
+            timeTo = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.timeTo);
             update = (Button) v.findViewById(R.id.update);
             cancel = (Button) v.findViewById(R.id.cancel);
         }
@@ -278,13 +279,13 @@ public class Agenda extends Fragment {
         setColorDefault();
         this.day = ((AppCompatButton) view);
         this.day.setTextColor(Color.WHITE);
-        ((AppCompatButton)view).setBackgroundResource(R.drawable.circel);
-        ((AppCompatButton)view).setSupportBackgroundTintList(getContext().getResources().getColorStateList(R.color.red));
+        ((AppCompatButton) view).setBackgroundResource(R.drawable.circel);
+        ((AppCompatButton) view).setSupportBackgroundTintList(getContext().getResources().getColorStateList(R.color.red));
 
-        String day = ((TextView) view).getText().toString();
+        String day = ((android.support.v7.widget.AppCompatButton) view).getText().toString();
         String month = "";
         String year = "";
-        currentDate = new GregorianCalendar();
+        currentDate = Calendar.getInstance();
 
         switch (view.getId()) {
             case R.id.day1:
@@ -325,7 +326,7 @@ public class Agenda extends Fragment {
     }
 
     private void setDate() {
-        Calendar date = new GregorianCalendar();
+        Calendar date = Calendar.getInstance();
 
         day1.setText(date.get(Calendar.DAY_OF_MONTH) + "");
         day1text.setText(android.text.format.DateFormat.format("EEE", date));
@@ -407,18 +408,43 @@ public class Agenda extends Fragment {
     public void addSchedule() {
         final Dialog dialog = new Dialog(getContext());
         dialog.setContentView(R.layout.create_appointment);
+
+
+        Calendar calendar = new GregorianCalendar();
+
         final TimePicker timeFrom = (TimePicker) dialog.findViewById(R.id.timeFrom);
         timeFrom.setIs24HourView(true);
+
         final TimePicker timeTo = (TimePicker) dialog.findViewById(R.id.timeTo);
         timeTo.setIs24HourView(true);
 
+        if (calendar.get(Calendar.MINUTE) >= 30) {
+            calendar.add(Calendar.HOUR, 1);
+            calendar.set(Calendar.MINUTE, 0);
+            timeFrom.setCurrentMinute(calendar.get(Calendar.MINUTE));
+            timeFrom.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+
+            calendar.add(Calendar.HOUR, 1);
+            timeTo.setCurrentMinute(calendar.get(Calendar.MINUTE));
+            timeTo.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+        } else {
+            calendar.set(Calendar.MINUTE, 30);
+            timeFrom.setCurrentMinute(calendar.get(Calendar.MINUTE));
+            timeFrom.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+
+            calendar.add(Calendar.HOUR, 1);
+            timeTo.setCurrentMinute(calendar.get(Calendar.MINUTE));
+            timeTo.setCurrentHour(calendar.get(Calendar.HOUR_OF_DAY));
+        }
         Button confirm = (Button) dialog.findViewById(R.id.confirm);
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 dialog.hide();
-                Calendar calendar = new GregorianCalendar();
-                if((calendar.get(Calendar.DAY_OF_MONTH)+"").equals(day.getText().toString())) {
+                Calendar calendar = Calendar.getInstance();
+                Log.e("Time", timeFrom.getCurrentHour() + " / " + calendar.get(Calendar.HOUR_OF_DAY) + " / " +
+                        timeFrom.getCurrentMinute() + " / " + calendar.get(Calendar.MINUTE));
+                if ((calendar.get(Calendar.DAY_OF_MONTH) + "").equals(day.getText().toString())) {
                     if (timeFrom.getCurrentHour() < calendar.get(Calendar.HOUR_OF_DAY)) {
                         Toast.makeText(getActivity(), getActivity().getString(R.string.wrongAppoinment), Toast.LENGTH_LONG).show();
                         return;
@@ -437,7 +463,7 @@ public class Agenda extends Fragment {
                         }
                     }).show();
                 } else {
-                    if (timeFrom.getCurrentHour() == timeTo.getCurrentHour() && (timeTo.getCurrentMinute() - timeFrom.getCurrentMinute()) < 20) {
+                    if (timeFrom.getCurrentHour() == timeTo.getCurrentHour() && (timeTo.getCurrentMinute() - timeFrom.getCurrentMinute()) < 59) {
                         Toast.makeText(getActivity(), getActivity().getString(R.string.min20), Toast.LENGTH_SHORT).show();
                         return;
                     }

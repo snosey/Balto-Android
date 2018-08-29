@@ -63,9 +63,9 @@ public class SignIn extends Fragment {
 
         if (getArguments() != null && getArguments().containsKey("auto")) {
             String type = sharedPreferences.getString("type", "");
-            if (type.equals("email"))
+            if (type.equals("email")) {
                 check_Username_Password(sharedPreferences.getString("email", ""), sharedPreferences.getString("password", ""));
-            else {
+            } else {
                 ((ImageView) getActivity().findViewById(R.id.background)).setVisibility(View.GONE);
             }
         }
@@ -89,6 +89,8 @@ public class SignIn extends Fragment {
             }
 
         });
+
+        closeKeyboard();
         return view;
     }
 
@@ -104,6 +106,7 @@ public class SignIn extends Fragment {
             public void processFinish(String output) {
                 if (output.contains("false")) {
                     Toast.makeText(getActivity(), getActivity().getString(R.string.wrongEmailOrPassword), Toast.LENGTH_SHORT).show();
+                    ((ImageView)getActivity().findViewById(R.id.background)).setVisibility(View.GONE);
                 } else {
                     try {
                         editor.putString("email", email);
@@ -155,6 +158,15 @@ public class SignIn extends Fragment {
         ft.add(R.id.fragment, fragment);
         ft.addToBackStack(null);
         ft.commit();
+    }
+
+
+    private void closeKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
 }

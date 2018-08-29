@@ -30,7 +30,7 @@
     <string name="estimatedFare">Total Fare</string>
     <string name="schedule">Schedule</string>
     <string name="requestNow">Request Now</string>
-    <string name="promoCodeRequest">Referral ID</string>
+    <string name="promoCodeRequest">Promo Code</string>
     <string name="available">Available</string>
     <string name="offline">Offline</string>
     <string name="noProfissional">No professional available</string>
@@ -41,6 +41,7 @@
     <string name="coming">Upcoming</string>
     <string name="past">Past</string>
     <string name="alarmComingReservation">You have reservation in 15 minute</string>
+    <string name="alarmComingReservationNow">You have reservation Now</string>
     <string name="ProfissionalBusy">All our professionals are busy now with other clients, you will be contacted shortly</string>
     <string name="optional">Optional</string>
     <string name="hour">H</string>
@@ -57,11 +58,11 @@
     <string name="reviews">Reviews</string>
     <string name="bookedUp">Booked up</string>
     <string name="newReservation">New Reservation</string>
-    <string name="notAvailable">Not Available</string>
+    <string name="notAvailable">Fully booked, kindly see another day or another doctor</string>
     <string name="video_room_is_created">Video room is ready</string>
     <string name="Disconnected">Disconnected</string>
     <string name="Connected">Connected</string>
-    <string name="FailToConnected">Connection is failed</string>
+    <string name="FailToConnected">Internet connection failed</string>
     <string name="SuccessConnected">You have joined consulting room</string>
     <string name="waitToBookTime">Please wait untill booking time</string>
     <string name="baltoCertificate">ElBalto Certificate Doctor</string>
@@ -77,16 +78,25 @@
     <string name="balto">Balto</string>
     <string name="certifications">Documents</string>
     <string name="date">Date</string>
-    <string name="shareOffer">Download Doctor ElBalto Now! and enjoy extra 20% on your 1st medical service fee by using this code: </string>
+    <string name="shareOfferDoctor">Download Doctor ElBalto Now! and enjoy extra 20% on your 1st medical service fee by using this code: </string>
+    <string name="shareOfferPatient">Download ElBalto Now! and enjoy 20% discount on your 1st medical service fee by using this code: </string>
     <string name="chooseLang">Choose Language</string>
 
     <string name="doctorStart">The professional is on the way</string>
     <string name="doctorArrive">The professional has arrived to your location</string>
-    <string name="doctorFinished">Professional has finished.</string>
+    <string name="doctorFinished">The consultation has been ended, please add your review.</string>
     <string name="exit">Please click BACK again to exit</string>
     <string name="help">Help</string>
     <string name="contactYou">Our team will contact you as soon as possible!</string>
     <string name="powerdBy">Powered by</string>
-    <string name="reservationCancel">Reservation is canceled</string>
+    <string name="reservationPatientCancel">Unfortunately, the patient cancelled the reservation.</string>
+    <string name="reservationCancel">Unfortunately, the doctor cancelled the reservation. Please re-book another time or with another doctor.</string>
+    <string name="oldPassword">Old password</string>
+    <string name="newPassword">New password</string>
+    <string name="WrongPassword">Wrong Password</string>
+    <string name="gps_network_not_enabled">Please open GPS  !</string>
+    <string name="soon">SOON</string>
+    <string name="cantCancel">Reservation can not be cancelled less than 1 hour in advance</string>
+    <string name="all">All</string>
 
 </resources>

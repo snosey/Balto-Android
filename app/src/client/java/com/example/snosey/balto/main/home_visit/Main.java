@@ -1,14 +1,17 @@
 package com.example.snosey.balto.main.home_visit;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -19,13 +22,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.login.RegistrationActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -48,8 +51,6 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Locale;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -64,19 +65,19 @@ public class Main extends Fragment implements OnMapReadyCallback {
     @InjectView(R.id.doctorIcon)
     ImageView doctorIcon;
     @InjectView(R.id.doctorText)
-    TextView doctorText;
+    com.example.snosey.balto.Support.CustomTextView doctorText;
     @InjectView(R.id.nurseIcon)
     ImageView nurseIcon;
     @InjectView(R.id.nurseText)
-    TextView nurseText;
+    com.example.snosey.balto.Support.CustomTextView nurseText;
     @InjectView(R.id.nurseAidIcon)
     ImageView nurseAidIcon;
     @InjectView(R.id.nurseAidText)
-    TextView nurseAidText;
+    com.example.snosey.balto.Support.CustomTextView nurseAidText;
     @InjectView(R.id.tabe3yIcon)
     ImageView tabe3yIcon;
     @InjectView(R.id.tabe3yText)
-    TextView tabe3yText;
+    com.example.snosey.balto.Support.CustomTextView tabe3yText;
     private GoogleMap mGoogleMap;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private boolean mLocationPermissionGranted;
@@ -86,7 +87,9 @@ public class Main extends Fragment implements OnMapReadyCallback {
     Marker mCurrLocationMarker;
     private boolean choosePlaceNow = true;
     private String categoryId;
-    TextView title;
+    com.example.snosey.balto.Support.CustomTextView title;
+    private int ACCESS_LOCATION = 31123;
+    private SupportMapFragment mapFragment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -98,14 +101,15 @@ public class Main extends Fragment implements OnMapReadyCallback {
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
 
 
-        title = ((TextView) getActivity().getWindow().getDecorView().findViewById(R.id.title));
+        title = ((com.example.snosey.balto.Support.CustomTextView) getActivity().getWindow().getDecorView().findViewById(R.id.title));
         title.setText(getActivity().getString(R.string.yourLocation));
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
-        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
+        mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+        checkLocation();
 
         setData();
         return view;
@@ -114,7 +118,7 @@ public class Main extends Fragment implements OnMapReadyCallback {
 
     private void setData() {
         UrlData urlData = new UrlData();
-        urlData.add("type", Locale.getDefault().getLanguage());
+        urlData.add("type", RegistrationActivity.sharedPreferences.getString("lang", "en"));
         new GetData(new GetData.AsyncResponse() {
             @Override
             public void processFinish(String output) {
@@ -232,6 +236,50 @@ public class Main extends Fragment implements OnMapReadyCallback {
         ButterKnife.reset(this);
     }
 
+
+    void checkLocation() {
+
+        LocationManager lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) {
+        }
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) {
+        }
+
+        if (!gps_enabled && !network_enabled) {
+            // notify user
+            android.app.AlertDialog.Builder dialog = new android.app.AlertDialog.Builder(getContext());
+            dialog.setMessage(getActivity().getResources().getString(R.string.gps_network_not_enabled));
+            dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivityForResult(myIntent, ACCESS_LOCATION);
+                    //get gps
+                }
+            });
+            dialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+
+                }
+            });
+            dialog.show();
+
+        } else {
+            mapFragment.getMapAsync(this);
+        }
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -371,7 +419,10 @@ public class Main extends Fragment implements OnMapReadyCallback {
 
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
+
+        if (requestCode == ACCESS_LOCATION) {
+            checkLocation();
+        } else if (requestCode == PLACE_PICKER_REQUEST) {
             choosePlaceNow = true;
             if (resultCode == RESULT_OK) {
                 String address = PlacePicker.getPlace(data, getActivity()).getAddress().toString();

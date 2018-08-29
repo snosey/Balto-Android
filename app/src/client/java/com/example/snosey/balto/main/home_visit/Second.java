@@ -17,6 +17,7 @@ import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.login.RegistrationActivity;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -92,7 +93,7 @@ public class Second extends Fragment {
 
     private void setData() {
         UrlData urlData = new UrlData();
-        urlData.add("type", Locale.getDefault().getLanguage());
+        urlData.add("type", RegistrationActivity.sharedPreferences.getString("lang","en"));
         urlData.add(WebService.HomeVisit.id_doctor_kind, WebService.HomeVisit.homeVisit);
         urlData.add(WebService.HomeVisit.id_main, getArguments().getString(WebService.HomeVisit.id_main));
         new GetData(new GetData.AsyncResponse() {
@@ -166,13 +167,13 @@ public class Second extends Fragment {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView title;
+        public com.example.snosey.balto.Support.CustomTextView title;
         public ImageView logo;
 
         public MyViewHolder(View v) {
             super(v);
             logo = (ImageView) v.findViewById(R.id.icon);
-            title = (TextView) v.findViewById(R.id.title);
+            title = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.title);
         }
     }
 }

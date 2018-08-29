@@ -13,7 +13,7 @@
         android:layout_alignParentEnd="true"
         android:layout_margin="@dimen/margin_Medium"
         android:background="@drawable/button_rounded"
-        android:backgroundTint="@color/colorPrimary"
+        app:backgroundTint="@color/colorPrimary"
         android:padding="@dimen/margin_Small"
         android:text="@string/reservation2"
         android:textAllCaps="false"
@@ -27,7 +27,7 @@
         android:layout_margin="@dimen/margin_Medium"
         app:srcCompat="@drawable/logo_profile" />
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -38,7 +38,7 @@
         android:maxLines="1"
         android:padding="@dimen/margin_Small" />
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -50,13 +50,13 @@
         android:padding="@dimen/margin_Small"
         android:textColor="@color/colorPrimary" />
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/rate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/type"
         android:layout_toEndOf="@id/logo"
-        android:drawableStart="@drawable/star"
+        app:drawableStartCompat="@drawable/star"
         android:drawablePadding="@dimen/margin_Medium"
         android:ellipsize="end"
         android:gravity="end|center_vertical"
@@ -65,13 +65,13 @@
         android:text="5" />
 
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/type"
         android:layout_alignParentEnd="true"
-        android:drawableEnd="@drawable/money"
+        app:drawableEndCompat="@drawable/money"
         android:drawablePadding="@dimen/margin_Medium"
         android:ellipsize="end"
         android:gravity="end|center_vertical"

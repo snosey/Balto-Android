@@ -17,7 +17,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
@@ -25,6 +24,7 @@ import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.login.RegistrationActivity;
 import com.example.snosey.balto.main.DoctorProfile;
 import com.example.snosey.balto.main.MedicalReport;
 import com.example.snosey.balto.main.RateDialog;
@@ -37,7 +37,6 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -49,26 +48,33 @@ import butterknife.InjectView;
 public class Past extends Fragment {
     @InjectView(R.id.dateLL)
     LinearLayout dateLL;
+
+    @InjectView(R.id.calenderLL)
+    LinearLayout calenderLL;
+
+
     @InjectView(R.id.reservationRV)
     RecyclerView reservationRV;
     @InjectView(R.id.date)
-    TextView date;
+    com.example.snosey.balto.Support.CustomTextView date;
 
 
     JSONArray reservationJsonArray;
     ReservationAdapter reservationAdapter;
     RecyclerView recyclerViewReservation;
+    private Calendar now = Calendar.getInstance();
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.reservation_list, container, false);
         ButterKnife.inject(this, view);
         dateLL.setVisibility(View.GONE);
-        date.setVisibility(View.VISIBLE);
+        calenderLL.setVisibility(View.VISIBLE);
 
         final Calendar cal = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, yyyy");
-        date.setText(sdf.format(cal.getTime()));
+        date.setText(getActivity().getString(R.string.filter));
         getComingReservation(addZeroToString(cal.get(Calendar.DAY_OF_MONTH) + ""), addZeroToString((cal.get(Calendar.MONTH) + 1) + ""), addZeroToString(cal.get(Calendar.YEAR) + ""), false);
         date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,7 +89,7 @@ public class Past extends Fragment {
                     }
                 });
 
-                dpd.setMaxDate(cal);
+                dpd.setMaxDate(now);
                 dpd.show(getActivity().getFragmentManager(), "");
 
             }
@@ -106,7 +112,7 @@ public class Past extends Fragment {
         UrlData urlData = new UrlData();
         try {
             urlData.add(WebService.Booking.id_client, MainActivity.jsonObject.getString("id"));
-            urlData.add(WebService.Booking.lang, Locale.getDefault().getLanguage());
+            urlData.add(WebService.Booking.lang, RegistrationActivity.sharedPreferences.getString("lang", "en"));
             urlData.add(WebService.Booking.type, WebService.Booking.client);
             if (thisDay) {
                 urlData.add(WebService.Booking.receive_day, day);
@@ -206,7 +212,7 @@ public class Past extends Fragment {
                     public void onClick(View view) {
                         Bundle bundle = new Bundle();
                         try {
-                            bundle.putString(WebService.HomeVisit.id_user,reservationObject.getString(WebService.Booking.id_doctor));
+                            bundle.putString(WebService.HomeVisit.id_user, reservationObject.getString(WebService.Booking.id_doctor));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -219,6 +225,11 @@ public class Past extends Fragment {
                         ft.commit();
                     }
                 });
+                if (reservationObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStateDone)) {
+                    holder.medicalReport.setVisibility(View.VISIBLE);
+                } else
+                    holder.medicalReport.setVisibility(View.GONE);
+
                 holder.medicalReport.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -249,18 +260,18 @@ public class Past extends Fragment {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView firstName, date, kind, type, rate, price;
+        public com.example.snosey.balto.Support.CustomTextView firstName, date, kind, type, rate, price;
         public Button medicalReport;
         public ImageView logo, call;
 
         public MyViewHolder(View v) {
             super(v);
-            type = (TextView) v.findViewById(R.id.type);
-            price = (TextView) v.findViewById(R.id.price);
-            rate = (TextView) v.findViewById(R.id.rate);
-            firstName = (TextView) v.findViewById(R.id.firstName);
-            date = (TextView) v.findViewById(R.id.date);
-            kind = (TextView) v.findViewById(R.id.kind);
+            type = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.type);
+            price = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.price);
+            rate = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.rate);
+            firstName = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.firstName);
+            date = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.date);
+            kind = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.kind);
             medicalReport = (Button) v.findViewById(R.id.medicalReport);
             call = (ImageView) v.findViewById(R.id.call);
             logo = (ImageView) v.findViewById(R.id.logo);

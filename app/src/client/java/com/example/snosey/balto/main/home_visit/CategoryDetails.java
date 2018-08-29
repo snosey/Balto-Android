@@ -19,7 +19,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.snosey.balto.MainActivity;
@@ -27,7 +26,7 @@ import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
-import com.example.snosey.balto.main.payment.PaymentSlider;
+import com.example.snosey.balto.payment.PaymentSlider;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -45,17 +44,17 @@ public class CategoryDetails extends Fragment {
     @InjectView(R.id.logo)
     ImageView logo;
     @InjectView(R.id.title)
-    TextView title;
+    com.example.snosey.balto.Support.CustomTextView title;
     @InjectView(R.id.details)
-    TextView details;
+    com.example.snosey.balto.Support.CustomTextView details;
     @InjectView(R.id.cash)
     RadioButton cash;
     @InjectView(R.id.credit)
     RadioButton credit;
     @InjectView(R.id.baseFare)
-    TextView baseFare;
+    com.example.snosey.balto.Support.CustomTextView baseFare;
     @InjectView(R.id.serviceDuration)
-    TextView serviceDuration;
+    com.example.snosey.balto.Support.CustomTextView serviceDuration;
     @InjectView(R.id.durationSeekBar)
     SeekBar durationSeekBar;
     @InjectView(R.id.durationLayout)

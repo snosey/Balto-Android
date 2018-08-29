@@ -39,7 +39,7 @@ public class DoctorType extends Fragment {
             final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getActivity()
                     , R.layout.spinner_text);
 
-            if (Locale.getDefault().getLanguage().equals("en")) {
+            if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("en")) {
                 arrayAdapter.add("Home Visit");
                 arrayAdapter.add("Online Consultation");
                 arrayAdapter.add("Both");

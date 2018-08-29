@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.login.MobileConfirm;
 import com.example.snosey.balto.login.NewAccountObject;
+import com.hbb20.CountryCodePicker;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -28,6 +29,8 @@ public class Phone extends Fragment {
     ImageButton next;
     @InjectView(R.id.phone)
     EditText phone;
+    @InjectView(R.id.countryPicker)
+    CountryCodePicker countryPicker;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -47,12 +50,12 @@ public class Phone extends Fragment {
                         imm.hideSoftInputFromWindow(keyboard.getWindowToken(), 0);
                     }
                     NewAccountObject accountObject = (NewAccountObject) getArguments().getSerializable("object");
-                    accountObject.phone = phone.getText().toString();
-                    Bundle bundle = new Bundle();
+                    accountObject.phone = "+"+countryPicker.getSelectedCountryCode()+phone.getText().toString();
+                     Bundle bundle = new Bundle();
                     bundle.putSerializable("object", accountObject);
                     FragmentManager fm = getActivity().getSupportFragmentManager();
                     FragmentTransaction ft = fm.beginTransaction();
-                    com.example.snosey.balto.login.MobileConfirm fragment = new com.example.snosey.balto.login.MobileConfirm();
+                    MobileConfirm fragment = new MobileConfirm();
                     fragment.setArguments(bundle);
                     ft.add(R.id.fragment, fragment);
                     ft.addToBackStack(null);

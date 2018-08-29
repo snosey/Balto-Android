@@ -33,7 +33,7 @@ public class ForgetPassword extends Fragment {
     @InjectView(R.id.email)
     EditText email;
     @InjectView(R.id.emailDesc)
-    TextView emailDesc;
+    com.example.snosey.balto.Support.CustomTextView emailDesc;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

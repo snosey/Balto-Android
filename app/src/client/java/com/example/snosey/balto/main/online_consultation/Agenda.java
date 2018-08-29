@@ -1,10 +1,14 @@
 package com.example.snosey.balto.main.online_consultation;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,26 +16,28 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.image.CircleTransform;
+import com.example.snosey.balto.Support.notification.NotifyService;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
-import com.example.snosey.balto.main.payment.MakePayMobApi;
-import com.example.snosey.balto.main.payment.PaymentSlider;
 import com.example.snosey.balto.main.reservation.Reservations;
+import com.example.snosey.balto.payment.MakePayMobApi;
+import com.example.snosey.balto.payment.PaymentSlider;
 import com.paymob.acceptsdk.IntentConstants;
 import com.paymob.acceptsdk.PayResponseKeys;
 import com.paymob.acceptsdk.SaveCardResponseKeys;
@@ -44,12 +50,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+
+import static android.content.Context.ALARM_SERVICE;
 
 /**
  * Created by Snosey on 3/13/2018.
@@ -77,34 +86,34 @@ public class Agenda extends android.support.v4.app.Fragment {
     AppCompatButton day7;
     RecyclerView agendaRV;
     @InjectView(R.id.day1text)
-    TextView day1text;
+    com.example.snosey.balto.Support.CustomTextView day1text;
     @InjectView(R.id.day2text)
-    TextView day2text;
+    com.example.snosey.balto.Support.CustomTextView day2text;
     @InjectView(R.id.day3text)
-    TextView day3text;
+    com.example.snosey.balto.Support.CustomTextView day3text;
     @InjectView(R.id.day4text)
-    TextView day4text;
+    com.example.snosey.balto.Support.CustomTextView day4text;
     @InjectView(R.id.day5text)
-    TextView day5text;
+    com.example.snosey.balto.Support.CustomTextView day5text;
     @InjectView(R.id.day6text)
-    TextView day6text;
+    com.example.snosey.balto.Support.CustomTextView day6text;
     @InjectView(R.id.day7text)
-    TextView day7text;
+    com.example.snosey.balto.Support.CustomTextView day7text;
     @InjectView(R.id.logo)
     ImageView logo;
     @InjectView(R.id.price)
-    TextView price;
+    com.example.snosey.balto.Support.CustomTextView price;
     @InjectView(R.id.name)
-    TextView name;
+    com.example.snosey.balto.Support.CustomTextView name;
     @InjectView(R.id.type)
-    TextView type;
+    com.example.snosey.balto.Support.CustomTextView type;
     @InjectView(R.id.rate)
-    TextView rate;
+    com.example.snosey.balto.Support.CustomTextView rate;
     @InjectView(R.id.rateNumber)
-    TextView rateNumber;
+    com.example.snosey.balto.Support.CustomTextView rateNumber;
     @InjectView(R.id.notAvailable)
-    TextView notAvailable;
-    private GregorianCalendar currentDate;
+    com.example.snosey.balto.Support.CustomTextView notAvailable;
+    private Calendar currentDate;
 
 
     // Arbitrary number and used only in this activity. Change it as you wish.
@@ -116,6 +125,8 @@ public class Agenda extends android.support.v4.app.Fragment {
     AgendaAdapter agendaAdapter;
     private JSONObject doctorObject;
     private AgendaAdapter.TimeScheduale timeSceduale;
+    private int latestPrice;
+    private String id_coupon_client = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -147,7 +158,7 @@ public class Agenda extends android.support.v4.app.Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Calendar date = new GregorianCalendar();
+        Calendar date = Calendar.getInstance();
 
         day1.setText(date.get(Calendar.DAY_OF_MONTH) + "");
         day1text.setText(android.text.format.DateFormat.format("EEE", date));
@@ -189,26 +200,6 @@ public class Agenda extends android.support.v4.app.Fragment {
         return view;
     }
 
-    private void totalRateText() {
-        UrlData urlData = new UrlData();
-        try {
-            urlData.add(WebService.Slider.id_user, doctorObject.getString("id"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        new GetData(new GetData.AsyncResponse() {
-            @Override
-            public void processFinish(String output) throws JSONException {
-                if (!output.contains("null")) {
-                    JSONArray allRate = new JSONObject(output).getJSONArray("rate");
-                    rateNumber.setText(getActivity().getString(R.string.reviews) + ": " + allRate.length());
-                    rateNumber.setPaintFlags(rateNumber.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-                }
-            }
-        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Slider.allUserRateApi, urlData.get());
-    }
-
-
     @SuppressLint("RestrictedApi")
     @OnClick({R.id.day1, R.id.day2, R.id.day3, R.id.day4, R.id.day5, R.id.day6, R.id.day7})
     public void dayClick(View view) {
@@ -218,10 +209,10 @@ public class Agenda extends android.support.v4.app.Fragment {
         view.setBackgroundResource(R.drawable.circel);
         ((AppCompatButton) view).setSupportBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.red));
 
-        String day = ((TextView) view).getText().toString();
+        String day = ((AppCompatButton) view).getText().toString();
         String month = "";
         String year = "";
-        currentDate = new GregorianCalendar();
+        currentDate = Calendar.getInstance();
 
         switch (view.getId()) {
             case R.id.day1:
@@ -354,6 +345,25 @@ public class Agenda extends android.support.v4.app.Fragment {
         List<TimeScheduale> newAgendaList;
         int estimated_time = 0;
 
+
+        void sort() {
+            Collections.sort(newAgendaList, new Comparator<TimeScheduale>() {
+                @Override
+                public int compare(TimeScheduale lhs, TimeScheduale rhs) {
+                    // TODO Auto-generated method stub
+
+                    if (rhs.fromHour > lhs.fromHour)
+                        return -1;
+                    else if (rhs.fromHour == lhs.fromHour && rhs.fromMin > lhs.fromMin)
+                        return -1;
+                    else
+                        return 1;
+                }
+            });
+
+        }
+
+
         AgendaAdapter() throws JSONException {
             try {
                 estimated_time = Integer.parseInt(doctorObject.getJSONObject("price").getString("estimated_time"));
@@ -363,7 +373,10 @@ public class Agenda extends android.support.v4.app.Fragment {
             newAgendaList = new ArrayList<>();
             int maxOfBooking;
             TimeScheduale scheduale = new TimeScheduale();
-            Calendar calendarNow = new GregorianCalendar();
+            Calendar calendarNow = Calendar.getInstance();
+
+            calendarNow.add(Calendar.HOUR, +1);
+
             for (int i = 0; i < agendaJsonArray.length(); i++) {
                 if (estimated_time != 0) {
                     JSONObject agendaJsonObject = agendaJsonArray.getJSONObject(i);
@@ -399,13 +412,36 @@ public class Agenda extends android.support.v4.app.Fragment {
                         modifedTime.toMin = to.get(Calendar.MINUTE);
 
                         Log.e("modifedTime", modifedTime.toString());
-                        if (chooseDay.equals(calendarNow.get(Calendar.DAY_OF_MONTH) + "")
-                                && (calendarNow.get(Calendar.HOUR_OF_DAY) > modifedTime.fromHour ||
-                                (calendarNow.get(Calendar.HOUR_OF_DAY) == modifedTime.fromHour) &&
-                                        calendarNow.get(Calendar.MINUTE) > modifedTime.fromMin))
+
+                        Log.e("chooseDay", chooseDay + " " + calendarNow.get(Calendar.DAY_OF_MONTH));
+                        Log.e("fromHour", modifedTime.fromHour + " " + calendarNow.get(Calendar.HOUR_OF_DAY));
+                        Log.e("fromMin", modifedTime.fromMin + " " + calendarNow.get(Calendar.MINUTE));
+
+
+                        Log.e("day vs chooseday", chooseDay + "," + addZeroToString(calendarNow.get(Calendar.DAY_OF_MONTH) + ""));
+                        Boolean sameDay = chooseDay.equals(addZeroToString(calendarNow.get(Calendar.DAY_OF_MONTH) + ""));
+                        Boolean afterTime = (calendarNow.get(Calendar.HOUR_OF_DAY) > modifedTime.fromHour);
+                        Boolean sameHour = ((calendarNow.get(Calendar.HOUR_OF_DAY) == modifedTime.fromHour)
+                                && calendarNow.get(Calendar.MINUTE) > modifedTime.fromMin);
+
+                        Log.e("sameDay", sameDay + "");
+                        Log.e("afterTime", afterTime + "");
+                        Log.e("sameHour", sameHour + "");
+
+                        if (calendarNow.get(Calendar.HOUR) == 0) {
                             continue;
-                        newAgendaList.add(modifedTime);
+                        } else if ((sameHour || afterTime) && sameDay) {
+                            if (true)
+                                continue;
+                            Log.e("Agenda", "past");
+                            modifedTime.past = true;
+                            newAgendaList.add(modifedTime);
+                        } else {
+                            Log.e("Agenda", "coming");
+                            newAgendaList.add(modifedTime);
+                        }
                     }
+
 
                 }
             }
@@ -413,13 +449,13 @@ public class Agenda extends android.support.v4.app.Fragment {
                 notAvailable.setVisibility(View.VISIBLE);
             else
                 notAvailable.setVisibility(View.GONE);
-
-
+            sort();
         }
 
         private class TimeScheduale {
             int fromHour, fromMin, toHour, toMin;
             String estimated_time;
+            boolean past = false;
         }
 
         @Override
@@ -434,8 +470,16 @@ public class Agenda extends android.support.v4.app.Fragment {
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             final TimeScheduale timeScheduale = newAgendaList.get(position);
             final boolean[] clickAble = {true};
-            holder.timeFrom.setText(addZeroToString(timeScheduale.fromHour + "") + ":" + addZeroToString(timeScheduale.fromMin + ""));
-            holder.timeTo.setText(addZeroToString(timeScheduale.toHour + "") + ":" + addZeroToString(timeScheduale.toMin + ""));
+            if (timeScheduale.fromHour >= 12)
+                holder.timeFrom.setText(addZeroToString(timeScheduale.fromHour - 12 + "") + ":" + addZeroToString(timeScheduale.fromMin + "") + " " + getActivity().getString(R.string.mdtp_pm));
+            else
+                holder.timeFrom.setText(addZeroToString(timeScheduale.fromHour + "") + ":" + addZeroToString(timeScheduale.fromMin + "") + " " + getActivity().getString(R.string.mdtp_am));
+
+            if (timeScheduale.toHour >= 12)
+                holder.timeTo.setText(addZeroToString(timeScheduale.toHour - 12 + "") + ":" + addZeroToString(timeScheduale.toMin + "") + " " + getActivity().getString(R.string.mdtp_pm));
+            else
+                holder.timeTo.setText(addZeroToString(timeScheduale.toHour + "") + ":" + addZeroToString(timeScheduale.toMin + "") + " " + getActivity().getString(R.string.mdtp_am));
+
             if (clickAble[0])
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -455,14 +499,65 @@ public class Agenda extends android.support.v4.app.Fragment {
                         } else {
                             final Dialog dialog = new Dialog(getActivity());
                             dialog.setContentView(R.layout.payment_confirm);
+                            final com.example.snosey.balto.Support.CustomTextView estimatedFare = (com.example.snosey.balto.Support.CustomTextView) dialog.findViewById(R.id.estimatedFare);
+                            estimatedFare.setText(price.getText().toString());
+                            com.example.snosey.balto.Support.CustomTextView time = (com.example.snosey.balto.Support.CustomTextView) dialog.findViewById(R.id.time);
+                            final AppCompatEditText promoCode = (AppCompatEditText) dialog.findViewById(R.id.promoCode);
+                            final AppCompatButton confirmCode = (AppCompatButton) dialog.findViewById(R.id.confirmCode);
+                            final int tempLatestPrice = Integer.parseInt(price.getText().toString().replace(" " + getActivity().getString(R.string.egp), ""));
+                            confirmCode.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    if (promoCode.getText().length() != 0) {
+                                        View keyboard = getActivity().getCurrentFocus();
+                                        if (keyboard != null) {
+                                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                                            imm.hideSoftInputFromWindow(keyboard.getWindowToken(), 0);
+                                        }
+                                        UrlData urlDataPromo = new UrlData();
+                                        urlDataPromo.add(WebService.PromoCode.code, promoCode.getText().toString());
+                                        new GetData(new GetData.AsyncResponse() {
+                                            @Override
+                                            public void processFinish(String output) {
+                                                if (output.contains("false"))
+                                                    Toast.makeText(getActivity(), getActivity().getString(R.string.codeIsInvalid), Toast.LENGTH_SHORT).show();
+                                                else {
+                                                    try {
+                                                        JSONObject jsonObject = new JSONObject(output).getJSONObject("coupon");
+                                                        id_coupon_client = jsonObject.getString("id");
+                                                        Toast.makeText(getActivity(), jsonObject.getString("coupon_text"), Toast.LENGTH_LONG).show();
+                                                        latestPrice = tempLatestPrice - (tempLatestPrice * Integer.parseInt(jsonObject.getString(WebService.PromoCode.discount)) / 100);
+                                                        estimatedFare.setText(latestPrice + " " + getActivity().getString(R.string.egp));
+                                                        confirmCode.setVisibility(View.GONE);
+                                                        promoCode.setEnabled(false);
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }
+                                            }
+                                        }, getActivity(), true).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, WebService.PromoCode.promoCodeCheckApi, urlDataPromo.get());
 
-                            TextView time = (TextView) dialog.findViewById(R.id.time);
+                                    }
+                                }
+                            });
                             time.setText(holder.timeFrom.getText().toString() + " - " + holder.timeTo.getText().toString());
 
-                            TextView estimatedFare = (TextView) dialog.findViewById(R.id.estimatedFare);
-                            estimatedFare.setText(price.getText().toString());
+                            com.example.snosey.balto.Support.CustomTextView saved_card = (com.example.snosey.balto.Support.CustomTextView) dialog.findViewById(R.id.saved_card);
+                            try {
+                                if (!MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("") && !MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("null")) {
+                                    saved_card.setText(MainActivity.jsonObject.getString(WebService.Login.card_number));
+                                    if (MainActivity.jsonObject.getString(WebService.Login.card_type).equals("MasterCard"))
+                                        saved_card.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.master_card, 0, 0, 0);
+                                    else
+                                        saved_card.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.visa, 0, 0, 0);
 
-                            TextView doctorKind = (TextView) dialog.findViewById(R.id.doctorKind);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+
+                            com.example.snosey.balto.Support.CustomTextView doctorKind = (com.example.snosey.balto.Support.CustomTextView) dialog.findViewById(R.id.doctorKind);
                             doctorKind.setText(type.getText().toString());
                             Button confirm = (Button) dialog.findViewById(R.id.confirm);
                             confirm.setOnClickListener(new View.OnClickListener() {
@@ -478,16 +573,24 @@ public class Agenda extends android.support.v4.app.Fragment {
 
                     }
                 });
-
+            holder.bookedUp.setVisibility(View.GONE);
+            Log.e("timeScheduale.past", timeScheduale.past + "");
+            if (timeScheduale.past) {
+                holder.itemView.setClickable(false);
+                holder.itemView.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+            } else {
+                holder.itemView.setClickable(true);
+                holder.itemView.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+            }
             for (int i = 0; i < bookingJsonArray.length(); i++) {
                 try {
                     JSONObject jsonObject = bookingJsonArray.getJSONObject(i);
 
-                    if (jsonObject.getString(WebService.Booking.receive_hour).equals(addZeroToString(timeScheduale.fromHour + "")) &&
-                            jsonObject.getString(WebService.Booking.receive_minutes).equals(addZeroToString(timeScheduale.fromMin + ""))) {
-                        //  holder.book.setVisibility(View.GONE);
-                        //  holder.bookedUp.setVisibility(View.VISIBLE);
-
+                    Log.e("timeScheduale.past", timeScheduale.past + "");
+                    if (!jsonObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStateDoctorCancel)
+                            && !jsonObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStatePatientCancel)
+                            && jsonObject.getString(WebService.Booking.receive_hour).equals(addZeroToString(timeScheduale.fromHour + ""))
+                            && jsonObject.getString(WebService.Booking.receive_minutes).equals(addZeroToString(timeScheduale.fromMin + ""))) {
                         holder.bookedUp.setVisibility(View.VISIBLE);
                         holder.itemView.setClickable(false);
                         if (jsonObject.getString(WebService.Booking.id_client).equals(MainActivity.jsonObject.getString("id")))
@@ -498,8 +601,14 @@ public class Agenda extends android.support.v4.app.Fragment {
                         break;
                     } else {
                         holder.bookedUp.setVisibility(View.GONE);
-                        holder.itemView.setClickable(true);
-                        holder.itemView.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                        Log.e("timeScheduale.past", timeScheduale.past + "");
+                        if (timeScheduale.past) {
+                            holder.itemView.setClickable(false);
+                            holder.itemView.setBackgroundColor(getActivity().getResources().getColor(R.color.red));
+                        } else {
+                            holder.itemView.setClickable(true);
+                            holder.itemView.setBackgroundColor(getActivity().getResources().getColor(R.color.colorPrimary));
+                        }
                         //  holder.book.setVisibility(View.VISIBLE);
                         //  holder.bookedUp.setVisibility(View.GONE);
                     }
@@ -511,20 +620,13 @@ public class Agenda extends android.support.v4.app.Fragment {
 
         private void makePayment() {
             try {
-
-                String finalPrice = price.getText().toString().substring(0, price.getText().toString().indexOf(" ")) + "00";
-                if (!MainActivity.jsonObject.getString("payment_token").equals("null") || !MainActivity.jsonObject.getString("payment_token").equals("")) {
-
-                    //   confirmRequest(timeSceduale, "");
-                    new MakePayMobApi(getActivity(), finalPrice, Agenda.this, MainActivity.jsonObject.getString("payment_token"), "241");
-
+                Log.e("payment_token", MainActivity.jsonObject.getString("payment_token"));
+                // String finalPrice = price.getText().toString().substring(0, price.getText().toString().indexOf(" ")) + "00";
+                if (!MainActivity.jsonObject.getString("payment_token").equals("null") && !MainActivity.jsonObject.getString("payment_token").equals("")) {
+                    confirmRequest(timeSceduale, "");
+                    //  new MakePayMobApi(getActivity(), latestPrice + "00", Agenda.this, MainActivity.jsonObject.getString("payment_token"), WebService.Payment.payLive2);
                 } else {
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                    PaymentSlider fragment = new PaymentSlider();
-                    FragmentTransaction ft = fm.beginTransaction();
-                    ft.replace(R.id.fragment, fragment, "payment");
-                    ft.addToBackStack("payment");
-                    ft.commit();
+                    new MakePayMobApi(getActivity(), "100", Agenda.this, "", WebService.Payment.payLive1);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -539,20 +641,20 @@ public class Agenda extends android.support.v4.app.Fragment {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView timeFrom, timeTo;
-        public TextView bookedUp;
+        public com.example.snosey.balto.Support.CustomTextView timeFrom, timeTo;
+        public com.example.snosey.balto.Support.CustomTextView bookedUp;
 
         public MyViewHolder(View v) {
             super(v);
-            timeFrom = (TextView) v.findViewById(R.id.timeFrom);
-            timeTo = (TextView) v.findViewById(R.id.timeTo);
-            bookedUp = (TextView) v.findViewById(R.id.bookedUp);
+            timeFrom = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.timeFrom);
+            timeTo = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.timeTo);
+            bookedUp = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.bookedUp);
         }
 
     }
 
 
-    private void confirmRequest(AgendaAdapter.TimeScheduale timeScheduale, final String orderId) {
+    private void confirmRequest(final AgendaAdapter.TimeScheduale timeScheduale, final String orderId) {
         UrlData urlData = new UrlData();
         //  if (getArguments().containsKey(WebService.HomeVisit.promoCode))
         //    urlData.add(WebService.Booking.id_coupon_client, getArguments().getString(WebService.HomeVisit.promoCode));
@@ -564,6 +666,10 @@ public class Agenda extends android.support.v4.app.Fragment {
             e.printStackTrace();
         }
         urlData.add(WebService.Booking.id_payment_way, "2");
+        if (!id_coupon_client.equals("")) {
+            increaseCoupon(id_coupon_client);
+        }
+        urlData.add(WebService.Booking.id_coupon_client, id_coupon_client);
         urlData.add(WebService.Booking.receive_year, chooseYear + "");
         urlData.add(WebService.Booking.receive_month, chooseMonth + "");
         urlData.add(WebService.Booking.receive_day, chooseDay + "");
@@ -571,6 +677,7 @@ public class Agenda extends android.support.v4.app.Fragment {
         urlData.add(WebService.Booking.receive_minutes, addZeroToString(timeScheduale.fromMin + ""));
         urlData.add(WebService.Booking.id_doctor_kind, WebService.onlineConsult);
         urlData.add(WebService.Booking.duration, "" + timeScheduale.estimated_time);
+
 
         new GetData(new GetData.AsyncResponse() {
             @Override
@@ -582,11 +689,20 @@ public class Agenda extends android.support.v4.app.Fragment {
                         {
                             final UrlData urlData = new UrlData();
 
+                            saveAlarm15Min(Integer.parseInt(chooseYear), Integer.parseInt(chooseMonth), Integer.parseInt(chooseDay),
+                                    Integer.parseInt(addZeroToString(timeScheduale.fromHour + "")), Integer.parseInt(addZeroToString(timeScheduale.fromMin + ""))
+                                    , Integer.parseInt(jsonBooking.getString(WebService.Booking.id)) + 15);
+
+
+                            saveAlarmNow(Integer.parseInt(chooseYear), Integer.parseInt(chooseMonth), Integer.parseInt(chooseDay),
+                                    Integer.parseInt(addZeroToString(timeScheduale.fromHour + "")), Integer.parseInt(addZeroToString(timeScheduale.fromMin + "")),
+                                    Integer.parseInt(jsonBooking.getString(WebService.Booking.id)));
+
                             urlData.add(WebService.Notification.reg_id, doctorObject.getString("fcm_token"));
-                            urlData.add(WebService.Notification.data, "empty");
+                            urlData.add(WebService.Notification.data, jsonBooking.getString(WebService.Booking.id));
                             urlData.add(WebService.Notification.kind, WebService.Notification.Types.bookingRequestOnline);
-                            urlData.add(WebService.Notification.message, "");
-                            urlData.add(WebService.Notification.title, "");
+                            urlData.add(WebService.Notification.message, " ");
+                            urlData.add(WebService.Notification.title, getActivity().getString(R.string.newReservation));
                             new GetData(new GetData.AsyncResponse() {
                                 @Override
                                 public void processFinish(String output) {
@@ -601,7 +717,15 @@ public class Agenda extends android.support.v4.app.Fragment {
                                     new GetData(new GetData.AsyncResponse() {
                                         @Override
                                         public void processFinish(String output) {
-                                            {
+
+                                            FragmentManager fm = getActivity().getSupportFragmentManager();
+                                            Reservations fragment = new Reservations();
+                                            FragmentTransaction ft = fm.beginTransaction();
+                                            ft.replace(R.id.fragment, fragment, "Reservations");
+                                            ft.addToBackStack("Reservations");
+                                            ft.commit();
+
+                                      /*      {
                                                 try {
                                                     getPercntageDoctor(orderId, new JSONObject(output).getJSONObject("booking").getString("id"),
                                                             new JSONObject(output).getJSONObject("booking").getString(WebService.Booking.total_price));
@@ -609,6 +733,7 @@ public class Agenda extends android.support.v4.app.Fragment {
                                                     e.printStackTrace();
                                                 }
                                             }
+                           */
                                         }
                                     }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.updateBookingApi, updateData.get());
 
@@ -626,6 +751,18 @@ public class Agenda extends android.support.v4.app.Fragment {
 
     }
 
+    private void increaseCoupon(String id_coupon_client) {
+        UrlData urlData = new UrlData();
+        urlData.add(WebService.PromoCode.id, id_coupon_client);
+
+        new GetData(new GetData.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                Log.e("IncreaseCode", output);
+            }
+        }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.PromoCode.increasePromoCodeUsageApi, urlData.get());
+    }
+
     private void getPercntageDoctor(final String orderId, final String id, final String totalPrice) throws JSONException {
         UrlData urlData = new UrlData();
         urlData.add(WebService.Booking.id_sub, doctorObject.getString(WebService.Booking.id_sub));
@@ -635,7 +772,7 @@ public class Agenda extends android.support.v4.app.Fragment {
             public void processFinish(String output) throws JSONException {
                 JSONObject jsonObject = new JSONObject(output);
                 int intTotalPrice = Integer.parseInt(totalPrice);
-                int adminPrice = intTotalPrice * Integer.parseInt(jsonObject.getString(WebService.Payment.online_percentage)) / 100;
+                int adminPrice = (int) (intTotalPrice * Double.parseDouble(jsonObject.getString(WebService.Payment.online_percentage)) / 100);
                 int doctorPrice = intTotalPrice - adminPrice;
                 addPaymentToDB(intTotalPrice, adminPrice, doctorPrice, orderId, id);
             }
@@ -728,29 +865,18 @@ public class Agenda extends android.support.v4.app.Fragment {
                 // User finished their payment successfully
 
                 // Use the static keys declared in PayResponseKeys to extract the fields you want
-                confirmRequest(timeSceduale, extras.getString(SaveCardResponseKeys.ORDER_ID));
                 ToastMaker.displayShortToast(getActivity(), extras.getString(PayResponseKeys.DATA_MESSAGE));
+                saveCard(extras.getString(SaveCardResponseKeys.TOKEN), extras.getString(SaveCardResponseKeys.CARD_SUBTYPE), extras.getString(SaveCardResponseKeys.MASKED_PAN));
+
             } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL_PARSING_ISSUE) {
                 // User finished their payment successfully. An error occured while reading the returned JSON.
-                confirmRequest(timeSceduale, extras.getString(SaveCardResponseKeys.ORDER_ID));
                 ToastMaker.displayShortToast(getActivity(), "TRANSACTION_SUCCESSFUL - Parsing Issue");
 
                 // ToastMaker.displayShortToast(getActivity(), extras.getString(IntentConstants.RAW_PAY_RESPONSE));
             } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL_CARD_SAVED) {
-                confirmRequest(timeSceduale, extras.getString(SaveCardResponseKeys.ORDER_ID));
-                UrlData urlData = new UrlData();
-                urlData.add("payment_token", extras.getString(SaveCardResponseKeys.TOKEN));
-                try {
-                    urlData.add("id", MainActivity.jsonObject.getString("id"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                new GetData(new GetData.AsyncResponse() {
-                    @Override
-                    public void processFinish(String output) throws JSONException {
-                        ToastMaker.displayShortToast(getActivity(), "Saved");
-                    }
-                }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Setting.updateUserApi, urlData.get());
+
+                saveCard(extras.getString(SaveCardResponseKeys.TOKEN), extras.getString(SaveCardResponseKeys.CARD_SUBTYPE), extras.getString(SaveCardResponseKeys.MASKED_PAN));
+
             } else if (resultCode == IntentConstants.USER_CANCELED_3D_SECURE_VERIFICATION) {
                 ToastMaker.displayShortToast(getActivity(), "User canceled 3-d scure verification!!");
 
@@ -765,6 +891,96 @@ public class Agenda extends android.support.v4.app.Fragment {
                 ToastMaker.displayShortToast(getActivity(), extras.getString(IntentConstants.RAW_PAY_RESPONSE));
             }
         }
+    }
+
+
+    private void saveAlarm15Min(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minute, int bookingId) {
+
+
+        Calendar now = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, monthOfYear, dayOfMonth, hourOfDay, minute);
+        calendar.add(Calendar.MINUTE, -15);
+        calendar.add(Calendar.MONTH, -1);
+
+        if (now.getTimeInMillis() > calendar.getTimeInMillis())
+            return;
+
+        Log.e("Save Alarm", calendar.getTime().toString());
+
+        ComponentName receiver = new ComponentName(getActivity(), NotifyService.class);
+        PackageManager pm = getActivity().getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        Intent intent1 = new Intent(getActivity(), NotifyService.class);
+        intent1.putExtra("now", false);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),
+                bookingId, intent1,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                0, pendingIntent);
+
+
+    }
+
+    private void saveAlarmNow(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minute, int bookingId) {
+
+        if (true)
+            return;
+
+        Calendar now = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, monthOfYear, dayOfMonth, hourOfDay, minute);
+        calendar.add(Calendar.MONTH, -1);
+
+        if (now.getTimeInMillis() > calendar.getTimeInMillis())
+            return;
+
+        Log.e("Save Alarm", calendar.getTime().toString());
+
+        ComponentName receiver = new ComponentName(getActivity(), NotifyService.class);
+        PackageManager pm = getActivity().getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        Intent intent1 = new Intent(getActivity(), NotifyService.class);
+        intent1.putExtra("now", true);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),
+                bookingId, intent1,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                0, pendingIntent);
+
+
+    }
+
+    private void saveCard(String token, final String type, final String number) {
+        UrlData urlData = new UrlData();
+        urlData.add("payment_token", token);
+        urlData.add(WebService.Login.card_number, number);
+        urlData.add(WebService.Login.card_type, type);
+        try {
+            urlData.add("id", MainActivity.jsonObject.getString("id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        new GetData(new GetData.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                JSONObject jsonObject = new JSONObject(output);
+                MainActivity.jsonObject.put("payment_token", jsonObject.getJSONObject("user").getString("payment_token"));
+                MainActivity.jsonObject.put(WebService.Login.card_type, type);
+                MainActivity.jsonObject.put(WebService.Login.card_number, number);
+                // ToastMaker.displayShortToast(getActivity(), "Saved");
+                confirmRequest(timeSceduale, "");
+            }
+        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Setting.updateUserApi, urlData.get());
+
     }
 
 

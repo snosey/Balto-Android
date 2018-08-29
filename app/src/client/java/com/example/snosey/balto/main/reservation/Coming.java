@@ -2,6 +2,8 @@ package com.example.snosey.balto.main.reservation;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -23,7 +25,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.snosey.balto.MainActivity;
@@ -32,18 +34,23 @@ import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.login.RegistrationActivity;
 import com.example.snosey.balto.main.DoctorProfile;
 import com.example.snosey.balto.main.VideoCall;
 import com.example.snosey.balto.main.home_visit.ProfissionLocation;
+import com.example.snosey.balto.payment.MakePayMobApi;
+import com.example.snosey.balto.payment.PaymentSlider;
 import com.squareup.picasso.Picasso;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
@@ -75,26 +82,42 @@ public class Coming extends Fragment {
     @InjectView(R.id.day7)
     AppCompatButton day7;
     @InjectView(R.id.day1text)
-    TextView day1text;
+    com.example.snosey.balto.Support.CustomTextView day1text;
     @InjectView(R.id.day2text)
-    TextView day2text;
+    com.example.snosey.balto.Support.CustomTextView day2text;
     @InjectView(R.id.day3text)
-    TextView day3text;
+    com.example.snosey.balto.Support.CustomTextView day3text;
     @InjectView(R.id.day4text)
-    TextView day4text;
+    com.example.snosey.balto.Support.CustomTextView day4text;
     @InjectView(R.id.day5text)
-    TextView day5text;
+    com.example.snosey.balto.Support.CustomTextView day5text;
     @InjectView(R.id.day6text)
-    TextView day6text;
+    com.example.snosey.balto.Support.CustomTextView day6text;
     @InjectView(R.id.day7text)
-    TextView day7text;
+    com.example.snosey.balto.Support.CustomTextView day7text;
 
     AppCompatButton dayClick;
-    private GregorianCalendar currentDate;
+    private Calendar currentDate;
 
-    String day;
-    String month;
-    String year;
+    private List<JSONObject> arrayReservation = new ArrayList<>();
+
+    @InjectView(R.id.date)
+    com.example.snosey.balto.Support.CustomTextView date;
+    @InjectView(R.id.dateLL)
+    LinearLayout dateLL;
+    @InjectView(R.id.calenderLL)
+    LinearLayout calenderLL;
+
+    @InjectView(R.id.all)
+    Button all;
+
+    String day = "";
+    String month = "";
+    String year = "";
+
+
+    private Calendar nowPlus7 = Calendar.getInstance();
+    private Calendar now = Calendar.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -110,7 +133,47 @@ public class Coming extends Fragment {
         recyclerViewReservation.setLayoutManager(layoutManager);
         recyclerViewReservation.setAdapter(reservationAdapter);
 
-        setDate();
+        //setDate();
+
+
+        nowPlus7.add(Calendar.DAY_OF_MONTH, 7);
+        dateLL.setVisibility(View.GONE);
+        calenderLL.setVisibility(View.VISIBLE);
+        date.setText(getActivity().getString(R.string.filter));
+        final Calendar cal = Calendar.getInstance();
+        getComingReservation();
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                        cal.set(year, monthOfYear, dayOfMonth);
+                        SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, yyyy");
+                        date.setText(sdf.format(cal.getTime()));
+                        Coming.this.day = addZeroToString(dayOfMonth + "");
+                        Coming.this.month = addZeroToString((monthOfYear + 1) + "");
+                        Coming.this.year = addZeroToString(year + "");
+                        getComingReservation();
+                    }
+                });
+                all.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Coming.this.day = "";
+                        Coming.this.month = "";
+                        Coming.this.year = "";
+                        getComingReservation();
+                    }
+                });
+                dpd.setMaxDate(nowPlus7);
+                dpd.setMinDate(now);
+                dpd.show(getActivity().getFragmentManager(), "");
+
+            }
+        });
+
+
         return view;
     }
 
@@ -118,11 +181,13 @@ public class Coming extends Fragment {
         UrlData urlData = new UrlData();
         try {
             urlData.add(WebService.Booking.id_client, MainActivity.jsonObject.getString("id"));
-            urlData.add(WebService.Booking.lang, Locale.getDefault().getLanguage());
+            urlData.add(WebService.Booking.lang, RegistrationActivity.sharedPreferences.getString("lang", "en"));
             urlData.add(WebService.Booking.type, WebService.Booking.client);
-            urlData.add(WebService.Booking.receive_day, day);
-            urlData.add(WebService.Booking.receive_month, month);
-            urlData.add(WebService.Booking.receive_year, year);
+            if (!day.equals("")) {
+                urlData.add(WebService.Booking.receive_day, day);
+                urlData.add(WebService.Booking.receive_month, month);
+                urlData.add(WebService.Booking.receive_year, year);
+            }
 
             urlData.add(WebService.Booking.state, WebService.Booking.coming);
         } catch (JSONException e) {
@@ -162,13 +227,18 @@ public class Coming extends Fragment {
             try {
 
                 final JSONObject reservationObject = reservationJsonArray.getJSONObject(position);
-                Calendar calendar = new GregorianCalendar();
-                final long currentTimeMillis = TimeUnit.HOURS.toMillis(calendar.get(Calendar.HOUR_OF_DAY)) + TimeUnit.MINUTES.toMillis(calendar.get(Calendar.MINUTE));
+                Calendar calendar = Calendar.getInstance();
+                final long currentTimeMillis = TimeUnit.HOURS.toMillis(calendar.get(Calendar.HOUR_OF_DAY)) +
+                        TimeUnit.DAYS.toMillis(calendar.get(Calendar.DAY_OF_MONTH)) + calendar.get(Calendar.DAY_OF_MONTH)
+                        + TimeUnit.MINUTES.toMillis(calendar.get(Calendar.MINUTE));
 
                 final long startTimeHour = TimeUnit.HOURS.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_hour)));
                 final long startTimeMin = TimeUnit.MINUTES.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_minutes)));
                 long duration = TimeUnit.MINUTES.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.duration)));
-                long bookTotal = startTimeHour + startTimeMin + duration;
+                final long startDay = TimeUnit.DAYS.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_day))) +
+                        Long.parseLong(reservationObject.getString(WebService.Booking.receive_month));
+
+                long bookTotal = startTimeHour + startTimeMin + duration + startDay;
 
 
                 holder.date.setText(reservationObject.getString(WebService.Booking.receive_hour) + ":" + reservationObject.getString(WebService.Booking.receive_minutes)
@@ -203,32 +273,48 @@ public class Coming extends Fragment {
                 holder.kind.setText(reservationObject.getString(WebService.Booking.doctorKindName));
                 holder.kind.setTypeface(font, Typeface.BOLD);
                 holder.cancel.setTypeface(font, Typeface.BOLD);
+                if (!reservationObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStateProcessing))
+                    holder.cancel.setVisibility(View.GONE);
+                else
+                    holder.cancel.setVisibility(View.VISIBLE);
                 holder.cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.add(Calendar.HOUR, 1);
                         try {
-                            updateBooking(reservationObject.getString("id"), WebService.Booking.bookingStateCancel, reservationObject.getString(WebService.Booking.fcm_token));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
-                holder.call.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        UrlData urlData = new UrlData();
-                        try {
-                            urlData.add(WebService.Booking.id, reservationObject.getString(WebService.Booking.id));
-                            urlData.add(WebService.Booking.id_state, WebService.Booking.bookingStateCancel);
-                            new GetData(new GetData.AsyncResponse() {
-                                @Override
-                                public void processFinish(String output) throws JSONException {
-                                    reservationAdapter.notifyDataSetChanged();
+                            final long currentTimeMillis = TimeUnit.HOURS.toMillis(calendar.get(Calendar.HOUR_OF_DAY)) + TimeUnit.MINUTES.toMillis(calendar.get(Calendar.MINUTE)) +
+                                    TimeUnit.DAYS.toMillis(calendar.get(Calendar.DAY_OF_MONTH)) + calendar.get(Calendar.DAY_OF_MONTH);
+                            final long startTimeHour = TimeUnit.HOURS.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_hour)));
+                            final long startTimeMin;
+                            final long startDay = TimeUnit.DAYS.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_day))) +
+                                    Long.parseLong(reservationObject.getString(WebService.Booking.receive_month));
+                            startTimeMin = TimeUnit.MINUTES.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_minutes)));
+                            if (addZeroToString(calendar.get(Calendar.DAY_OF_MONTH) + "").equals(reservationObject.getString(WebService.Booking.receive_day))) {
+                                if (currentTimeMillis > startTimeHour + startTimeMin + startDay) {
+                                    Toast.makeText(getContext(), getActivity().getString(R.string.cantCancel), Toast.LENGTH_LONG).show();
+                                    return;
                                 }
-                            }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.updateBookingApi, urlData.get());
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
+
+
+                        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                        alertDialogBuilder.setTitle("").setMessage(getActivity().getString(R.string.areYouSure)).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    updateBooking(reservationObject.getString("id"), WebService.Booking.bookingStatePatientCancel, reservationObject.getString(WebService.Booking.fcm_token));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        }).show();
                     }
                 });
 
@@ -272,12 +358,18 @@ public class Coming extends Fragment {
                         }
                     });
                 } else {
+                    if (!reservationObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStateProcessing))
+                        holder.cancel.setVisibility(View.GONE);
+                    else
+                        holder.cancel.setVisibility(View.VISIBLE);
                     holder.tracking.setVisibility(View.GONE);
+
                     if (currentTimeMillis >= bookTotal) {
                         Log.e("left:", currentTimeMillis + " / " + bookTotal);
-                        Calendar calendar1 = new GregorianCalendar();
-                        if (addZeroToString(calendar1.get(Calendar.DAY_OF_MONTH) + "").equals(reservationObject.getString(WebService.Booking.receive_day)))
-                            moveToPast(reservationObject.getString(WebService.Booking.id));
+                        moveToPast(reservationObject.getString(WebService.Booking.id),
+                                reservationObject.getString(WebService.Booking.total_price),
+                                reservationObject.getString(WebService.Booking.id_coupon_client),
+                                reservationObject.getString(WebService.Booking.id_state));
                         return;
                     }
                     holder.call.setImageResource(R.drawable.video_call);
@@ -285,7 +377,7 @@ public class Coming extends Fragment {
                         @Override
                         public void onClick(View view) {
                             try {
-                                Calendar calendar = new GregorianCalendar();
+                                Calendar calendar = Calendar.getInstance();
                                 final long currentTimeMillis = TimeUnit.HOURS.toMillis(calendar.get(Calendar.HOUR_OF_DAY)) + TimeUnit.MINUTES.toMillis(calendar.get(Calendar.MINUTE));
                                 final long startTimeHour = TimeUnit.HOURS.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_hour)));
                                 final long startTimeMin = TimeUnit.MINUTES.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_minutes)));
@@ -369,27 +461,34 @@ public class Coming extends Fragment {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView firstName, date, kind, type, cancel;
+        public com.example.snosey.balto.Support.CustomTextView firstName, date, kind, type, cancel;
         public Button tracking;
         public ImageView logo, call;
 
         public MyViewHolder(View v) {
             super(v);
-            type = (TextView) v.findViewById(R.id.doctorType);
-            firstName = (TextView) v.findViewById(R.id.firstName);
-            cancel = (TextView) v.findViewById(R.id.cancel);
-            date = (TextView) v.findViewById(R.id.date);
-            kind = (TextView) v.findViewById(R.id.kind);
+            type = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.doctorType);
+            firstName = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.firstName);
+            cancel = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.cancel);
+            date = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.date);
+            kind = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.kind);
             tracking = (Button) v.findViewById(R.id.track);
             call = (ImageView) v.findViewById(R.id.call);
             logo = (ImageView) v.findViewById(R.id.logo);
         }
     }
 
-    private void moveToPast(String id) {
+    private void moveToPast(String id, String totalPrice, String id_coupon_client, String idState) {
+        if (false)
+            return;
         UrlData urlData = new UrlData();
         urlData.add(WebService.Booking.id, id);
-        urlData.add(WebService.Booking.id_state, WebService.Booking.bookingStateDone);
+        if (idState.equals(WebService.Booking.bookingStateWorking)) {
+            urlData.add(WebService.Booking.id_state, WebService.Booking.bookingStateDone);
+            checkIfCodeExist(totalPrice, id_coupon_client);
+        } else
+            urlData.add(WebService.Booking.id_state, WebService.Booking.bookingStateTimeout);
+
         new GetData(new GetData.AsyncResponse() {
             @Override
             public void processFinish(String output) throws JSONException {
@@ -408,7 +507,7 @@ public class Coming extends Fragment {
         this.dayClick.setBackgroundResource(R.drawable.circel);
         this.dayClick.setSupportBackgroundTintList(ContextCompat.getColorStateList(getActivity(), R.color.red));
 
-        currentDate = new GregorianCalendar();
+        currentDate = Calendar.getInstance();
 
         switch (view.getId()) {
             case R.id.day1:
@@ -452,7 +551,7 @@ public class Coming extends Fragment {
     }
 
     private void setDate() {
-        Calendar date = new GregorianCalendar();
+        Calendar date = Calendar.getInstance();
 
         day1.setText(date.get(Calendar.DAY_OF_MONTH) + "");
         day1text.setText(android.text.format.DateFormat.format("EEE", date));
@@ -497,7 +596,7 @@ public class Coming extends Fragment {
     }
 
     private void updateBooking(String id, String state, String regId) {
-        if (state.equals(WebService.Booking.bookingStateCancel)) {
+        if (state.equals(WebService.Booking.bookingStatePatientCancel)) {
             sendNotification(regId, state);
         }
         UrlData urlData = new UrlData();
@@ -518,7 +617,7 @@ public class Coming extends Fragment {
         urlData.add(WebService.Notification.data, " ");
         urlData.add(WebService.Notification.kind, state);
         urlData.add(WebService.Notification.message, " ");
-        urlData.add(WebService.Notification.title, " ");
+        urlData.add(WebService.Notification.title, "Reservation has been updated!");
 
         new GetData(new GetData.AsyncResponse() {
             @Override
@@ -528,4 +627,44 @@ public class Coming extends Fragment {
         }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Notification.notificationApi, urlData.get());
 
     }
+
+    private void checkIfCodeExist(final String totalPrice, String id_coupon_client) {
+        if (id_coupon_client.equals("0"))
+            PAYNOW(totalPrice);
+        else {
+            UrlData urlData = new UrlData();
+            urlData.add(WebService.PromoCode.id, id_coupon_client);
+            new GetData(new GetData.AsyncResponse() {
+                @Override
+                public void processFinish(String output) throws JSONException {
+                    JSONObject jsonObjectCode = new JSONObject(output).getJSONObject("coupon");
+                    int price = Integer.parseInt(totalPrice) - (Integer.parseInt(totalPrice) * Integer.parseInt(jsonObjectCode.getString(WebService.PromoCode.discount))) / 100;
+                    PAYNOW(price + "");
+
+                }
+            }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.PromoCode.promoCodeCheckApi, urlData.get());
+        }
+    }
+
+    private void PAYNOW(String latestPrice) {
+        {
+            try {
+
+                // String finalPrice = price.getText().toString().substring(0, price.getText().toString().indexOf(" ")) + "00";
+                if (!MainActivity.jsonObject.getString("payment_token").equals("null") || !MainActivity.jsonObject.getString("payment_token").equals("")) {
+                    new MakePayMobApi(getActivity(), latestPrice + "00", Coming.this, MainActivity.jsonObject.getString("payment_token"), WebService.Payment.payLive2);
+                } else {
+                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                    PaymentSlider fragment = new PaymentSlider();
+                    FragmentTransaction ft = fm.beginTransaction();
+                    ft.replace(R.id.fragment, fragment, "payment");
+                    ft.addToBackStack("payment");
+                    ft.commit();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

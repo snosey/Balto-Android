@@ -14,12 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.webservice.WebService;
 import com.example.snosey.balto.main.DoctorProfile;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -145,13 +145,23 @@ public class DoctorList extends Fragment {
                         + " " + getActivity().getString(R.string.egp));
 
                 if (!doctorObject.getString("image").equals("")) {
+                    holder.logo.setImageResource(R.drawable.doctor_logo);
                     String imageLink = doctorObject.getString("image");
                     if (!imageLink.startsWith("https://"))
                         imageLink = WebService.Image.fullPathImage + imageLink;
-                    Picasso.with(getContext()).load(imageLink).transform(new CircleTransform()).into(holder.logo);
-                }
-                else
-                    holder.logo.setImageResource(R.drawable.logo_profile);
+                    Picasso.with(getContext()).load(imageLink).transform(new CircleTransform()).into(holder.logo, new Callback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onError() {
+                            holder.logo.setImageResource(R.drawable.doctor_logo);
+                        }
+                    });
+                } else
+                    holder.logo.setImageResource(R.drawable.doctor_logo);
                 if (!doctorObject.getString(WebService.Slider.total_rate).equals("null") && !doctorObject.getString(WebService.Slider.total_rate).equals("0"))
                     holder.rate.setText(doctorObject.getString(WebService.Slider.total_rate));
 
@@ -169,21 +179,21 @@ public class DoctorList extends Fragment {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name, type, rate, price;
+        public com.example.snosey.balto.Support.CustomTextView name, type, rate, price;
         public ImageView logo;
         public Button book;
 
         public MyViewHolder(View v) {
             super(v);
-            name = (TextView) v.findViewById(R.id.name);
+            name = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.name);
             Typeface font = Typeface.createFromAsset(
                     getActivity().getAssets(),
                     "fonts/arial.ttf");
             name.setTypeface(font, Typeface.BOLD);
 
-            type = (TextView) v.findViewById(R.id.type);
-            rate = (TextView) v.findViewById(R.id.rate);
-            price = (TextView) v.findViewById(R.id.price);
+            type = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.type);
+            rate = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.rate);
+            price = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.price);
             logo = (ImageView) v.findViewById(R.id.logo);
             book = (Button) v.findViewById(R.id.book);
         }
@@ -214,7 +224,7 @@ public class DoctorList extends Fragment {
                         else if (item.getItemId() == R.id.nameDesc)
                             sort(WebService.OnlineConsult.firstName, true);
                         else if (item.getItemId() == R.id.rateSort)
-                            sort(WebService.Slider.total_rate, false);
+                            sort(WebService.Slider.total_rate, true);
                         return false;
                     }
                 });

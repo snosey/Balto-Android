@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/firstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -41,13 +41,13 @@
             android:layout_height="match_parent"
             android:background="@drawable/login_background" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_Medium"
             android:background="@drawable/button_rounded"
-            android:backgroundTint="@color/black_shfaf"
+            app:backgroundTint="@color/black_shfaf"
             android:padding="@dimen/margin_Small"
             android:textColor="@color/white"
             android:textSize="@dimen/text_Medium" />
@@ -67,7 +67,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="@dimen/margin_Medium"
                 android:background="@drawable/circel"
-                android:backgroundTint="@color/red"
+                app:backgroundTint="@color/red"
                 app:srcCompat="@drawable/end_call" />
 
             <android.support.v7.widget.AppCompatImageButton
@@ -92,7 +92,7 @@
                 android:layout_height="60dp"
                 android:layout_margin="@dimen/margin_Medium"
                 android:background="@drawable/circel"
-                android:backgroundTint="@color/colorPrimary"
+                app:backgroundTint="@color/colorPrimary"
                 android:tint="@color/white"
                 app:srcCompat="@drawable/edit" />
 
@@ -120,7 +120,7 @@
                 android:layout_height="25dp"
                 android:layout_margin="@dimen/margin_Small"
                 android:background="@drawable/shadow"
-                android:backgroundTint="@color/colorPrimary"
+                app:backgroundTint="@color/colorPrimary"
                 android:padding="@dimen/margin_VerySmall"
                 android:tint="@color/white"
                 app:srcCompat="@drawable/switch_camera" />
@@ -135,7 +135,7 @@
             android:layout_margin="@dimen/margin_Medium"
             android:layout_toEndOf="@id/timer"
             android:background="@drawable/shadow"
-            android:backgroundTint="@color/white"
+            app:backgroundTint="@color/white"
             android:padding="@dimen/margin_VerySmall"
             android:tint="@color/black_8am2"
             app:srcCompat="@drawable/volum" />

@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
@@ -24,7 +23,6 @@ import org.json.JSONObject;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -36,23 +34,23 @@ import butterknife.InjectView;
 public class Wallet extends Fragment {
 
     @InjectView(R.id.dueTo)
-    TextView dueTo;
+    com.example.snosey.balto.Support.CustomTextView dueTo;
 
 
     JSONArray walletJsonArray;
     WalletAdapter walletAdapter;
     RecyclerView walletRV;
     @InjectView(R.id.transactionNumber)
-    TextView transactionNumber;
+    com.example.snosey.balto.Support.CustomTextView transactionNumber;
     @InjectView(R.id.Pending)
-    TextView Pending;
+    com.example.snosey.balto.Support.CustomTextView Pending;
     @InjectView(R.id.Balance)
-    TextView Balance;
+    com.example.snosey.balto.Support.CustomTextView Balance;
     @InjectView(R.id.allMoney)
-    TextView allMoney;
+    com.example.snosey.balto.Support.CustomTextView allMoney;
     @InjectView(R.id.CashReceived)
-    TextView CashReceived;
-    private GregorianCalendar dueCalendar;
+    com.example.snosey.balto.Support.CustomTextView CashReceived;
+    private Calendar dueCalendar;
     int currentMonth;
 
     @Override
@@ -62,7 +60,7 @@ public class Wallet extends Fragment {
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
         ButterKnife.inject(this, view);
 
-        dueCalendar = new GregorianCalendar();
+        dueCalendar = Calendar.getInstance();
         currentMonth = dueCalendar.get(Calendar.MONTH);
         if (dueCalendar.get(Calendar.DAY_OF_MONTH) > 15) {
             dueCalendar.add(Calendar.MONTH, 1);
@@ -103,7 +101,7 @@ public class Wallet extends Fragment {
                 Calendar cal = Calendar.getInstance();
                 int pending = 0, balance = 0, cashReceived = 0, allInCome = 0, docMoneyMonthly = 0;
                 for (int i = 0; i < walletJsonArray.length(); i++) {
-                    int docMoney = Integer.parseInt(walletJsonArray.getJSONObject(i).getString(WebService.Payment.doctor_money));
+                    double docMoney = Double.parseDouble(walletJsonArray.getJSONObject(i).getString(WebService.Payment.doctor_money));
                     if (docMoney < 0) docMoney = docMoney * -1;
                     allInCome += docMoney;
                     try {
@@ -218,14 +216,14 @@ public class Wallet extends Fragment {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView date, doctorMoney, cashReceived, moneyOnYou;
+        public com.example.snosey.balto.Support.CustomTextView date, doctorMoney, cashReceived, moneyOnYou;
 
         public MyViewHolder(View v) {
             super(v);
-            date = (TextView) v.findViewById(R.id.date);
-            cashReceived = (TextView) v.findViewById(R.id.cashReceived);
-            doctorMoney = (TextView) v.findViewById(R.id.doctorMoney);
-            moneyOnYou = (TextView) v.findViewById(R.id.moneyOnYou);
+            date = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.date);
+            cashReceived = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.cashReceived);
+            doctorMoney = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.doctorMoney);
+            moneyOnYou = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.moneyOnYou);
         }
     }
 

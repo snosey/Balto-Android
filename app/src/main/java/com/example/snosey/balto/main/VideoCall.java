@@ -22,7 +22,6 @@ import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.snosey.balto.BuildConfig;
@@ -31,8 +30,10 @@ import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.login.RegistrationActivity;
 import com.twilio.video.CameraCapturer;
 import com.twilio.video.ConnectOptions;
+import com.twilio.video.EncodingParameters;
 import com.twilio.video.LocalAudioTrack;
 import com.twilio.video.LocalVideoTrack;
 import com.twilio.video.RemoteAudioTrack;
@@ -52,9 +53,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import butterknife.ButterKnife;
@@ -69,11 +68,11 @@ public class VideoCall extends Fragment {
 
     private static final int REQUEST_MICROPHONE = 55;
     @InjectView(R.id.firstName)
-    TextView firstName;
+    com.example.snosey.balto.Support.CustomTextView firstName;
     @InjectView(R.id.videoViewClient)
     VideoView videoViewClient;
     @InjectView(R.id.timer)
-    TextView timer;
+    com.example.snosey.balto.Support.CustomTextView timer;
     @InjectView(R.id.myVideoView)
     VideoView myVideoView;
     @InjectView(R.id.myVideoViewLL)
@@ -170,9 +169,9 @@ public class VideoCall extends Fragment {
                     if (millisUntilFinished < TimeUnit.MINUTES.toMillis(5))
                         timer.setTextColor(Color.RED);
 
-                    timer.setText(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) + ":" + (
+                    timer.setText(check2digit("" + TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)) + ":" + check2digit("" + (
                             TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) - TimeUnit.MINUTES.toSeconds(
-                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished))));
+                                    TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)))));
 
                 } catch (Exception e) {
                     counter.cancel();
@@ -224,7 +223,7 @@ public class VideoCall extends Fragment {
     private void getBooking() {
         UrlData urlData = new UrlData();
         urlData.add(WebService.Booking.id_booking, booking_id);
-        urlData.add(WebService.Booking.lang, Locale.getDefault().getLanguage());
+        urlData.add(WebService.Booking.lang, RegistrationActivity.sharedPreferences.getString("lang", "en"));
         new GetData(new GetData.AsyncResponse() {
             @Override
             public void processFinish(String output) throws JSONException {
@@ -237,7 +236,7 @@ public class VideoCall extends Fragment {
                     if (jsonObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStateStart))
                         updateBooking(jsonObject.getString("id"), jsonObject.getString(WebService.Booking.fcm_token_client));
                 }
-                Calendar calendar = new GregorianCalendar();
+                Calendar calendar = Calendar.getInstance();
                 final long currentTimeMillis = TimeUnit.HOURS.toMillis(calendar.get(Calendar.HOUR_OF_DAY)) + TimeUnit.MINUTES.toMillis(calendar.get(Calendar.MINUTE));
 
                 final long startTimeHour = TimeUnit.HOURS.toMillis(Long.parseLong(jsonObject.getString(WebService.Booking.receive_hour)));
@@ -274,8 +273,8 @@ public class VideoCall extends Fragment {
         urlData.add(WebService.Notification.reg_id, regId);
         urlData.add(WebService.Notification.data, booking_id);
         urlData.add(WebService.Notification.kind, WebService.Notification.Types.video_call);
-        urlData.add(WebService.Notification.message, "");
-        urlData.add(WebService.Notification.title, "");
+        urlData.add(WebService.Notification.message, " ");
+        urlData.add(WebService.Notification.title, getActivity().getString(R.string.video_room_is_created));
 
         new GetData(new GetData.AsyncResponse() {
             @Override
@@ -292,14 +291,14 @@ public class VideoCall extends Fragment {
 
         List<LocalVideoTrack> localVideoTracks = new ArrayList<>();
         localVideoTracks.add(localVideoTrack);
-        ConnectOptions connectOptions = null;
 
         Log.e("video.token:", TOKEN);
 
-        connectOptions = new ConnectOptions.Builder(TOKEN).
+        ConnectOptions connectOptions = new ConnectOptions.Builder(TOKEN).
                 roomName(booking_id)
                 .audioTracks(localAudioTracks)
                 .videoTracks(localVideoTracks)
+                .encodingParameters(new EncodingParameters(0, 600 * 600))
                 .build();
 
         room = Video.connect(getActivity(), connectOptions, new Room.Listener() {
@@ -440,11 +439,16 @@ public class VideoCall extends Fragment {
             @Override
             public void onConnectFailure(Room room, TwilioException twilioException) {
                 try {
+                    Log.e("Error in room creation", twilioException.getMessage() + "...");
                     twilioException.printStackTrace();
                 } catch (Exception e) {
 
                 }
-                Toast.makeText(getContext(), getActivity().getString(R.string.FailToConnected), Toast.LENGTH_LONG).show();
+                try {
+                    Toast.makeText(getContext(), twilioException + "", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -701,6 +705,13 @@ public class VideoCall extends Fragment {
             // permissions this app might request
         }
 
+    }
+
+    String check2digit(String digit) {
+        if (digit.length() == 1)
+            return "0" + digit;
+        else
+            return digit;
     }
 
 }

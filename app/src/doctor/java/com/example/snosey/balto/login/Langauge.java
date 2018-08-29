@@ -39,7 +39,7 @@ public class Langauge extends Fragment {
                 public void onClick(View view) {
                     Bundle bundle = new Bundle();
                     NewAccountObject accountObject = (NewAccountObject) getArguments().getSerializable("object");
-                    TextView langId = (TextView) spinner.getSelectedView();
+                    com.example.snosey.balto.Support.CustomTextView langId = (com.example.snosey.balto.Support.CustomTextView) spinner.getSelectedView();
                     accountObject.lang = langId.getTag().toString();
                     bundle.putString("json", output);
                     bundle.putSerializable("object", accountObject);

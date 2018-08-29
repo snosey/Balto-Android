@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/black_shfaf"
-    android:clickable="true"
+    android:clickable="true"  android:focusable="true"
     android:orientation="vertical">
 
 
@@ -13,20 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.AppCompatImageButton
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="@dimen/dimen_VerySmall"
             android:layout_height="@dimen/dimen_VerySmall"
             android:layout_alignParentStart="true"
             android:layout_margin="@dimen/margin_Medium"
             android:background="@android:color/transparent"
-            android:onClick="back"
+            android:clickable="true"  android:focusable="true"
+
+            android:visibility="invisible"
             app:srcCompat="@drawable/back" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
+            android:id="@+id/forgetPassword"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:id="@+id/forgetPassword"
             android:layout_margin="@dimen/margin_Medium"
             android:text="@string/forget_password"
             android:textColor="@color/white"
@@ -44,19 +46,19 @@
         android:layout_marginEnd="@dimen/margin_Large"
         android:layout_marginStart="@dimen/margin_Large"
         android:background="@drawable/button_rounded"
-        android:backgroundTint="@color/blue"
-        android:drawableStart="@drawable/fb_logo"
         android:padding="@dimen/margin_Medium"
         android:text="@string/login"
         android:textAllCaps="false"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        app:backgroundTint="@color/blue"
+        app:drawableStartCompat="@drawable/fb_logo" />
 
     <!-- Or -->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/or"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -85,7 +87,7 @@
 
 
     <!-- Email -->
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_Large"
@@ -93,19 +95,19 @@
         android:text="@string/email"
         android:textColor="@color/white" />
 
-    <EditText
+    <android.support.v7.widget.AppCompatEditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_Large"
         android:layout_marginStart="@dimen/margin_Large"
-        android:backgroundTint="@color/white"
         android:inputType="textEmailAddress"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        app:backgroundTint="@color/white" />
 
 
     <!-- Password -->
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_Large"
@@ -113,15 +115,15 @@
         android:text="@string/password"
         android:textColor="@color/white" />
 
-    <EditText
+    <android.support.v7.widget.AppCompatEditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/margin_Large"
         android:layout_marginStart="@dimen/margin_Large"
-        android:backgroundTint="@color/white"
         android:inputType="textPassword"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        app:backgroundTint="@color/white" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/next"

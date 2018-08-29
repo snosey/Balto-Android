@@ -1,7 +1,9 @@
 package com.example.snosey.balto;
 
 import android.Manifest;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -10,12 +12,14 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Typeface;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +27,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatDelegate;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -30,10 +35,10 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.Switch;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.snosey.balto.Support.image.CircleTransform;
+import com.example.snosey.balto.Support.notification.NotifyService;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
@@ -58,6 +63,7 @@ import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
@@ -66,12 +72,13 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 
 public class MainActivity extends FragmentActivity {
+    private static final int ACCESS_LOCATION = 55555;
     public static JSONObject jsonObject;
 
     @InjectView(R.id.clientName)
-    TextView clientName;
+    com.example.snosey.balto.Support.CustomTextView clientName;
     @InjectView(R.id.clientRate)
-    TextView clientRate;
+    com.example.snosey.balto.Support.CustomTextView clientRate;
 
     @InjectView(R.id.drawer)
     ScrollView drawer;
@@ -102,29 +109,72 @@ public class MainActivity extends FragmentActivity {
     ImageView menu;
     private static boolean firstTime = true;
     @InjectView(R.id.title)
-    TextView title;
+    com.example.snosey.balto.Support.CustomTextView title;
     @InjectView(R.id.HomeText)
-    TextView HomeText;
+    com.example.snosey.balto.Support.CustomTextView HomeText;
     @InjectView(R.id.reservationText)
-    TextView reservationText;
+    com.example.snosey.balto.Support.CustomTextView reservationText;
     @InjectView(R.id.agendaText)
-    TextView agendaText;
+    com.example.snosey.balto.Support.CustomTextView agendaText;
     @InjectView(R.id.promotionsText)
-    TextView promotionsText;
+    com.example.snosey.balto.Support.CustomTextView promotionsText;
     @InjectView(R.id.languageText)
-    TextView languageText;
+    com.example.snosey.balto.Support.CustomTextView languageText;
     @InjectView(R.id.termsAndConditionsText)
-    TextView termsAndConditionsText;
+    com.example.snosey.balto.Support.CustomTextView termsAndConditionsText;
     @InjectView(R.id.shareText)
-    TextView shareText;
+    com.example.snosey.balto.Support.CustomTextView shareText;
     @InjectView(R.id.logoutText)
-    TextView logoutText;
+    com.example.snosey.balto.Support.CustomTextView logoutText;
     @InjectView(R.id.walletText)
-    TextView walletText;
+    com.example.snosey.balto.Support.CustomTextView walletText;
     @InjectView(R.id.helpText)
-    TextView helpText;
+    com.example.snosey.balto.Support.CustomTextView helpText;
 
     boolean doubleBackToExitPressedOnce = false;
+
+
+    void checkLocation() {
+
+        LocationManager lm = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        boolean gps_enabled = false;
+        boolean network_enabled = false;
+
+        try {
+            gps_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) {
+        }
+
+        try {
+            network_enabled = lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        } catch (Exception ex) {
+        }
+
+        if (!gps_enabled && !network_enabled) {
+            // notify user
+            android.app.AlertDialog.Builder dialog = new android.app.AlertDialog.Builder(this);
+            dialog.setMessage(this.getResources().getString(R.string.gps_network_not_enabled));
+            dialog.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivityForResult(myIntent, ACCESS_LOCATION);
+                    //get gps
+                }
+            });
+            dialog.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+
+                @Override
+                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                    // TODO Auto-generated method stub
+
+                }
+            });
+            dialog.show();
+
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -158,12 +208,22 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+        Intent intent = new Intent(MainActivity.this, NotifyService.class);
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this,
+                22, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        manager.cancel(pendingIntent);
+
+        checkLang();
+
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/arial.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
-
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
@@ -186,6 +246,20 @@ public class MainActivity extends FragmentActivity {
 
         ((Application) this.getApplicationContext()).setCurrentActivity(MainActivity.this);
 
+        menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menu();
+            }
+        });
+
+        logo
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        setting();
+                    }
+                });
         //menu.setColorFilter(Color.BLACK);
         try {
             jsonObject = new JSONObject(getIntent().getStringExtra("userData"));
@@ -195,7 +269,7 @@ public class MainActivity extends FragmentActivity {
                 e.printStackTrace();
             }
 
-            if (Locale.getDefault().getLanguage().equals("ar"))
+            if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
                 clientName.setText(jsonObject.getString("first_name_ar"));
             else
                 clientName.setText(jsonObject.getString("first_name_en"));
@@ -301,6 +375,7 @@ public class MainActivity extends FragmentActivity {
         if (getIntent().hasExtra("data")) {
             new NotificationTransaction(MainActivity.this, getIntent().getStringExtra("data"));
         }
+        checkLocation();
     }
 
     private void checkKind() throws JSONException {
@@ -322,12 +397,10 @@ public class MainActivity extends FragmentActivity {
                 , "http://haseboty.com/doctor/public/api/getDoctorKind?", urlData.get());
     }
 
-
-    public void setting(View view) {
+    public void setting() {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
     }
-
 
     public void agenda(View view) {
         if (drawerLayout.isDrawerOpen(drawer))
@@ -348,7 +421,6 @@ public class MainActivity extends FragmentActivity {
         ft.commit();
     }
 
-
     public void reservations(View view) {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
@@ -368,7 +440,6 @@ public class MainActivity extends FragmentActivity {
         ft.commit();
     }
 
-
     public void help(View view) {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
@@ -387,7 +458,6 @@ public class MainActivity extends FragmentActivity {
         ft.commit();
     }
 
-
     public void Wallet(View view) {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
@@ -405,7 +475,6 @@ public class MainActivity extends FragmentActivity {
 
         ft.commit();
     }
-
 
     public void promotions(View view) {
 
@@ -452,7 +521,8 @@ public class MainActivity extends FragmentActivity {
                     }
                     Intent sendIntent = new Intent();
                     sendIntent.setAction(Intent.ACTION_SEND);
-                    sendIntent.putExtra(Intent.EXTRA_TEXT, "Download Balto application and get offer by using this code: " + code);
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.shareOfferDoctor) + code + "\nhttps://play.google.com/store/apps/details?id=" +
+                            BuildConfig.APPLICATION_ID);
                     sendIntent.setType("text/plain");
                     startActivity(sendIntent);
 
@@ -509,12 +579,28 @@ public class MainActivity extends FragmentActivity {
 
     }
 
+    void checkLang() {
+        Locale locale;
+
+        if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
+            locale = new Locale("ar");
+        else
+            locale = new Locale("en");
+
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        onConfigurationChanged(config);
+    }
+
+
     public void termAndConditions(View view) {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
 
         String url = "";
-        if (Locale.getDefault().getLanguage().equals("ar"))
+        if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
             url = "https://drive.google.com/open?id=1eSaJK6ZJS4N8BRCpiwIwki0DZqkJZ6UY";
         else
             url = "https://drive.google.com/open?id=1EsOM9r5vDV-QYLb_nCvZNbWonv1L6xeA";
@@ -529,12 +615,26 @@ public class MainActivity extends FragmentActivity {
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, getString(android.R.string.yes),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        SharedPreferences sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
-                        SharedPreferences.Editor editor = sharedPreferences.edit();
-                        editor.clear();
-                        editor.commit();
-                        startActivity(new Intent(MainActivity.this, RegistrationActivity.class));
-                        finish();
+                        UrlData urlData = new UrlData();
+                        try {
+                            urlData.add(WebService.Setting.id, jsonObject.getString(WebService.Setting.id));
+                            urlData.add(WebService.Login.fcm_token, "");
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        new GetData(new GetData.AsyncResponse() {
+                            @Override
+                            public void processFinish(String output) throws JSONException {
+                                SharedPreferences sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.clear();
+                                editor.commit();
+                                startActivity(new Intent(MainActivity.this, RegistrationActivity.class));
+                                finish();
+
+                            }
+                        }, MainActivity.this, false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Setting.updateUserApi, urlData.get());
                     }
                 });
         alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, getString(android.R.string.no),
@@ -546,7 +646,7 @@ public class MainActivity extends FragmentActivity {
         alertDialog.show();
     }
 
-    public void menu(View view) {
+    public void menu() {
         if (drawerLayout.isDrawerOpen(drawer))
             drawerLayout.closeDrawer(drawer);
         else
@@ -675,4 +775,8 @@ public class MainActivity extends FragmentActivity {
         }
     }
 
+    @OnClick(R.id.back)
+    public void onViewClicked() {
+        onBackPressed();
+    }
 }

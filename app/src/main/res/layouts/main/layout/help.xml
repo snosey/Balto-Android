@@ -12,7 +12,7 @@
         android:orientation="vertical">
 
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -24,12 +24,12 @@
             android:textSize="@dimen/text_Large"
             android:textStyle="bold" />
 
-        <ImageView
+        <android.support.v7.widget.AppCompatImageView
             android:layout_width="match_parent"
             android:layout_height="@dimen/dimen_Medium"
-            android:src="@drawable/help" />
+            app:srcCompat="@drawable/help" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -96,7 +96,7 @@
         android:orientation="horizontal"
         android:paddingBottom="@dimen/small_padding_value">
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

@@ -1,15 +1,16 @@
 package com.example.snosey.balto.main;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.snosey.balto.BuildConfig;
 import com.example.snosey.balto.MainActivity;
@@ -17,6 +18,7 @@ import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.login.RegistrationActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,19 +32,20 @@ import butterknife.InjectView;
 
 public class MedicalReport extends Fragment {
     @InjectView(R.id.fullName)
-    TextView fullName;
+    com.example.snosey.balto.Support.CustomTextView fullName;
     @InjectView(R.id.type)
-    TextView type;
+    com.example.snosey.balto.Support.CustomTextView type;
     @InjectView(R.id.date)
-    TextView date;
+    com.example.snosey.balto.Support.CustomTextView date;
     @InjectView(R.id.patientName)
-    TextView patientName;
+    com.example.snosey.balto.Support.CustomTextView patientName;
     @InjectView(R.id.diagnosis)
     EditText diagnosis;
     @InjectView(R.id.prescription)
     EditText prescription;
     @InjectView(R.id.next)
     ImageButton next;
+    private String json = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -52,16 +55,34 @@ public class MedicalReport extends Fragment {
 
         ButterKnife.inject(this, view);
         try {
-            setData();
+            if (getArguments().containsKey("json")) {
+                json = getArguments().getString("json");
+                setData();
+            } else {
+                getData();
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return view;
     }
 
+    private void getData() {
+        UrlData urlData = new UrlData();
+        urlData.add(WebService.Booking.id_booking, getArguments().getString(WebService.Booking.id));
+        urlData.add(WebService.Booking.lang, RegistrationActivity.sharedPreferences.getString("lang", "en"));
+        new GetData(new GetData.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                json = new JSONObject(output).getJSONObject("booking").toString();
+                setData();
+            }
+        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.getBookDataApi, urlData.get());
+    }
+
 
     private void setData() throws JSONException {
-        final JSONObject bookingObject = new JSONObject(getArguments().getString("json"));
+        final JSONObject bookingObject = new JSONObject(json);
         if (BuildConfig.APPLICATION_ID.contains("doctor")) {
             diagnosis.setEnabled(true);
             prescription.setEnabled(true);
@@ -69,6 +90,10 @@ public class MedicalReport extends Fragment {
                 @Override
                 public void onClick(View view) {
                     try {
+                        if (getActivity().getCurrentFocus() != null) {
+                            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                        }
                         updateData(bookingObject.getString(WebService.Booking.id));
                     } catch (JSONException e) {
                         e.printStackTrace();

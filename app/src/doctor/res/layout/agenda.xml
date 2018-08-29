@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -122,7 +122,7 @@
         android:paddingStart="@dimen/margin_Medium"
         android:weightSum="7">
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/day1text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_Small" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/day2text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -142,7 +142,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_Small" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/day3text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_Small" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/day4text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -162,7 +162,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_Small" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/day5text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -172,7 +172,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_Small" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/day6text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -182,7 +182,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_Small" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/day7text"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

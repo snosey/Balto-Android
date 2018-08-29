@@ -13,7 +13,7 @@
         android:layout_margin="@dimen/margin_Medium"
         android:orientation="horizontal">
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -23,7 +23,7 @@
             android:textSize="@dimen/text_VerySmall"
             android:textStyle="bold" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/timeFrom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/text_VerySmall" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -47,7 +47,7 @@
             android:textSize="@dimen/text_VerySmall"
             android:textStyle="bold" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/timeTo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

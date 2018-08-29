@@ -50,7 +50,7 @@ public class ChooseLocation extends Fragment {
                         View adapterView = listView.getChildAt(i);
                         CheckBox checkBox = (CheckBox) adapterView.findViewById(R.id.checkbox);
                         if (checkBox.isChecked()) {
-                            accountObject.city.add(((TextView) adapterView.findViewById(R.id.text)).getTag().toString());
+                            accountObject.city.add(((com.example.snosey.balto.Support.CustomTextView) adapterView.findViewById(R.id.text)).getTag().toString());
                         }
                     }
                     if (accountObject.city.size() > 0) {

@@ -17,7 +17,7 @@
             android:layout_margin="@dimen/margin_Medium"
             app:srcCompat="@drawable/logo_profile" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/clientName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -26,7 +26,7 @@
             android:textSize="@dimen/text_Medium"
             android:textStyle="bold" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/clientRate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,19 +34,19 @@
             android:layout_below="@id/clientName"
             android:layout_gravity="center"
             android:layout_marginBottom="@dimen/margin_Medium"
-            android:drawableEnd="@drawable/star"
+            app:drawableEndCompat="@drawable/star"
             android:drawablePadding="@dimen/margin_Medium"
             android:text="5"
             android:textSize="@dimen/text_VerySmall" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/requestDescription"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_margin="@dimen/margin_Medium"
             android:drawablePadding="@dimen/margin_Medium"
-            android:drawableStart="@drawable/info"
+            app:drawableStartCompat="@drawable/info"
             android:gravity="center"
             android:textSize="@dimen/text_Small" />
 
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:id="@+id/visitDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -67,11 +67,11 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Medium"
                 android:drawablePadding="@dimen/margin_Medium"
-                android:drawableStart="@drawable/time"
+                app:drawableStartCompat="@drawable/time"
                 android:gravity="center" />
 
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -83,7 +83,7 @@
         </RelativeLayout>
 
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,17 +105,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_margin="@dimen/margin_Medium"
                 android:drawablePadding="@dimen/margin_Medium"
-                android:drawableStart="@drawable/money"
+                app:drawableStartCompat="@drawable/money"
                 android:gravity="center"
                 android:text="@string/estimatedFare" />
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:id="@+id/estimatedFare"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:id="@+id/serviceDurationText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -142,12 +142,12 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Medium"
                 android:drawablePadding="@dimen/margin_Medium"
-                android:drawableStart="@drawable/time"
+                app:drawableStartCompat="@drawable/time"
                 android:gravity="center"
                 android:text="@string/serviceDuration" />
 
 
-            <TextView
+            <com.example.snosey.balto.Support.CustomTextView
                 android:id="@+id/serviceDuration"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -158,23 +158,23 @@
 
         </RelativeLayout>
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/paymentWay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_Medium"
             android:drawablePadding="@dimen/margin_Medium"
-            android:drawableStart="@drawable/payment"
+            app:drawableStartCompat="@drawable/payment"
             android:gravity="center"
             android:text="@string/cash" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/clientAddress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_Medium"
             android:drawablePadding="@dimen/margin_Medium"
-            android:drawableStart="@drawable/gps"
+            app:drawableStartCompat="@drawable/gps"
             android:gravity="center"
             android:textColor="@color/red" />
 
@@ -190,7 +190,7 @@
             android:text="@string/accept"
             android:textColor="@color/white" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:layout_width="wrap_content"
             android:id="@+id/cancel"
             android:layout_height="wrap_content"

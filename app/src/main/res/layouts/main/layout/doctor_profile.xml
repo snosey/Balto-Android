@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/whiteDark"
-    android:clickable="true">
+    android:clickable="true"  android:focusable="true">
 
 
     <RelativeLayout
@@ -23,7 +23,7 @@
             android:layout_margin="@dimen/margin_Medium"
             app:srcCompat="@drawable/logo_profile" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/change"
             android:layout_width="@dimen/dimen_Small"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
             android:gravity="center"
             android:text="@string/change" />
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/fisrtName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
             android:textColor="@color/black_8am2"
             android:textCursorDrawable="@null" />
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/secondName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
             android:padding="@dimen/margin_Small"
             android:textColor="@color/black_8am2" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -67,19 +67,19 @@
             android:padding="@dimen/margin_Small"
             android:textColor="@color/colorPrimary" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/rate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/type"
             android:layout_toEndOf="@id/logo"
             android:drawablePadding="@dimen/margin_Medium"
-            android:drawableStart="@drawable/star"
             android:ellipsize="end"
             android:gravity="end|center_vertical"
             android:maxLines="1"
             android:padding="@dimen/margin_Small"
-            android:text="5" />
+            android:text="5"
+            app:drawableStartCompat="@drawable/star" />
 
         <android.support.v7.widget.AppCompatButton
             android:id="@+id/wallet"
@@ -94,10 +94,10 @@
             android:layout_marginStart="@dimen/margin_Small"
             android:layout_marginTop="7dp"
             android:background="@drawable/button_rounded"
-            android:backgroundTint="@color/black_fat7"
-            android:onClick="Wallet"
+            android:clickable="true"  android:focusable="true"
             android:text="@string/wallet"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            app:backgroundTint="@color/black_fat7" />
 
     </RelativeLayout>
 
@@ -114,9 +114,9 @@
         android:layout_alignParentBottom="true"
         android:layout_margin="@dimen/margin_Medium"
         android:background="@drawable/button_rounded"
-        android:backgroundTint="@color/colorPrimary"
         android:text="@string/confirm"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        app:backgroundTint="@color/colorPrimary" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -136,38 +136,77 @@
                 android:orientation="vertical">
 
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/phone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_Medium"
                     android:drawablePadding="@dimen/margin_Medium"
-                    android:drawableStart="@drawable/phone"
                     android:ellipsize="end"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    app:drawableStartCompat="@drawable/phone" />
 
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_Medium"
                     android:drawablePadding="@dimen/margin_Medium"
-                    android:drawableStart="@drawable/email"
                     android:ellipsize="end"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    app:drawableStartCompat="@drawable/email" />
+                <LinearLayout
+                    android:id="@+id/passwordLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <android.support.v7.widget.AppCompatTextView
+                    <com.example.snosey.balto.Support.CustomTextView
+                        android:id="@+id/changePassword"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:drawablePadding="@dimen/margin_Medium"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:text="@string/change"
+                        app:drawableStartCompat="@drawable/ic_lock_black_24dp" />
+
+                    <EditText
+                        android:id="@+id/oldPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:ellipsize="end"
+                        android:hint="@string/oldPassword"
+                        android:maxLines="1"
+                        android:padding="@dimen/margin_Small" />
+
+                    <EditText
+                        android:id="@+id/newPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:ellipsize="end"
+                        android:hint="@string/newPassword"
+                        android:maxLines="1"
+                        android:padding="@dimen/margin_Small" />
+
+                </LinearLayout>
+
+
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/gender"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_Medium"
                     android:drawablePadding="@dimen/margin_Medium"
-                    android:drawableStart="@drawable/gender_blue"
                     android:ellipsize="end"
-                    android:maxLines="1" />
+                    android:maxLines="1"
+                    app:drawableStartCompat="@drawable/gender_blue" />
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/reviews"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -188,7 +227,7 @@
                     android:layout_margin="@dimen/margin_Medium" />
 
 
-                <TextView
+                <com.example.snosey.balto.Support.CustomTextView
                     android:id="@+id/certification"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -214,9 +253,9 @@
                     android:layout_height="@dimen/dimen_VerySmall"
                     android:layout_margin="@dimen/margin_Medium"
                     android:background="@drawable/button_rounded"
-                    android:backgroundTint="@color/black_8am2"
                     android:text="@string/add"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    app:backgroundTint="@color/black_8am2" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/newCerRV"

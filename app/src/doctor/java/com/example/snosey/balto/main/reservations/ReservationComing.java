@@ -23,8 +23,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.snosey.balto.MainActivity;
@@ -33,18 +34,21 @@ import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.login.RegistrationActivity;
 import com.example.snosey.balto.main.ClientProfile;
 import com.example.snosey.balto.main.MedicalReport;
 import com.example.snosey.balto.main.RateDialog;
 import com.example.snosey.balto.main.VideoCall;
+import com.example.snosey.balto.payment.MakePayMobApi;
 import com.squareup.picasso.Picasso;
+import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -77,32 +81,43 @@ public class ReservationComing extends Fragment {
     @InjectView(R.id.day7)
     AppCompatButton day7;
     @InjectView(R.id.day1text)
-    TextView day1text;
+    com.example.snosey.balto.Support.CustomTextView day1text;
     @InjectView(R.id.day2text)
-    TextView day2text;
+    com.example.snosey.balto.Support.CustomTextView day2text;
     @InjectView(R.id.day3text)
-    TextView day3text;
+    com.example.snosey.balto.Support.CustomTextView day3text;
     @InjectView(R.id.day4text)
-    TextView day4text;
+    com.example.snosey.balto.Support.CustomTextView day4text;
     @InjectView(R.id.day5text)
-    TextView day5text;
+    com.example.snosey.balto.Support.CustomTextView day5text;
     @InjectView(R.id.day6text)
-    TextView day6text;
+    com.example.snosey.balto.Support.CustomTextView day6text;
     @InjectView(R.id.day7text)
-    TextView day7text;
-
+    com.example.snosey.balto.Support.CustomTextView day7text;
     AppCompatButton dayClick;
-    private GregorianCalendar currentDate;
+    private Calendar currentDate;
+    @InjectView(R.id.date)
+    com.example.snosey.balto.Support.CustomTextView date;
+    @InjectView(R.id.dateLL)
+    LinearLayout dateLL;
+    @InjectView(R.id.calenderLL)
+    LinearLayout calenderLL;
+    @InjectView(R.id.all)
+    Button all;
+    String day = "";
+    String month = "";
+    String year = "";
 
-    String day;
-    String month;
-    String year;
+
+    private Calendar nowPlus7 = Calendar.getInstance();
+    private Calendar now = Calendar.getInstance();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.reservation_list, container, false);
 
         ButterKnife.inject(this, view);
+
 
         reservationJsonArray = new JSONArray();
         reservationAdapter = new ReservationAdapter();
@@ -111,7 +126,50 @@ public class ReservationComing extends Fragment {
                 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         recyclerViewReservation.setLayoutManager(layoutManager);
         recyclerViewReservation.setAdapter(reservationAdapter);
-        setDate();
+        // setDate();
+
+        if (getArguments() != null && getArguments().containsKey(WebService.Booking.receive_day)) {
+            dayClick(day2);
+        }
+
+        nowPlus7.add(Calendar.DAY_OF_MONTH, 7);
+        dateLL.setVisibility(View.GONE);
+        calenderLL.setVisibility(View.VISIBLE);
+        date.setText(getActivity().getString(R.string.filter));
+        final Calendar cal = Calendar.getInstance();
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog dpd = DatePickerDialog.newInstance(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePickerDialog view, int year, int monthOfYear, int dayOfMonth) {
+                        cal.set(year, monthOfYear, dayOfMonth);
+                        SimpleDateFormat sdf = new SimpleDateFormat("EEE, MMM d, yyyy");
+                        date.setText(sdf.format(cal.getTime()));
+                        ReservationComing.this.day = addZeroToString(dayOfMonth + "");
+                        ReservationComing.this.month = addZeroToString((monthOfYear + 1) + "");
+                        ReservationComing.this.year = addZeroToString(year + "");
+                        getComingReservation();
+                    }
+                });
+                all.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        ReservationComing.this.day = "";
+                        ReservationComing.this.month = "";
+                        ReservationComing.this.year = "";
+                        getComingReservation();
+                    }
+                });
+
+                dpd.setMaxDate(nowPlus7);
+                dpd.setMinDate(now);
+                dpd.show(getActivity().getFragmentManager(), "");
+
+            }
+        });
+
+        getComingReservation();
         return view;
     }
 
@@ -119,11 +177,14 @@ public class ReservationComing extends Fragment {
         UrlData urlData = new UrlData();
         try {
             urlData.add(WebService.Booking.id_doctor, MainActivity.jsonObject.getString("id"));
-            urlData.add(WebService.Booking.lang, Locale.getDefault().getLanguage());
+            urlData.add(WebService.Booking.lang, RegistrationActivity.sharedPreferences.getString("lang", "en"));
             urlData.add(WebService.Booking.type, WebService.Booking.doctor);
-            urlData.add(WebService.Booking.receive_day, day);
-            urlData.add(WebService.Booking.receive_month, month);
-            urlData.add(WebService.Booking.receive_year, year);
+
+            if (!day.equals("")) {
+                urlData.add(WebService.Booking.receive_day, day);
+                urlData.add(WebService.Booking.receive_month, month);
+                urlData.add(WebService.Booking.receive_year, year);
+            }
 
             urlData.add(WebService.Booking.state, WebService.Booking.coming);
         } catch (JSONException e) {
@@ -164,13 +225,17 @@ public class ReservationComing extends Fragment {
             try {
 
                 final JSONObject reservationObject = reservationJsonArray.getJSONObject(position);
-                Calendar calendar = new GregorianCalendar();
-                final long currentTimeMillis = TimeUnit.HOURS.toMillis(calendar.get(Calendar.HOUR_OF_DAY)) + TimeUnit.MINUTES.toMillis(calendar.get(Calendar.MINUTE));
+                Calendar calendar = Calendar.getInstance();
 
+                final long currentTimeMillis = TimeUnit.HOURS.toMillis(calendar.get(Calendar.HOUR_OF_DAY)) +
+                        TimeUnit.DAYS.toMillis(calendar.get(Calendar.DAY_OF_MONTH)) + calendar.get(Calendar.DAY_OF_MONTH)
+                        + TimeUnit.MINUTES.toMillis(calendar.get(Calendar.MINUTE));
                 final long startTimeHour = TimeUnit.HOURS.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_hour)));
                 final long startTimeMin = TimeUnit.MINUTES.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_minutes)));
-                long duration = TimeUnit.MINUTES.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.duration)));
-                long bookTotal = startTimeHour + startTimeMin + duration;
+                final long duration = TimeUnit.MINUTES.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.duration)));
+                final long startDay = TimeUnit.DAYS.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_day))) +
+                        Long.parseLong(reservationObject.getString(WebService.Booking.receive_month));
+                final long bookTotal = startTimeHour + startTimeMin + duration + startDay;
 
 
                 holder.date.setText(reservationObject.getString(WebService.Booking.receive_hour) + ":" + reservationObject.getString(WebService.Booking.receive_minutes)
@@ -190,6 +255,7 @@ public class ReservationComing extends Fragment {
 
                 if (reservationObject.getString(WebService.Booking.id_doctor_kind).toString().equals(WebService.homeVisit)) {
                     holder.done.setVisibility(View.VISIBLE);
+                    holder.cancelOrStart.setVisibility(View.VISIBLE);
                     holder.arrive.setVisibility(View.VISIBLE);
                     holder.arrive.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -200,7 +266,7 @@ public class ReservationComing extends Fragment {
                                 alertDialogBuilder.setMessage(R.string.areYouSure).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         try {
-                                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateWorking, reservationObject.getString(WebService.Booking.id_client));
+                                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateWorking, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorArrive), reservationObject.getString(WebService.Booking.id_state));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -224,7 +290,7 @@ public class ReservationComing extends Fragment {
                                         try {
                                             getPercntageDoctor("", reservationObject.getString(WebService.Booking.id), reservationObject.getString(WebService.Booking.total_price),
                                                     reservationObject.getString(WebService.Booking.id_sub), reservationObject.getString(WebService.Booking.id_client), reservationObject.getString(WebService.Booking.id_payment_way));
-                                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client));
+                                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorFinished), reservationObject.getString(WebService.Booking.id_state));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -248,7 +314,7 @@ public class ReservationComing extends Fragment {
                                 alertDialogBuilder.setMessage(R.string.areYouSure).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         try {
-                                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateStart, reservationObject.getString(WebService.Booking.id_client));
+                                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateStart, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorStart), reservationObject.getString(WebService.Booking.id_state));
                                             String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)",
                                                     Double.parseDouble(reservationObject.getString(WebService.Booking.client_latitude))
                                                     , Double.parseDouble(reservationObject.getString(WebService.Booking.client_longitude)), "");
@@ -293,25 +359,55 @@ public class ReservationComing extends Fragment {
                     holder.arrive.setVisibility(View.GONE);
                     holder.done.setVisibility(View.GONE);
                     holder.cancelOrStart.setText(getActivity().getString(R.string.com_facebook_loginview_cancel_action));
+
+                    if (!reservationObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStateProcessing))
+                        holder.cancelOrStart.setVisibility(View.GONE);
+                    else
+                        holder.cancelOrStart.setVisibility(View.VISIBLE);
+
                     holder.cancelOrStart.setSupportBackgroundTintList(getActivity().getResources().getColorStateList(R.color.red));
                     holder.cancelOrStart.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.add(Calendar.HOUR, 1);
                             try {
-                                updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateCancel, reservationObject.getString(WebService.Booking.id_client));
+                                final long currentTimeMillis = TimeUnit.HOURS.toMillis(calendar.get(Calendar.HOUR_OF_DAY)) + TimeUnit.MINUTES.toMillis(calendar.get(Calendar.MINUTE));
+                                final long startTimeHour = TimeUnit.HOURS.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_hour)));
+                                final long startTimeMin;
+                                startTimeMin = TimeUnit.MINUTES.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_minutes)));
+                                if (addZeroToString(calendar.get(Calendar.DAY_OF_MONTH) + "").equals(reservationObject.getString(WebService.Booking.receive_day))) {
+                                    if (currentTimeMillis > startTimeHour + startTimeMin) {
+                                        Toast.makeText(getContext(), getActivity().getString(R.string.cantCancel), Toast.LENGTH_LONG).show();
+                                        return;
+                                    }
+                                }
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
+
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                            alertDialogBuilder.setTitle("").setMessage(getActivity().getString(R.string.areYouSure)).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    try {
+                                        updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDoctorCancel, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.reservationCancel), reservationObject.getString(WebService.Booking.id_state));
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }).setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                }
+                            }).show();
                         }
                     });
-                    if (currentTimeMillis >= bookTotal) {
-                        Calendar calendar1 = new GregorianCalendar();
-                        if (!addZeroToString(calendar1.get(Calendar.DAY_OF_MONTH) + "").equals(reservationObject.getString(WebService.Booking.receive_day)))
-                            return;
 
+                    if (currentTimeMillis >= bookTotal) {
                         Log.e("left:", currentTimeMillis + " / " + bookTotal);
-                        updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client));
-                        return;
+                        if (reservationObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStateProcessing))
+                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateTimeout, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorFinished), reservationObject.getString(WebService.Booking.id_state));
+                        else
+                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorFinished), reservationObject.getString(WebService.Booking.id_state));
                     }
 
                     holder.call.setImageResource(R.drawable.video_call);
@@ -319,18 +415,14 @@ public class ReservationComing extends Fragment {
                         @Override
                         public void onClick(View view) {
 
-                            Calendar calendar = new GregorianCalendar();
-                            try {
-                                final long currentTimeMillis = TimeUnit.HOURS.toMillis(calendar.get(Calendar.HOUR_OF_DAY)) + TimeUnit.MINUTES.toMillis(calendar.get(Calendar.MINUTE));
-                                final long startTimeHour = TimeUnit.HOURS.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_hour)));
-                                final long startTimeMin;
-                                startTimeMin = TimeUnit.MINUTES.toMillis(Long.parseLong(reservationObject.getString(WebService.Booking.receive_minutes)));
-                                if (currentTimeMillis < startTimeHour + startTimeMin) {
-                                    Toast.makeText(getContext(), getActivity().getString(R.string.waitToBookTime), Toast.LENGTH_LONG).show();
-                                    return;
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
+                            Calendar calendar = Calendar.getInstance();
+                            final long currentTimeMillis = TimeUnit.HOURS.toMillis(calendar.get(Calendar.HOUR_OF_DAY)) +
+                                    TimeUnit.DAYS.toMillis(calendar.get(Calendar.DAY_OF_MONTH)) + calendar.get(Calendar.DAY_OF_MONTH)
+                                    + TimeUnit.MINUTES.toMillis(calendar.get(Calendar.MINUTE));
+
+                            if (currentTimeMillis < bookTotal-duration) {
+                                Toast.makeText(getContext(), getActivity().getString(R.string.waitToBookTime), Toast.LENGTH_LONG).show();
+                                return;
                             }
 
 
@@ -403,16 +495,16 @@ public class ReservationComing extends Fragment {
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView firstName, date, kind, price;
+        public com.example.snosey.balto.Support.CustomTextView firstName, date, kind, price;
         public AppCompatButton cancelOrStart, done, arrive;
         public ImageView logo, call;
 
         public MyViewHolder(View v) {
             super(v);
-            firstName = (TextView) v.findViewById(R.id.firstName);
-            date = (TextView) v.findViewById(R.id.date);
-            kind = (TextView) v.findViewById(R.id.kind);
-            price = (TextView) v.findViewById(R.id.price);
+            firstName = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.firstName);
+            date = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.date);
+            kind = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.kind);
+            price = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.price);
             cancelOrStart = (AppCompatButton) v.findViewById(R.id.cancelOrStart);
             done = (AppCompatButton) v.findViewById(R.id.done);
             arrive = (AppCompatButton) v.findViewById(R.id.arrive);
@@ -431,7 +523,7 @@ public class ReservationComing extends Fragment {
             public void processFinish(String output) throws JSONException {
                 JSONObject jsonObject = new JSONObject(output);
                 int intTotalPrice = Integer.parseInt(totalPrice);
-                int adminPrice = intTotalPrice * Integer.parseInt(jsonObject.getString(WebService.Payment.online_percentage)) / 100;
+                int adminPrice = (int) (intTotalPrice * Double.parseDouble(jsonObject.getString(WebService.Payment.online_percentage)) / 100);
                 int doctorPrice = intTotalPrice - adminPrice;
                 addPaymentToDB(intTotalPrice, adminPrice, doctorPrice, "", id, idUser, paymentWay);
             }
@@ -457,22 +549,29 @@ public class ReservationComing extends Fragment {
         }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.addPayment, urlData.get());
     }
 
-    private void updateBooking(final String fcm_token, final String id, final String state, final String id_client) {
+    private void updateBooking(final String fcm_token, final String id, final String state, final String id_client, final String title, final String previousState) {
         UrlData urlData = new UrlData();
         urlData.add(WebService.Booking.id, id);
         urlData.add(WebService.Booking.id_state, state);
         new GetData(new GetData.AsyncResponse() {
             @Override
             public void processFinish(String output) throws JSONException {
-                if (state.equals(WebService.Booking.bookingStateDone)) {
-                    sendNotification(fcm_token, state, id + "|" + MainActivity.jsonObject.getString("id"));
+                JSONObject jsonObjectBooking = new JSONObject(output).getJSONObject("booking");
+                if (!previousState.equals(WebService.Booking.bookingStateProcessing) &&
+                        state.equals(WebService.Booking.bookingStateDone)) {
+                    getPercntageDoctor("", jsonObjectBooking.getString(WebService.Booking.id), jsonObjectBooking.getString(WebService.Booking.total_price),
+                            jsonObjectBooking.getString(WebService.Booking.id_sub), jsonObjectBooking.getString(WebService.Booking.id_client), jsonObjectBooking.getString(WebService.Booking.id_payment_way));
+
+                    checkIfCodeExist(jsonObjectBooking.getString(WebService.Booking.total_price), jsonObjectBooking.getString(WebService.Booking.id_coupon_client),
+                            jsonObjectBooking.getString(WebService.Booking.id_client));
+                    sendNotification(fcm_token, state, id + "|" + MainActivity.jsonObject.getString("id"), title);
                     {
                         RateDialog rateDialog = new RateDialog(getActivity(), id, id_client);
                         rateDialog.show();
                         rateDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
                             @Override
                             public void onDismiss(DialogInterface dialogInterface) {
-                             /*   Bundle bundle = new Bundle();
+                                Bundle bundle = new Bundle();
                                 bundle.putString(WebService.Booking.id, id);
                                 FragmentManager fm = getActivity().getSupportFragmentManager();
                                 MedicalReport fragment = new MedicalReport();
@@ -480,17 +579,60 @@ public class ReservationComing extends Fragment {
                                 fragment.setArguments(bundle);
                                 ft.replace(R.id.fragment, fragment, "MedicalReport");
                                 ft.addToBackStack("MedicalReport");
-                                ft.commit();*/
+                                ft.commit();
                             }
                         });
                     }
-                } else sendNotification(fcm_token, state, MainActivity.jsonObject.getString("id"));
+                } else if (!state.equals(WebService.Booking.bookingStateTimeout))
+                    sendNotification(fcm_token, state, MainActivity.jsonObject.getString("id"), title);
 
                 getComingReservation();
             }
         }, getActivity(), false).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, WebService.Booking.updateBookingApi, urlData.get());
     }
 
+    private void checkIfCodeExist(final String totalPrice, String id_coupon_client, final String idClient) {
+        if (id_coupon_client.equals("0"))
+            PAYNOW(totalPrice, idClient);
+        else {
+            UrlData urlData = new UrlData();
+            urlData.add(WebService.PromoCode.id, id_coupon_client);
+            new GetData(new GetData.AsyncResponse() {
+                @Override
+                public void processFinish(String output) throws JSONException {
+                    JSONObject jsonObjectCode = new JSONObject(output).getJSONObject("coupon");
+                    int price = Integer.parseInt(totalPrice) - (Integer.parseInt(totalPrice) * Integer.parseInt(jsonObjectCode.getString(WebService.PromoCode.discount))) / 100;
+                    PAYNOW(price + "", idClient);
+
+                }
+            }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.PromoCode.promoCodeCheckApi, urlData.get());
+        }
+    }
+
+    private void PAYNOW(final String latestPrice, String idClient) {
+        {
+            UrlData urlData = new UrlData();
+            urlData.add(WebService.Booking.id, idClient);
+            urlData.add(WebService.Setting.default_location, "");
+            new GetData(new GetData.AsyncResponse() {
+                @Override
+                public void processFinish(String output) throws JSONException {
+                    JSONObject jsonObject = new JSONObject(output).getJSONObject("user");
+                    try {
+
+                        Log.e("output", output);
+                        if (!jsonObject.getString("payment_token").equals("null") || !jsonObject.getString("payment_token").equals("")) {
+                            new MakePayMobApi(getActivity(), latestPrice + "00", ReservationComing.this, jsonObject.getString("payment_token"), WebService.Payment.payLive2);
+                        } else
+                            Toast.makeText(getActivity(), "Error in payment!", Toast.LENGTH_SHORT).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Setting.updateUserApi, urlData.get());
+        }
+    }
 
     @SuppressLint("RestrictedApi")
     @OnClick({R.id.day1, R.id.day2, R.id.day3, R.id.day4, R.id.day5, R.id.day6, R.id.day7})
@@ -501,7 +643,7 @@ public class ReservationComing extends Fragment {
         view.setBackgroundResource(R.drawable.circel);
         ((AppCompatButton) view).setSupportBackgroundTintList(getContext().getResources().getColorStateList(R.color.red));
 
-        currentDate = new GregorianCalendar();
+        currentDate = Calendar.getInstance();
 
         switch (view.getId()) {
             case R.id.day1:
@@ -545,7 +687,7 @@ public class ReservationComing extends Fragment {
     }
 
     private void setDate() {
-        Calendar date = new GregorianCalendar();
+        Calendar date = Calendar.getInstance();
 
         day1.setText(date.get(Calendar.DAY_OF_MONTH) + "");
         day1text.setText(android.text.format.DateFormat.format("EEE", date));
@@ -589,14 +731,14 @@ public class ReservationComing extends Fragment {
         return s;
     }
 
-    void sendNotification(String regId, String type, String doctor_id) {
+    void sendNotification(String regId, String type, String doctor_id, String title) {
         final UrlData urlData = new UrlData();
 
         urlData.add(WebService.Notification.reg_id, regId);
         urlData.add(WebService.Notification.data, doctor_id);
         urlData.add(WebService.Notification.kind, type);
-        urlData.add(WebService.Notification.message, "");
-        urlData.add(WebService.Notification.title, "");
+        urlData.add(WebService.Notification.message, " ");
+        urlData.add(WebService.Notification.title, title);
 
         new GetData(new GetData.AsyncResponse() {
             @Override

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/LinearLayoutCompat"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/LinearLayoutCompat"
     android:layout_margin="@dimen/margin_Small"
     android:background="@color/colorPrimary"
     android:orientation="vertical">
@@ -14,7 +15,7 @@
         android:orientation="horizontal">
 
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/timeFrom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,9 +24,9 @@
             android:gravity="center"
             android:padding="@dimen/margin_Medium"
             android:textColor="@color/white"
-            android:textSize="@dimen/text_Small" />
+            android:textSize="@dimen/text_VerySmall" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -36,7 +37,7 @@
             android:textSize="@dimen/text_Medium"
             android:textStyle="bold" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/timeTo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +45,8 @@
             android:layout_marginTop="@dimen/margin_Medium"
             android:gravity="center"
             android:padding="@dimen/margin_Medium"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_VerySmall" />
 
 
     </LinearLayout>
@@ -56,13 +58,13 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/margin_Small"
         android:background="@drawable/button_rounded"
-        android:backgroundTint="@color/black_8am2"
         android:text="@string/reservation2"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:backgroundTint="@color/black_8am2" />
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/bookedUp"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dimen_VerySmall"

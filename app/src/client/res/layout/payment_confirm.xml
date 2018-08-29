@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/dimen_Large"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
 
@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
@@ -19,11 +19,11 @@
             android:layout_marginStart="@dimen/margin_Medium"
             android:layout_marginTop="@dimen/margin_Medium"
             android:drawablePadding="@dimen/margin_Medium"
-            android:drawableStart="@drawable/money"
             android:gravity="center"
-            android:text="@string/estimatedFare" />
+            android:text="@string/estimatedFare"
+            app:drawableStartCompat="@drawable/money" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/estimatedFare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -33,7 +33,7 @@
     </RelativeLayout>
 
     <!-- time -->
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,11 +41,11 @@
         android:layout_marginStart="@dimen/margin_Medium"
         android:layout_marginTop="@dimen/margin_Medium"
         android:drawablePadding="@dimen/margin_Medium"
-        android:drawableStart="@drawable/time"
-        android:gravity="center"/>
+        android:gravity="center"
+        app:drawableStartCompat="@drawable/time" />
 
     <!-- payment way -->
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/paymentWay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,9 +53,20 @@
         android:layout_marginStart="@dimen/margin_Medium"
         android:layout_marginTop="@dimen/margin_Medium"
         android:drawablePadding="@dimen/margin_Medium"
-        android:drawableStart="@drawable/payment"
         android:gravity="center"
-        android:text="@string/credit" />
+        android:text="@string/credit"
+        app:drawableStartCompat="@drawable/payment" />
+
+    <com.example.snosey.balto.Support.CustomTextView
+        android:id="@+id/saved_card"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_Medium"
+        android:layout_marginStart="@dimen/margin_Medium"
+        android:layout_marginTop="@dimen/margin_Medium"
+        android:drawablePadding="@dimen/margin_Medium"
+        android:gravity="center"
+        android:textColor="@color/colorPrimary" />
 
 
     <!-- Line -->
@@ -63,10 +74,55 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_VerySmall"
-        app:srcCompat="@drawable/line"
-        android:tint="@color/colorPrimary" />
+        android:tint="@color/colorPrimary"
+        app:srcCompat="@drawable/line" />
+
+
+    <!-- Promo Code -->
+    <com.example.snosey.balto.Support.CustomTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_Large"
+        android:layout_marginStart="@dimen/margin_Medium"
+        android:layout_marginTop="@dimen/margin_Large"
+        android:text="@string/promoCodeRequest"
+        android:textColor="@color/black_8am2"
+        android:textSize="@dimen/text_Small" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/margin_Large"
+        android:layout_marginStart="@dimen/margin_Medium"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/promoCode"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight=".7"
+            android:hint="@string/optional"
+            android:textSize="@dimen/text_VerySmall"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/red"
+            app:backgroundTint="@color/red" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/confirmCode"
+            android:layout_width="0dp"
+            android:layout_height="29dp"
+            android:layout_gravity="center"
+            android:layout_weight=".3"
+            android:background="@drawable/button_rounded"
+            android:text="@string/confirm"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_VerySmall"
+            app:backgroundTint="@color/red" />
+    </LinearLayout>
 
     <!-- icon and text -->
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -81,7 +137,7 @@
             android:layout_marginTop="@dimen/margin_Medium"
             app:srcCompat="@drawable/logo_icon" />
 
-        <TextView
+        <com.example.snosey.balto.Support.CustomTextView
             android:id="@+id/doctorKind"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -100,8 +156,8 @@
         android:layout_gravity="center"
         android:layout_margin="@dimen/margin_Medium"
         android:background="@drawable/button_rounded"
-        android:backgroundTint="@color/colorPrimary"
         android:text="@string/confirm"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        app:backgroundTint="@color/colorPrimary" />
 
 </LinearLayout>

@@ -6,7 +6,7 @@
     android:background="@color/whiteDark"
     android:orientation="vertical">
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
@@ -34,7 +34,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="true"
+                android:clickable="true"  android:focusable="true"
                 android:orientation="vertical">
 
 
@@ -46,13 +46,13 @@
                     android:orientation="vertical">
 
 
-                    <TextView
+                    <com.example.snosey.balto.Support.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_Large"
                         android:layout_marginTop="@dimen/margin_Medium"
                         android:drawablePadding="@dimen/margin_Medium"
-                        android:drawableStart="@drawable/doctor"
+                        app:drawableStartCompat="@drawable/doctor"
                         android:gravity="center_vertical"
                         android:text="@string/specialization"
                         android:textColor="@color/white"
@@ -65,7 +65,7 @@
                         android:layout_marginBottom="@dimen/margin_Medium"
                         android:layout_marginEnd="@dimen/margin_Large"
                         android:layout_marginStart="@dimen/margin_Large"
-                        android:backgroundTint="@color/white"
+                        app:backgroundTint="@color/white"
                         android:popupBackground="@color/colorPrimary" />
 
 
@@ -79,13 +79,13 @@
                     android:orientation="vertical">
 
 
-                    <TextView
+                    <com.example.snosey.balto.Support.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_Large"
                         android:layout_marginTop="@dimen/margin_Medium"
                         android:drawablePadding="@dimen/margin_Medium"
-                        android:drawableStart="@drawable/doctor_icon"
+                        app:drawableStartCompat="@drawable/doctor_icon"
                         android:gravity="center_vertical"
                         android:text="@string/SubSpecialization"
                         android:textColor="@color/white"
@@ -99,7 +99,7 @@
                         android:layout_marginBottom="@dimen/margin_Medium"
                         android:layout_marginEnd="@dimen/margin_Large"
                         android:layout_marginStart="@dimen/margin_Large"
-                        android:backgroundTint="@color/white"
+                        app:backgroundTint="@color/white"
                         android:popupBackground="@color/colorPrimary" />
 
 
@@ -113,13 +113,13 @@
                     android:background="@drawable/button_rounded_stroked"
                     android:orientation="vertical">
 
-                    <TextView
+                    <com.example.snosey.balto.Support.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_Large"
                         android:layout_marginTop="@dimen/margin_Medium"
                         android:drawablePadding="@dimen/margin_Medium"
-                        android:drawableStart="@drawable/gender"
+                        app:drawableStartCompat="@drawable/gender"
                         android:gravity="center_vertical"
                         android:text="@string/gender"
                         android:textColor="@color/white"
@@ -132,7 +132,7 @@
                         android:layout_marginBottom="@dimen/margin_Medium"
                         android:layout_marginEnd="@dimen/margin_Large"
                         android:layout_marginStart="@dimen/margin_Large"
-                        android:backgroundTint="@color/white"
+                        app:backgroundTint="@color/white"
                         android:popupBackground="@color/colorPrimary" />
 
                 </LinearLayout>
@@ -145,13 +145,13 @@
                     android:background="@drawable/button_rounded_stroked"
                     android:orientation="vertical">
 
-                    <TextView
+                    <com.example.snosey.balto.Support.CustomTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/margin_Large"
                         android:layout_marginTop="@dimen/margin_Medium"
                         android:drawablePadding="@dimen/margin_Medium"
-                        android:drawableStart="@drawable/langauge"
+                        app:drawableStartCompat="@drawable/langauge"
                         android:gravity="center_vertical"
                         android:text="@string/lang"
                         android:textColor="@color/white"
@@ -164,7 +164,7 @@
                         android:layout_marginBottom="@dimen/margin_Medium"
                         android:layout_marginEnd="@dimen/margin_Large"
                         android:layout_marginStart="@dimen/margin_Large"
-                        android:backgroundTint="@color/white"
+                        app:backgroundTint="@color/white"
                         android:popupBackground="@color/colorPrimary" />
                 </LinearLayout>
 
@@ -175,7 +175,7 @@
                     android:background="@drawable/button_rounded_stroked"
                     android:orientation="vertical">
 
-                    <EditText
+                    <android.support.v7.widget.AppCompatEditText
                         android:id="@+id/doctorName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -183,9 +183,9 @@
                         android:layout_marginEnd="@dimen/margin_Large"
                         android:layout_marginStart="@dimen/margin_Large"
                         android:layout_marginTop="@dimen/margin_Medium"
-                        android:backgroundTint="@color/white"
+                        app:backgroundTint="@color/white"
                         android:drawablePadding="@dimen/margin_Medium"
-                        android:drawableStart="@drawable/edit"
+                        app:drawableStartCompat="@drawable/edit"
                         android:gravity="center_vertical"
                         android:hint="@string/doctorName"
                         android:inputType="textEmailAddress"
@@ -204,7 +204,7 @@
                     android:background="@drawable/button_rounded_stroked"
                     android:orientation="vertical">
 
-                    <TextView
+                    <com.example.snosey.balto.Support.CustomTextView
                         android:id="@+id/date"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -213,7 +213,7 @@
                         android:layout_marginStart="@dimen/margin_Large"
                         android:layout_marginTop="@dimen/margin_Medium"
                         android:drawablePadding="@dimen/margin_Medium"
-                        android:drawableStart="@drawable/agenda"
+                        app:drawableStartCompat="@drawable/agenda"
                         android:gravity="center_vertical"
                         android:text="@string/chooseDate"
                         android:textColor="@color/white"
@@ -229,7 +229,7 @@
                     android:layout_gravity="end"
                     android:layout_margin="@dimen/margin_Medium"
                     android:background="@drawable/circel"
-                    android:backgroundTint="@color/red"
+                    app:backgroundTint="@color/red"
                     app:srcCompat="@drawable/search"
                     android:tint="@color/white" />
 

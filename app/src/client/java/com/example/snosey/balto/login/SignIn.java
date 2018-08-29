@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.snosey.balto.MainActivity;
@@ -66,6 +67,7 @@ public class SignIn extends Fragment {
         View view = inflater.inflate(R.layout.sign_in, container, false);
         ButterKnife.inject(this, view);
 
+
         sharedPreferences = getActivity().getSharedPreferences("login_client", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
 
@@ -98,7 +100,17 @@ public class SignIn extends Fragment {
             }
 
         });
+
+
         return view;
+    }
+
+    private void closeKeyboard() {
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
     }
 
     private void check_Username_Password(final String email, final String password) {
@@ -113,13 +125,16 @@ public class SignIn extends Fragment {
             public void processFinish(String output) {
                 if (output.contains("false")) {
                     Toast.makeText(getActivity(), getActivity().getString(R.string.wrongEmailOrPassword), Toast.LENGTH_SHORT).show();
+                    ((ImageView)getActivity().findViewById(R.id.background)).setVisibility(View.GONE);
+                    editor.clear();
+                    editor.commit();
                 } else {
                     try {
                         editor.putString("email", email);
                         editor.putString("password", password);
                         editor.putString("type", "email");
                         editor.commit();
-
+                        closeKeyboard();
                         startNewActivity(new JSONObject(output).getJSONObject("user").toString());
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -127,8 +142,7 @@ public class SignIn extends Fragment {
                 }
             }
         }, getActivity(), true).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, WebService.Login.loginApi, urlData.get());
-
-
+        closeKeyboard();
     }
 
     private void startNewActivity(String json) {
@@ -165,6 +179,9 @@ public class SignIn extends Fragment {
                         UrlData urlData = new UrlData();
                         urlData.add("type", "client");
                         urlData.add(WebService.Login.id_provider, profile.getId());
+
+                        if (!(getArguments() != null && getArguments().containsKey("auto")))
+
                         urlData.add(WebService.Login.fcm_token, FirebaseInstanceId.getInstance().getToken());
                         new GetData(new GetData.AsyncResponse() {
                             @Override
@@ -242,6 +259,8 @@ public class SignIn extends Fragment {
                         accountObject.lastName = (profile.getLastName());
 
                         try {
+                            Log.e("graph", object.toString());
+                            accountObject.gender = ("1");
                             if (object.getString("gender").equals("male") || object.getString("gender").equals("ذكر"))
                                 accountObject.gender = ("1");
                             else
@@ -251,6 +270,7 @@ public class SignIn extends Fragment {
                         }
 
                         accountObject.id_provider = (profile.getId());
+                        accountObject.email = "facebook@gmail.com";
                         accountObject.provider_kind = ("facebook");
                         accountObject.logo = ("https://graph.facebook.com/" + profile.getId() + "/picture?type=large");
                         accountObject.type = (WebService.SignUp.typeClient);

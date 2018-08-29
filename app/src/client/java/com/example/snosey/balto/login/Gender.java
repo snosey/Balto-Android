@@ -1,5 +1,6 @@
 package com.example.snosey.balto.login;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,14 +16,13 @@ import android.widget.TextView;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.WebService;
-import com.example.snosey.balto.login.NewAccountObject;
 import com.example.snosey.balto.login.create_account.CustomeAdapter;
 import com.example.snosey.balto.login.create_account.Email;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Locale;
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by Snosey on 1/31/2018.
@@ -38,7 +38,9 @@ public class Gender extends Fragment {
         next = (ImageButton) view.findViewById(R.id.next);
         spinner = (Spinner) view.findViewById(R.id.spinner);
         String kind = "";
-        if (Locale.getDefault().getLanguage().equals("ar"))
+        SharedPreferences sharedPreferences;
+        sharedPreferences = getActivity().getSharedPreferences("login_client", MODE_PRIVATE);
+        if (sharedPreferences.getString("lang", "en").equals("ar"))
             kind = WebService.SignUp.getDataApiAr;
         else kind = WebService.SignUp.getDataApiEn;
 
@@ -54,7 +56,7 @@ public class Gender extends Fragment {
                         public void onClick(View view) {
                             Bundle bundle = new Bundle();
                             NewAccountObject accountObject = (NewAccountObject) getArguments().getSerializable("object");
-                            TextView gender = (TextView) spinner.getSelectedView();
+                            com.example.snosey.balto.Support.CustomTextView gender = (com.example.snosey.balto.Support.CustomTextView) spinner.getSelectedView();
                             accountObject.gender = gender.getTag().toString();
                             bundle.putString("json", output);
                             bundle.putSerializable("object", accountObject);

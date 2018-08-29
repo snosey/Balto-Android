@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary"
-    android:clickable="true"
+    android:clickable="true"  android:focusable="true"
     android:orientation="vertical">
 
 
@@ -23,17 +23,19 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.AppCompatImageButton
+    <android.support.v7.widget.AppCompatImageView
         android:layout_width="@dimen/dimen_VerySmall"
         android:layout_height="@dimen/dimen_VerySmall"
         android:layout_alignParentStart="true"
         android:layout_margin="@dimen/margin_Medium"
         android:background="@android:color/transparent"
-        android:onClick="back"
+
+        android:visibility="invisible"
+        android:clickable="true"  android:focusable="true"
         app:srcCompat="@drawable/back" />
 
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_Medium"
@@ -43,7 +45,7 @@
         android:textColor="@color/white"
         android:textSize="@dimen/text_Large" />
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_Large"
@@ -57,7 +59,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <TextView
+        <com.hbb20.CountryCodePicker
+            android:id="@+id/countryPicker"
+            android:layout_width="wrap_content"
+            app:ccp_contentColor="@color/white"
+            app:ccp_defaultNameCode="EG"
+            android:layout_height="wrap_content"/>
+        <com.example.snosey.balto.Support.CustomTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_Large"
@@ -65,12 +73,12 @@
             android:text="+2"
             android:textColor="@color/white" />
 
-        <EditText
+        <android.support.v7.widget.AppCompatEditText
             android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/margin_Large"
-            android:backgroundTint="@color/white"
+            app:backgroundTint="@color/white"
             android:textCursorDrawable="@null"
             android:inputType="phone"
             android:textColor="@color/white" />

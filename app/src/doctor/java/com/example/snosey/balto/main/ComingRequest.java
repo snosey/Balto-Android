@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.snosey.balto.MainActivity;
@@ -28,13 +27,13 @@ import com.example.snosey.balto.Support.notification.NotifyService;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.login.RegistrationActivity;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.Locale;
 
 import butterknife.ButterKnife;
@@ -50,34 +49,34 @@ public class ComingRequest extends Fragment {
     @InjectView(R.id.logo)
     ImageView logo;
     @InjectView(R.id.clientName)
-    TextView clientName;
+    com.example.snosey.balto.Support.CustomTextView clientName;
     @InjectView(R.id.clientRate)
-    TextView clientRate;
+    com.example.snosey.balto.Support.CustomTextView clientRate;
     @InjectView(R.id.requestDescription)
-    TextView requestDescription;
+    com.example.snosey.balto.Support.CustomTextView requestDescription;
     @InjectView(R.id.visitDate)
-    TextView visitDate;
+    com.example.snosey.balto.Support.CustomTextView visitDate;
     @InjectView(R.id.details)
-    TextView details;
+    com.example.snosey.balto.Support.CustomTextView details;
     @InjectView(R.id.estimatedFare)
-    TextView estimatedFare;
+    com.example.snosey.balto.Support.CustomTextView estimatedFare;
     @InjectView(R.id.paymentWay)
-    TextView paymentWay;
+    com.example.snosey.balto.Support.CustomTextView paymentWay;
 
     @InjectView(R.id.clientAddress)
-    TextView clientAddress;
+    com.example.snosey.balto.Support.CustomTextView clientAddress;
 
     @InjectView(R.id.durationLayout)
     RelativeLayout durationLayout;
 
     @InjectView(R.id.serviceDuration)
-    TextView serviceDuration;
+    com.example.snosey.balto.Support.CustomTextView serviceDuration;
 
     @InjectView(R.id.accept)
     Button accept;
 
     @InjectView(R.id.cancel)
-    TextView cancel;
+    com.example.snosey.balto.Support.CustomTextView cancel;
     private String receive_hour, receive_minutes, receive_day, receive_year, receive_month;
 
 
@@ -91,7 +90,7 @@ public class ComingRequest extends Fragment {
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.right_icon)).setVisibility(View.GONE);
 
         final UrlData urlData = new UrlData();
-        urlData.add(WebService.Booking.type, Locale.getDefault().getLanguage());
+        urlData.add(WebService.Booking.type, RegistrationActivity.sharedPreferences.getString("lang", "en"));
         urlData.add(WebService.Booking.id_booking, getArguments().getString(WebService.Booking.id));
 
         new GetData(new GetData.AsyncResponse() {
@@ -197,7 +196,7 @@ public class ComingRequest extends Fragment {
                 //check if booking still available or no
                 {
                     final UrlData urlData = new UrlData();
-                    urlData.add(WebService.Booking.type, Locale.getDefault().getLanguage());
+                    urlData.add(WebService.Booking.type, RegistrationActivity.sharedPreferences.getString("lang", "en"));
                     urlData.add(WebService.Booking.id_booking, getArguments().getString(WebService.Booking.id));
                     new GetData(new GetData.AsyncResponse() {
                         @Override
@@ -236,7 +235,8 @@ public class ComingRequest extends Fragment {
             @Override
             public void processFinish(String output) {
                 if (output.contains("true")) {
-                    saveAlarm(Integer.parseInt(receive_year), Integer.parseInt(receive_month), Integer.parseInt(receive_day), Integer.parseInt(receive_hour), Integer.parseInt(receive_minutes));
+                    saveAlarm15Min(Integer.parseInt(receive_year), Integer.parseInt(receive_month), Integer.parseInt(receive_day), Integer.parseInt(receive_hour), Integer.parseInt(receive_minutes), Integer.parseInt(getArguments().getString(WebService.Booking.id)) + 15);
+                    saveAlarmNow(Integer.parseInt(receive_year), Integer.parseInt(receive_month), Integer.parseInt(receive_day), Integer.parseInt(receive_hour), Integer.parseInt(receive_minutes), Integer.parseInt(getArguments().getString(WebService.Booking.id)) + 15);
                     getActivity().onBackPressed();
                     //   sendNotification(booking.getString(WebService.Booking.fcm_token), getArguments().getString(WebService.Booking.id));
                 }
@@ -245,22 +245,20 @@ public class ComingRequest extends Fragment {
 
     }
 
+    private void saveAlarm15Min(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minute, int bookingId) {
 
-    private void saveAlarm(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minute) {
 
-
-        Calendar now = new GregorianCalendar();
-        Calendar calendar = new GregorianCalendar();
+        Calendar now = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
         calendar.set(year, monthOfYear, dayOfMonth, hourOfDay, minute);
         calendar.add(Calendar.MINUTE, -15);
+        calendar.add(Calendar.MONTH, -1);
 
-        if (now.getTime().getTime() > calendar.getTime().getTime())
+        if (now.getTimeInMillis() > calendar.getTimeInMillis())
             return;
-//        long delay = SystemClock.elapsedRealtime() + (calendar.getTimeInMillis() - now.getTimeInMillis());
 
         Log.e("Save Alarm", calendar.getTime().toString());
 
-        // Enable a receiver
         ComponentName receiver = new ComponentName(getActivity(), NotifyService.class);
         PackageManager pm = getActivity().getPackageManager();
         pm.setComponentEnabledSetting(receiver,
@@ -268,22 +266,57 @@ public class ComingRequest extends Fragment {
                 PackageManager.DONT_KILL_APP);
 
         Intent intent1 = new Intent(getActivity(), NotifyService.class);
+        intent1.putExtra("now", false);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),
-                22, intent1,
+                bookingId, intent1,
                 PendingIntent.FLAG_UPDATE_CURRENT);
         AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
         am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY, pendingIntent);
+                0, pendingIntent);
+
+
+    }
+
+    private void saveAlarmNow(int year, int monthOfYear, int dayOfMonth, int hourOfDay, int minute, int bookingId) {
+
+
+        Calendar now = Calendar.getInstance();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, monthOfYear, dayOfMonth, hourOfDay, minute);
+        calendar.add(Calendar.MONTH, -1);
+
+        if (now.getTimeInMillis() > calendar.getTimeInMillis())
+            return;
+
+        Log.e("Save Alarm", calendar.getTime().toString());
+
+        ComponentName receiver = new ComponentName(getActivity(), NotifyService.class);
+        PackageManager pm = getActivity().getPackageManager();
+        pm.setComponentEnabledSetting(receiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        Intent intent1 = new Intent(getActivity(), NotifyService.class);
+        intent1.putExtra("now", true);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(),
+                bookingId, intent1,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) getActivity().getSystemService(ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                0, pendingIntent);
+
 
     }
 
 
     private void sendNotification(String fcm_token, String bookingId) {
+        if (true)
+            return;
         UrlData urlData = new UrlData();
         urlData.add(WebService.Notification.data, bookingId);
         urlData.add(WebService.Notification.kind, WebService.Notification.Types.acceptRequestHomeVisit);
-        urlData.add(WebService.Notification.message, "");
-        urlData.add(WebService.Notification.title, "");
+        urlData.add(WebService.Notification.message, " ");
+        urlData.add(WebService.Notification.title, "Accept Request");
         urlData.add(WebService.Notification.reg_id, fcm_token);
         new GetData(new GetData.AsyncResponse() {
             @Override

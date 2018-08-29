@@ -1,4 +1,4 @@
-package com.example.snosey.balto.main.payment;
+package com.example.snosey.balto.payment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,6 @@ import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
-import android.widget.TextView;
 
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
@@ -48,7 +47,11 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
     @InjectView(R.id.credit)
     RadioButton credit;
     @InjectView(R.id.addEditCredit)
-    TextView addEditCredit;
+    com.example.snosey.balto.Support.CustomTextView addEditCredit;
+
+    @InjectView(R.id.saved_card)
+    com.example.snosey.balto.Support.CustomTextView saved_card;
+
     @InjectView(R.id.next)
     ImageButton next;
 
@@ -64,6 +67,20 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.VISIBLE);
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
 
+
+        try {
+            if (!MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("") && !MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("null")) {
+                saved_card.setText(MainActivity.jsonObject.getString(WebService.Login.card_number));
+                if (MainActivity.jsonObject.getString(WebService.Login.card_type).equals("MasterCard"))
+                    saved_card.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.master_card, 0, 0, 0);
+                else
+                    saved_card.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.visa, 0, 0, 0);
+
+            } else
+                saved_card.setVisibility(View.GONE);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         sharedPreferences = getActivity().getSharedPreferences("payment", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
@@ -89,7 +106,7 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
                             joinAgain = true;
                         }
                     }, 5000);
-                    new MakePayMobApi(getActivity(), "100", PaymentSlider.this, "", "925");
+                    new MakePayMobApi(getActivity(), "100", PaymentSlider.this, "", WebService.Payment.payLive1);
                 }
 
             }
@@ -110,7 +127,7 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
                 if (b) {
                     try {
                         if (MainActivity.jsonObject.getString("payment_token").equals("null") || MainActivity.jsonObject.getString("payment_token").equals("")) {
-                            new MakePayMobApi(getActivity(), "100", PaymentSlider.this, "", "925");
+                            new MakePayMobApi(getActivity(), "100", PaymentSlider.this, "", WebService.Payment.payLive1);
                         } else {
                             editor.putString(WebService.Credit.paymentWay, WebService.Credit.credit);
                             editor.commit();
@@ -126,7 +143,16 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().onBackPressed();
+                if (joinAgain) {
+                    joinAgain = false;
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            joinAgain = true;
+                        }
+                    }, 5000);
+                    new MakePayMobApi(getActivity(), "100", PaymentSlider.this, "", WebService.Payment.payLive1);
+                }
             }
         });
         return view;
@@ -183,7 +209,16 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
 
                 // ToastMaker.displayShortToast(getActivity(), extras.getString(IntentConstants.RAW_PAY_RESPONSE));
             } else if (resultCode == IntentConstants.TRANSACTION_SUCCESSFUL_CARD_SAVED) {
-                saveCard(extras.getString(SaveCardResponseKeys.TOKEN));
+                saveCard(extras.getString(SaveCardResponseKeys.TOKEN), extras.getString(SaveCardResponseKeys.CARD_SUBTYPE), extras.getString(SaveCardResponseKeys.MASKED_PAN));
+                {
+                    saved_card.setText(extras.getString(SaveCardResponseKeys.MASKED_PAN));
+                    if (extras.getString(SaveCardResponseKeys.MASKED_PAN).equals("MasterCard"))
+                        saved_card.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.master_card, 0, 0, 0);
+                    else
+                        saved_card.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.visa, 0, 0, 0);
+
+                }
+                getActivity().onBackPressed();
             } else if (resultCode == IntentConstants.USER_CANCELED_3D_SECURE_VERIFICATION) {
                 ToastMaker.displayShortToast(getActivity(), "User canceled 3-d scure verification!!");
 
@@ -200,9 +235,11 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
         }
     }
 
-    private void saveCard(String token) {
+    private void saveCard(String token, final String type, final String number) {
         UrlData urlData = new UrlData();
         urlData.add("payment_token", token);
+        urlData.add(WebService.Login.card_number, number);
+        urlData.add(WebService.Login.card_type, type);
         try {
             urlData.add("id", MainActivity.jsonObject.getString("id"));
         } catch (JSONException e) {
@@ -213,6 +250,8 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
             public void processFinish(String output) throws JSONException {
                 JSONObject jsonObject = new JSONObject(output);
                 MainActivity.jsonObject.put("payment_token", jsonObject.getJSONObject("user").getString("payment_token"));
+                MainActivity.jsonObject.put(WebService.Login.card_type, type);
+                MainActivity.jsonObject.put(WebService.Login.card_number, number);
                 ToastMaker.displayShortToast(getActivity(), "Saved");
             }
         }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Setting.updateUserApi, urlData.get());

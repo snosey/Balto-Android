@@ -64,7 +64,7 @@ public class ProfissionLocation extends Fragment {
     ImageView markerIcon;
 
     @InjectView(R.id.confirmService)
-    ImageView confirmService;
+    com.example.snosey.balto.Support.CustomTextView confirmService;
 
     private Geocoder geocoder;
     private int mInterval = 10000; // 5 seconds by default, can be changed later
@@ -110,7 +110,7 @@ public class ProfissionLocation extends Fragment {
                 setLocation(Double.parseDouble(jsonObject.getString(WebService.Location.latitude)),
                         Double.parseDouble(jsonObject.getString(WebService.Location.longitude)));
             }
-        }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.getUserLocation, urlData.get());
+        }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.getUserLocationApi, urlData.get());
     }
 
     private void setLocation(double lat, double lng) {

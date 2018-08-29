@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ElBalto Doctor</string>
+    <string name="app_name">Doctor ElBalto</string>
     <string name="accept">Accept</string>
     <string name="visitData">The date of the visit</string>
     <string name="newAgenda">Add a new appointment</string>
     <string name="wrongAppoinment">The appointment is not available</string>
     <string name="FromTo">From - To</string>
-    <string name="min20">Available time can\'t be less than 20 min</string>
+    <string name="min20">Available time can\'t be less than 60 min</string>
     <string name="moneyForYou">Money for you : </string>
     <string name="moneyOnYou">Outstanding:  </string>
     <string name="dueTo">Due by : </string>

@@ -16,7 +16,7 @@
         android:layout_marginBottom="@dimen/margin_Medium"
         android:layout_marginTop="@dimen/margin_Medium"/>
 
-    <TextView
+    <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
