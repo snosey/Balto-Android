@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/whiteDark"
     android:orientation="vertical">
 
@@ -34,7 +34,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clickable="true"  android:focusable="true"
+                android:clickable="true"
+                android:focusable="true"
                 android:orientation="vertical">
 
 
@@ -52,11 +53,11 @@
                         android:layout_marginStart="@dimen/margin_Large"
                         android:layout_marginTop="@dimen/margin_Medium"
                         android:drawablePadding="@dimen/margin_Medium"
-                        app:drawableStartCompat="@drawable/doctor"
                         android:gravity="center_vertical"
                         android:text="@string/specialization"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/text_Medium" />
+                        android:textSize="@dimen/text_Medium"
+                        app:drawableStartCompat="@drawable/doctor" />
 
                     <Spinner
                         android:id="@+id/secondCategory"
@@ -65,8 +66,8 @@
                         android:layout_marginBottom="@dimen/margin_Medium"
                         android:layout_marginEnd="@dimen/margin_Large"
                         android:layout_marginStart="@dimen/margin_Large"
-                        app:backgroundTint="@color/white"
-                        android:popupBackground="@color/colorPrimary" />
+                        android:popupBackground="@color/colorPrimary"
+                        app:backgroundTint="@color/white" />
 
 
                 </LinearLayout>
@@ -85,12 +86,12 @@
                         android:layout_marginStart="@dimen/margin_Large"
                         android:layout_marginTop="@dimen/margin_Medium"
                         android:drawablePadding="@dimen/margin_Medium"
-                        app:drawableStartCompat="@drawable/doctor_icon"
                         android:gravity="center_vertical"
                         android:text="@string/SubSpecialization"
                         android:textColor="@color/white"
                         android:textSize="@dimen/text_Medium"
-                        android:visibility="visible" />
+                        android:visibility="visible"
+                        app:drawableStartCompat="@drawable/doctor_icon" />
 
                     <Spinner
                         android:id="@+id/thirdCategory"
@@ -99,8 +100,8 @@
                         android:layout_marginBottom="@dimen/margin_Medium"
                         android:layout_marginEnd="@dimen/margin_Large"
                         android:layout_marginStart="@dimen/margin_Large"
-                        app:backgroundTint="@color/white"
-                        android:popupBackground="@color/colorPrimary" />
+                        android:popupBackground="@color/colorPrimary"
+                        app:backgroundTint="@color/white" />
 
 
                 </LinearLayout>
@@ -119,11 +120,11 @@
                         android:layout_marginStart="@dimen/margin_Large"
                         android:layout_marginTop="@dimen/margin_Medium"
                         android:drawablePadding="@dimen/margin_Medium"
-                        app:drawableStartCompat="@drawable/gender"
                         android:gravity="center_vertical"
                         android:text="@string/gender"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/text_Medium" />
+                        android:textSize="@dimen/text_Medium"
+                        app:drawableStartCompat="@drawable/gender" />
 
                     <Spinner
                         android:id="@+id/gender"
@@ -132,8 +133,8 @@
                         android:layout_marginBottom="@dimen/margin_Medium"
                         android:layout_marginEnd="@dimen/margin_Large"
                         android:layout_marginStart="@dimen/margin_Large"
-                        app:backgroundTint="@color/white"
-                        android:popupBackground="@color/colorPrimary" />
+                        android:popupBackground="@color/colorPrimary"
+                        app:backgroundTint="@color/white" />
 
                 </LinearLayout>
 
@@ -151,11 +152,11 @@
                         android:layout_marginStart="@dimen/margin_Large"
                         android:layout_marginTop="@dimen/margin_Medium"
                         android:drawablePadding="@dimen/margin_Medium"
-                        app:drawableStartCompat="@drawable/langauge"
                         android:gravity="center_vertical"
                         android:text="@string/lang"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/text_Medium" />
+                        android:textSize="@dimen/text_Medium"
+                        app:drawableStartCompat="@drawable/langauge" />
 
                     <Spinner
                         android:id="@+id/language"
@@ -164,7 +165,7 @@
                         android:layout_marginBottom="@dimen/margin_Medium"
                         android:layout_marginEnd="@dimen/margin_Large"
                         android:layout_marginStart="@dimen/margin_Large"
-                        app:backgroundTint="@color/white"
+                        android:backgroundTint="@color/white"
                         android:popupBackground="@color/colorPrimary" />
                 </LinearLayout>
 
@@ -183,15 +184,15 @@
                         android:layout_marginEnd="@dimen/margin_Large"
                         android:layout_marginStart="@dimen/margin_Large"
                         android:layout_marginTop="@dimen/margin_Medium"
-                        app:backgroundTint="@color/white"
                         android:drawablePadding="@dimen/margin_Medium"
-                        app:drawableStartCompat="@drawable/edit"
                         android:gravity="center_vertical"
                         android:hint="@string/doctorName"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/white"
                         android:textColorHint="@color/whiteDark"
-                        android:textSize="@dimen/text_Medium" />
+                        android:textSize="@dimen/text_Medium"
+                        app:backgroundTint="@color/white"
+                        app:drawableStartCompat="@drawable/edit" />
 
 
                 </LinearLayout>
@@ -202,7 +203,18 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margin_Medium"
                     android:background="@drawable/button_rounded_stroked"
-                    android:orientation="vertical">
+                    android:layoutDirection="rtl"
+                    android:orientation="horizontal">
+
+                    <com.example.snosey.balto.Support.CustomTextView
+                        android:id="@+id/clear"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:text="Clear"
+                        android:textColor="@color/white"
+                        android:visibility="gone" />
 
                     <com.example.snosey.balto.Support.CustomTextView
                         android:id="@+id/date"
@@ -213,11 +225,11 @@
                         android:layout_marginStart="@dimen/margin_Large"
                         android:layout_marginTop="@dimen/margin_Medium"
                         android:drawablePadding="@dimen/margin_Medium"
-                        app:drawableStartCompat="@drawable/agenda"
-                        android:gravity="center_vertical"
+                        android:gravity="center_vertical|start"
                         android:text="@string/chooseDate"
                         android:textColor="@color/white"
-                        android:textSize="@dimen/text_Medium" />
+                        android:textSize="@dimen/text_Medium"
+                        app:drawableEndCompat="@drawable/agenda" />
 
                 </LinearLayout>
 
@@ -229,9 +241,9 @@
                     android:layout_gravity="end"
                     android:layout_margin="@dimen/margin_Medium"
                     android:background="@drawable/circel"
+                    android:tint="@color/white"
                     app:backgroundTint="@color/red"
-                    app:srcCompat="@drawable/search"
-                    android:tint="@color/white" />
+                    app:srcCompat="@drawable/search" />
 
             </LinearLayout>
         </LinearLayout>

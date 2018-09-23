@@ -13,8 +13,5 @@
     <string name="spokenLangauge">Spoken Language</string>
     <string name="arrive">Arrive</string>
     <string name="cashReceived">Cash Received: </string>
-    <string name="transactionNumber"># of transactions:</string>
-    <string name="balance">Balance: </string>
     <string name="pending">Pending: </string>
-    <string name="Settled">Total Amount: </string>
 </resources>

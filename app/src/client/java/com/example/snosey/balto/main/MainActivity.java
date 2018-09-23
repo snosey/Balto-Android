@@ -44,8 +44,8 @@ import com.example.snosey.balto.main.ClientProfile;
 import com.example.snosey.balto.main.Help;
 import com.example.snosey.balto.main.HomeAndOnline;
 import com.example.snosey.balto.main.Promotions;
+import com.example.snosey.balto.main.Wallet;
 import com.example.snosey.balto.main.reservation.Reservations;
-import com.example.snosey.balto.payment.PaymentSlider;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -384,10 +384,10 @@ public class MainActivity extends FragmentActivity {
         if (myFragment == null || !myFragment.isVisible()) {
 
             FragmentManager fm = getSupportFragmentManager();
-            PaymentSlider fragment = new PaymentSlider();
+            Wallet fragment = new Wallet();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.fragment, fragment, "payment");
-            ft.addToBackStack("payment");
+            ft.replace(R.id.fragment, fragment, "Wallet");
+            ft.addToBackStack("Wallet");
             ft.commit();
         }
 

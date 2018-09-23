@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,7 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -222,6 +222,7 @@ public class Coming extends Fragment {
             return new MyViewHolder(view);
         }
 
+        @SuppressLint("RestrictedApi")
         @Override
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             try {
@@ -364,6 +365,9 @@ public class Coming extends Fragment {
                         holder.cancel.setVisibility(View.VISIBLE);
                     holder.tracking.setVisibility(View.GONE);
 
+                    if (currentTimeMillis < bookTotal - duration || reservationObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStateProcessing))
+                        holder.call.setSupportImageTintList(getActivity().getResources().getColorStateList(R.color.silver));
+
                     if (currentTimeMillis >= bookTotal) {
                         Log.e("left:", currentTimeMillis + " / " + bookTotal);
                         moveToPast(reservationObject.getString(WebService.Booking.id),
@@ -372,6 +376,7 @@ public class Coming extends Fragment {
                                 reservationObject.getString(WebService.Booking.id_state));
                         return;
                     }
+
                     holder.call.setImageResource(R.drawable.video_call);
                     holder.call.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -463,7 +468,7 @@ public class Coming extends Fragment {
 
         public com.example.snosey.balto.Support.CustomTextView firstName, date, kind, type, cancel;
         public Button tracking;
-        public ImageView logo, call;
+        public AppCompatImageView logo, call;
 
         public MyViewHolder(View v) {
             super(v);
@@ -473,8 +478,8 @@ public class Coming extends Fragment {
             date = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.date);
             kind = (com.example.snosey.balto.Support.CustomTextView) v.findViewById(R.id.kind);
             tracking = (Button) v.findViewById(R.id.track);
-            call = (ImageView) v.findViewById(R.id.call);
-            logo = (ImageView) v.findViewById(R.id.logo);
+            call = (AppCompatImageView) v.findViewById(R.id.call);
+            logo = (AppCompatImageView) v.findViewById(R.id.logo);
         }
     }
 
@@ -652,7 +657,8 @@ public class Coming extends Fragment {
 
                 // String finalPrice = price.getText().toString().substring(0, price.getText().toString().indexOf(" ")) + "00";
                 if (!MainActivity.jsonObject.getString("payment_token").equals("null") || !MainActivity.jsonObject.getString("payment_token").equals("")) {
-                    new MakePayMobApi(getActivity(), latestPrice + "00", Coming.this, MainActivity.jsonObject.getString("payment_token"), WebService.Payment.payLive2);
+                    new MakePayMobApi(getActivity(), latestPrice + "00", Coming.this, MainActivity.jsonObject.getString("payment_token"),
+                            WebService.Payment.payLive2, WebService.Booking.credit);
                 } else {
                     FragmentManager fm = getActivity().getSupportFragmentManager();
                     PaymentSlider fragment = new PaymentSlider();

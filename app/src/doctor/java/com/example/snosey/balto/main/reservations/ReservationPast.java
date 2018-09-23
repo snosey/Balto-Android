@@ -1,6 +1,5 @@
 package com.example.snosey.balto.main.reservations;
 
-import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.graphics.Paint;
 import android.graphics.Typeface;
@@ -195,10 +194,25 @@ public class ReservationPast extends Fragment {
                     holder.rate.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                            android.support.v7.app.AlertDialog.Builder alertDialogBuilder = new android.support.v7.app.AlertDialog.Builder(getContext());
                             try {
                                 alertDialogBuilder.setMessage(reservationObject.getString(WebService.Booking.review)).setPositiveButton(R.string.mdtp_ok, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
+                                    }
+                                }).setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        UrlData urlData = new UrlData();
+                                        try {
+                                            urlData.add(WebService.Booking.id, reservationObject.getString(WebService.Booking.rateId));
+                                            new GetData(new GetData.AsyncResponse() {
+                                                @Override
+                                                public void processFinish(String output) throws JSONException {
+                                                    getComingReservation("", "", "", false);
+                                                }
+                                            }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.deleteRateApi, urlData.get());
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
                                     }
                                 }).show();
                             } catch (JSONException e) {

@@ -44,18 +44,39 @@
         android:gravity="center"
         app:drawableStartCompat="@drawable/time" />
 
-    <!-- payment way -->
-    <com.example.snosey.balto.Support.CustomTextView
-        android:id="@+id/paymentWay"
-        android:layout_width="wrap_content"
+    <RadioGroup
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/margin_Medium"
-        android:layout_marginStart="@dimen/margin_Medium"
-        android:layout_marginTop="@dimen/margin_Medium"
-        android:drawablePadding="@dimen/margin_Medium"
-        android:gravity="center"
-        android:text="@string/credit"
-        app:drawableStartCompat="@drawable/payment" />
+        android:orientation="horizontal">
+
+
+        <RadioButton
+            android:id="@+id/credit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_Medium"
+            android:layout_marginStart="@dimen/margin_Small"
+            android:layout_marginTop="@dimen/margin_Medium"
+            android:buttonTint="@color/colorPrimary"
+            android:checked="true"
+            android:gravity="center"
+            android:text="@string/credit"
+            android:textColor="@color/colorPrimary" />
+
+        <RadioButton
+            android:id="@+id/wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_Medium"
+            android:layout_marginStart="@dimen/margin_Small"
+            android:layout_marginTop="@dimen/margin_Medium"
+            android:buttonTint="@color/colorPrimary"
+            android:gravity="center"
+            android:text="@string/wallet"
+            android:textColor="@color/colorPrimary" />
+
+    </RadioGroup>
+    <!-- payment way -->
 
     <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/saved_card"
@@ -102,9 +123,9 @@
             android:layout_height="wrap_content"
             android:layout_weight=".7"
             android:hint="@string/optional"
-            android:textSize="@dimen/text_VerySmall"
             android:inputType="textEmailAddress"
             android:textColor="@color/red"
+            android:textSize="@dimen/text_VerySmall"
             app:backgroundTint="@color/red" />
 
         <android.support.v7.widget.AppCompatButton

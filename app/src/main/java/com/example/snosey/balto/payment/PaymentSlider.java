@@ -1,21 +1,37 @@
 package com.example.snosey.balto.payment;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetData;
@@ -28,6 +44,8 @@ import com.paymob.acceptsdk.ToastMaker;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -42,7 +60,9 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
     final int GET_NEW_CARD = 2;
     final int EDIT_CARD = 5;
 
-    @InjectView(R.id.cash)
+    @InjectView(R.id.radioGroup)
+    RadioGroup radioGroup;
+    @InjectView(R.id.aman)
     RadioButton cash;
     @InjectView(R.id.credit)
     RadioButton credit;
@@ -54,10 +74,13 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
 
     @InjectView(R.id.next)
     ImageButton next;
+    @InjectView(R.id.amount)
+    EditText amount;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
     private boolean joinAgain = true;
+    private RequestQueue MyRequestQueue;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -106,13 +129,13 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
                             joinAgain = true;
                         }
                     }, 5000);
-                    new MakePayMobApi(getActivity(), "100", PaymentSlider.this, "", WebService.Payment.payLive1);
+                    new MakePayMobApi(getActivity(), "100", PaymentSlider.this, "", WebService.Payment.payLive1, WebService.Booking.credit);
                 }
 
             }
         });
 
-        cash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    /*    cash.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
@@ -140,20 +163,131 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
                 }
             }
         });
+       */
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                View view2 = getActivity().getCurrentFocus();
+                if (view2 != null) {
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view2.getWindowToken(), 0);
+                }
+
+                if (amount.getText().length() == 0) {
+                    Toast.makeText(getActivity(), getActivity().getString(R.string.wrongAmount), Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (amount.getText().toString().startsWith("0")) {
+                    Toast.makeText(getActivity(), getActivity().getString(R.string.wrongAmount), Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                final ProgressBar dialog = getActivity().findViewById(R.id.progress);
+                dialog.setVisibility(View.VISIBLE);
+                MyRequestQueue = Volley.newRequestQueue(getActivity());
                 if (joinAgain) {
-                    joinAgain = false;
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
                             joinAgain = true;
                         }
                     }, 5000);
-                    new MakePayMobApi(getActivity(), "100", PaymentSlider.this, "", WebService.Payment.payLive1);
+                    String api = "";
+                    if (radioGroup.getCheckedRadioButtonId() == R.id.aman)
+                        api = WebService.Payment.amanPaymentApi;
+                    else if (radioGroup.getCheckedRadioButtonId() == R.id.wallet)
+                        api = WebService.Payment.walletPaymentApi;
+                    else {
+                        try {
+                            if (!MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("") && !MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("null")) {
+                                api = WebService.Payment.onlinePaymentApi;
+                            } else {
+                                Toast.makeText(getActivity(), getActivity().getString(R.string.addOrChangeCredit), Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, api, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.e("Response", response);
+                                //This code is executed if the server responds, whether or not the response contains data.
+                                //The String 'response' contains the server's response.
+                                try {
+                                    final JSONObject jsonObject = new JSONObject(response);
+                                    if (radioGroup.getCheckedRadioButtonId() == R.id.aman) {
+                                        getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
+                                                try {
+                                                    alertDialogBuilder.setTitle(getActivity().getString(R.string.payWithAman)).
+                                                            setMessage(getActivity().getString(R.string.amanDetails) + " " +
+                                                                    jsonObject.getString("data"))
+                                                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                }
+                                                            }).show();
+                                                } catch (JSONException e) {
+                                                    e.printStackTrace();
+                                                }
+                                            }
+                                        });
+                                    } else if (radioGroup.getCheckedRadioButtonId() == R.id.wallet) {
+                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(jsonObject.getString("data")));
+                                        startActivity(browserIntent);
+                                    } else {
+                                        Toast.makeText(getActivity(), "Ops", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+                                } catch (
+                                        JSONException e) {
+                                    Toast.makeText(getActivity(), getActivity().getString(R.string.error_null_cursor), Toast.LENGTH_SHORT).show();
+                                    dialog.setVisibility(View.GONE);
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                                new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+
+                                        Toast.makeText(getActivity(), getActivity().getString(R.string.error_null_cursor), Toast.LENGTH_SHORT).show();
+                                        dialog.setVisibility(View.GONE);
+                                        //This code is executed if there is an error.
+                                    }
+                                })
+
+                        {
+                            @Override
+                            public byte[] getBody() throws AuthFailureError {
+                                HashMap<String, String> MyData = new HashMap<String, String>();
+                                try {
+                                    MyData.put(WebService.Payment.user_id, MainActivity.jsonObject.getString(WebService.Payment.id));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                                MyData.put(WebService.Payment.amount, amount.getText().toString() + "00");
+                                if (radioGroup.getCheckedRadioButtonId() == R.id.credit)
+                                    MyData.put(WebService.Payment.state, WebService.Payment.online);
+                                Log.e("MyData", MyData.toString());
+                                return new JSONObject(MyData).toString().getBytes();
+                            }
+
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/json";
+                            }
+
+                        };  MyStringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                            0,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                        MyRequestQueue.add(MyStringRequest);
+                    }
                 }
-            }
         });
         return view;
     }

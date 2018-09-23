@@ -14,8 +14,5 @@
     <string name="spokenLangauge">لغة التحدث</string>
     <string name="arrive">وصل</string>
     <string name="cashReceived">المستلم نقدا: </string>
-    <string name="transactionNumber"># عدد المعاملات: </string>
-    <string name="balance">الرصيد: </string>
     <string name="pending">المستحق: </string>
-    <string name="Settled">قيمة المعامالت: </string>
 </resources>

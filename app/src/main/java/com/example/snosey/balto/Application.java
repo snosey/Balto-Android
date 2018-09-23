@@ -3,7 +3,9 @@ package com.example.snosey.balto;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
+import java.util.Calendar;
 import java.util.TimeZone;
 
 /**
@@ -11,9 +13,12 @@ import java.util.TimeZone;
  */
 
 public class Application extends android.app.Application {
+
+    @Override
     public void onCreate() {
         super.onCreate();
-        TimeZone.setDefault(TimeZone.getTimeZone("Africa/Cairo"));
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT+02"));
+        Log.e("current time=", Calendar.getInstance().getTime().toString());
     }
 
     @Override

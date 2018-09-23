@@ -193,6 +193,21 @@ public class Past extends Fragment {
                                 alertDialogBuilder.setMessage(reservationObject.getString(WebService.Booking.review)).setPositiveButton(R.string.mdtp_ok, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                     }
+                                }).setNegativeButton(R.string.delete, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        UrlData urlData = new UrlData();
+                                        try {
+                                            urlData.add(WebService.Booking.id, reservationObject.getString(WebService.Booking.rateId));
+                                            new GetData(new GetData.AsyncResponse() {
+                                                @Override
+                                                public void processFinish(String output) throws JSONException {
+                                                    getComingReservation("", "", "", false);
+                                                }
+                                            }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.deleteRateApi, urlData.get());
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
                                 }).show();
                             } catch (JSONException e) {
                                 e.printStackTrace();

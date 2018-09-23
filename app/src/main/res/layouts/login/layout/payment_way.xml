@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/whiteDark"
-    android:clickable="true"  android:focusable="true"
+    android:clickable="true"
+    android:focusable="true"
     android:orientation="vertical">
 
 
@@ -29,10 +30,10 @@
         android:layout_alignParentStart="true"
         android:layout_margin="@dimen/margin_Medium"
         android:background="@android:color/transparent"
-
-        android:clickable="true"  android:focusable="true"
+        android:clickable="true"
+        android:focusable="true"
         android:tint="@color/black_8am2"
-        android:visibility="invisible"
+        android:visibility="gone"
         app:srcCompat="@drawable/back" />
 
 
@@ -41,28 +42,38 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_Medium"
         android:layout_marginStart="@dimen/margin_Large"
-        android:layout_marginTop="@dimen/margin_Medium"
-        android:text="@string/choose_payment_way"
+        android:layout_marginTop="@dimen/dimen_VerySmall"
+        android:text="@string/addToWallet"
         android:textColor="@color/black_8am2"
         android:textSize="@dimen/text_Large"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
 
     <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/margin_Medium"
-        android:orientation="horizontal"
-        android:visibility="gone">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <RadioButton
-            android:id="@+id/cash"
+            android:id="@+id/aman"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_Medium"
             android:buttonTint="@color/black_8am2"
             android:checked="true"
-            android:text="@string/cash"
+            android:text="@string/aman"
+            android:textColor="@color/black_8am2" />
+
+        <RadioButton
+            android:id="@+id/wallet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Medium"
+            android:buttonTint="@color/black_8am2"
+            android:text="@string/ewallet"
             android:textColor="@color/black_8am2" />
 
 
@@ -72,9 +83,49 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_Medium"
             android:buttonTint="@color/black_8am2"
+            android:visibility="gone"
             android:text="@string/credit"
             android:textColor="@color/black_8am2" />
     </RadioGroup>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:hint="@string/Amount"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Medium"
+            android:layout_toStartOf="@id/egp"
+            android:maxLength="5"
+            android:inputType="number"
+            android:id="@+id/amount"
+            android:padding="@dimen/margin_Small" />
+
+        <com.example.snosey.balto.Support.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_Medium"
+            android:layout_marginEnd="@dimen/margin_xlarge"
+            android:id="@+id/egp"
+            android:layout_toStartOf="@id/next"
+            android:padding="@dimen/margin_Small"
+            android:text="@string/egp" />
+
+        <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_margin="@dimen/margin_Medium"
+            android:background="@drawable/circel"
+            android:tint="@color/white"
+            app:backgroundTint="@color/colorPrimary"
+            app:srcCompat="@drawable/next" />
+
+    </RelativeLayout>
 
     <com.example.snosey.balto.Support.CustomTextView
         android:id="@+id/addEditCredit"
@@ -100,17 +151,6 @@
         android:paddingStart="@dimen/margin_Medium"
         android:paddingTop="@dimen/margin_Small"
         android:textSize="@dimen/text_Small" />
-
-    <android.support.v7.widget.AppCompatImageButton
-        android:id="@+id/next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="end"
-        android:layout_margin="@dimen/margin_Medium"
-        android:background="@drawable/circel"
-        android:tint="@color/white"
-        app:backgroundTint="@color/colorPrimary"
-        app:srcCompat="@drawable/next" />
 
 
 </LinearLayout>

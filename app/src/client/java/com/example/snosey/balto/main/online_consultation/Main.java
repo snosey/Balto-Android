@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -53,6 +54,8 @@ public class Main extends Fragment {
     EditText doctorName;
     @InjectView(R.id.date)
     com.example.snosey.balto.Support.CustomTextView date;
+    @InjectView(R.id.clear)
+    com.example.snosey.balto.Support.CustomTextView clear;
     @InjectView(R.id.language)
     Spinner language;
 
@@ -146,7 +149,20 @@ public class Main extends Fragment {
                                                 chooseDay = addZero(dayOfMonth + "");
                                                 chooseMonth = addZero(monthOfYear + "");
                                                 chooseYear = addZero(year + "");
+                                                date.setGravity(Gravity.CENTER_VERTICAL | Gravity.END);
                                                 date.setText(year + "/" + (monthOfYear + 1) + "/" + dayOfMonth);
+                                                clear.setVisibility(View.VISIBLE);
+                                                clear.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        chooseDay="";
+                                                        chooseMonth="";
+                                                        chooseYear="";
+                                                        date.setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
+                                                        date.setText(getActivity().getString(R.string.chooseDate));
+                                                        clear.setVisibility(View.GONE);
+                                                    }
+                                                });
                                             }
                                         },
                                         now.get(Calendar.YEAR),

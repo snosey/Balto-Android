@@ -29,7 +29,6 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
-import com.facebook.Profile;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -61,6 +60,7 @@ public class SignIn extends Fragment {
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
+    private boolean start = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -125,7 +125,7 @@ public class SignIn extends Fragment {
             public void processFinish(String output) {
                 if (output.contains("false")) {
                     Toast.makeText(getActivity(), getActivity().getString(R.string.wrongEmailOrPassword), Toast.LENGTH_SHORT).show();
-                    ((ImageView)getActivity().findViewById(R.id.background)).setVisibility(View.GONE);
+                    ((ImageView) getActivity().findViewById(R.id.background)).setVisibility(View.GONE);
                     editor.clear();
                     editor.commit();
                 } else {
@@ -146,6 +146,9 @@ public class SignIn extends Fragment {
     }
 
     private void startNewActivity(String json) {
+        if (start)
+            return;
+        start = true;
         Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.putExtra("userData", json);
         if (getActivity().getIntent().hasExtra("data")) {
@@ -170,11 +173,55 @@ public class SignIn extends Fragment {
 
     private void checkFacebook() {
         callbackManager = CallbackManager.Factory.create();
-        LoginManager.getInstance().registerCallback(callbackManager,
+        LoginManager login = LoginManager.getInstance();
+        login.logInWithReadPermissions(this, (Arrays.asList("public_profile", "email")));
+        login.registerCallback(callbackManager,
                 new FacebookCallback<LoginResult>() {
                     @Override
                     public void onSuccess(final LoginResult loginResult) {
-                        final Profile profile = Profile.getCurrentProfile();
+                        {
+                            GraphRequest request = GraphRequest.newMeRequest(
+                                    loginResult.getAccessToken(),
+                                    new GraphRequest.GraphJSONObjectCallback() {
+                                        @Override
+                                        public void onCompleted(final JSONObject object, GraphResponse response) {
+                                            Log.v("LoginActivity", response.toString());
+                                            Log.e("jsonObject", object.toString());
+                                            UrlData urlData = new UrlData();
+                                            try {
+                                                urlData.add("type", "client");
+                                                urlData.add(WebService.Login.id_provider, object.getString("id"));
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+                                            urlData.add(WebService.Login.fcm_token, FirebaseInstanceId.getInstance().getToken());
+                                            new GetData(new GetData.AsyncResponse() {
+                                                @Override
+                                                public void processFinish(String output) {
+                                                    if (output.contains("false")) {
+                                                        newAccount(object.toString(), loginResult);
+                                                    } else {
+                                                        try {
+                                                            editor.putString("type", "facebook");
+                                                            editor.commit();
+
+                                                            startNewActivity(new JSONObject(output).getJSONObject("user").toString());
+                                                        } catch (JSONException e) {
+                                                            e.printStackTrace();
+                                                        }
+                                                    }
+                                                }
+                                            }, getActivity(), true).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, WebService.Login.loginApi, urlData.get());
+                                        }
+                                    });
+
+                            Bundle parameters = new Bundle();
+                            parameters.putString("fields", "id,email,first_name,last_name");
+                            request.setParameters(parameters);
+                            request.executeAsync();
+                        }
+
+                    /*    final Profile profile = Profile.getCurrentProfile();
 
                         UrlData urlData = new UrlData();
                         urlData.add("type", "client");
@@ -200,7 +247,7 @@ public class SignIn extends Fragment {
                                 }
                             }
                         }, getActivity(), true).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, WebService.Login.loginApi, urlData.get());
-
+*/
                     }
 
                     @Override
@@ -245,54 +292,45 @@ public class SignIn extends Fragment {
         ft.commit();
     }
 
-    private void newAccount(final Profile profile, LoginResult loginResult) {
-        GraphRequest request = GraphRequest.newMeRequest(
-                loginResult.getAccessToken(),
-                new GraphRequest.GraphJSONObjectCallback() {
-                    @Override
-                    public void onCompleted(
-                            JSONObject object,
-                            GraphResponse response) {
-
-                        NewAccountObject accountObject = new NewAccountObject();
-                        accountObject.firstName = (profile.getFirstName());
-                        accountObject.lastName = (profile.getLastName());
-
-                        try {
-                            Log.e("graph", object.toString());
-                            accountObject.gender = ("1");
-                            if (object.getString("gender").equals("male") || object.getString("gender").equals("ذكر"))
-                                accountObject.gender = ("1");
-                            else
-                                accountObject.gender = ("2");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-
-                        accountObject.id_provider = (profile.getId());
-                        accountObject.email = "facebook@gmail.com";
-                        accountObject.provider_kind = ("facebook");
-                        accountObject.logo = ("https://graph.facebook.com/" + profile.getId() + "/picture?type=large");
-                        accountObject.type = (WebService.SignUp.typeClient);
-
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("object", accountObject);
-                        FragmentManager fm = getActivity().getSupportFragmentManager();
-                        FragmentTransaction ft = fm.beginTransaction();
-                        Phone fragment = new Phone();
-                        fragment.setArguments(bundle);
-                        ft.add(R.id.fragment, fragment);
-                        ft.addToBackStack(null);
-                        ft.commit();
+    private void newAccount(final String profile, LoginResult loginResult) {
+        JSONObject profileObject = null;
+        try {
+            profileObject = new JSONObject(profile);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        final JSONObject finalProfileObject = profileObject;
+        {
+            Log.e("project object", finalProfileObject.toString());
+            NewAccountObject accountObject = new NewAccountObject();
+            try {
+                accountObject.firstName = (finalProfileObject.getString("first_name"));
+                accountObject.lastName = (finalProfileObject.getString("last_name"));
+                accountObject.gender = "1";
+                accountObject.id_provider = (finalProfileObject.getString("id"));
+                accountObject.email = (finalProfileObject.getString("email"));
+                accountObject.provider_kind = ("facebook");
+                accountObject.logo = ("https://graph.facebook.com/" + (finalProfileObject.getString("id")) + "/picture?type=large");
+                accountObject.type = (WebService.SignUp.typeClient);
 
 
-                    }
-                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "gender");
-        request.setParameters(parameters);
-        request.executeAsync();
+            ((ImageView) getActivity().findViewById(R.id.background)).setVisibility(View.GONE);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("object", accountObject);
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            Phone fragment = new Phone();
+            fragment.setArguments(bundle);
+            ft.add(R.id.fragment, fragment);
+            ft.addToBackStack(null);
+            ft.commit();
+
+
+        }
 
     }
 

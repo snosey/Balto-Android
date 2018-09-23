@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,7 +25,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -410,6 +410,10 @@ public class ReservationComing extends Fragment {
                             updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorFinished), reservationObject.getString(WebService.Booking.id_state));
                     }
 
+                    if (currentTimeMillis < bookTotal - duration)
+                        holder.call.setSupportImageTintList(getActivity().getResources().getColorStateList(R.color.silver));
+
+
                     holder.call.setImageResource(R.drawable.video_call);
                     holder.call.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -420,7 +424,7 @@ public class ReservationComing extends Fragment {
                                     TimeUnit.DAYS.toMillis(calendar.get(Calendar.DAY_OF_MONTH)) + calendar.get(Calendar.DAY_OF_MONTH)
                                     + TimeUnit.MINUTES.toMillis(calendar.get(Calendar.MINUTE));
 
-                            if (currentTimeMillis < bookTotal-duration) {
+                            if (currentTimeMillis < bookTotal - duration) {
                                 Toast.makeText(getContext(), getActivity().getString(R.string.waitToBookTime), Toast.LENGTH_LONG).show();
                                 return;
                             }
@@ -497,7 +501,7 @@ public class ReservationComing extends Fragment {
 
         public com.example.snosey.balto.Support.CustomTextView firstName, date, kind, price;
         public AppCompatButton cancelOrStart, done, arrive;
-        public ImageView logo, call;
+        public AppCompatImageView logo, call;
 
         public MyViewHolder(View v) {
             super(v);
@@ -508,8 +512,8 @@ public class ReservationComing extends Fragment {
             cancelOrStart = (AppCompatButton) v.findViewById(R.id.cancelOrStart);
             done = (AppCompatButton) v.findViewById(R.id.done);
             arrive = (AppCompatButton) v.findViewById(R.id.arrive);
-            call = (ImageView) v.findViewById(R.id.call);
-            logo = (ImageView) v.findViewById(R.id.logo);
+            call = (AppCompatImageView) v.findViewById(R.id.call);
+            logo = (AppCompatImageView) v.findViewById(R.id.logo);
         }
     }
 

@@ -47,7 +47,7 @@ public class CategoryDetails extends Fragment {
     com.example.snosey.balto.Support.CustomTextView title;
     @InjectView(R.id.details)
     com.example.snosey.balto.Support.CustomTextView details;
-    @InjectView(R.id.cash)
+    @InjectView(R.id.aman)
     RadioButton cash;
     @InjectView(R.id.credit)
     RadioButton credit;

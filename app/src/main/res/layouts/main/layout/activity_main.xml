@@ -32,11 +32,12 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/margin_Small"
                 android:background="@drawable/shadow"
-                app:backgroundTint="#94ffffff"
-                app:tint="@color/red"
-                android:clickable="true"  android:focusable="true"
+                android:clickable="true"
+                android:focusable="true"
                 android:visibility="gone"
-                app:srcCompat="@drawable/back" />
+                app:backgroundTint="#94ffffff"
+                app:srcCompat="@drawable/back"
+                app:tint="@color/red" />
 
 
             <android.support.v7.widget.AppCompatImageView
@@ -45,10 +46,10 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/margin_Small"
-                android:onClick="menu"
-                android:paddingTop="@dimen/margin_VerySmall"
                 android:clickable="true"
                 android:focusable="true"
+                android:onClick="menu"
+                android:paddingTop="@dimen/margin_VerySmall"
                 android:tint="@color/white"
                 android:visibility="visible"
                 app:srcCompat="@drawable/menu" />
@@ -114,7 +115,8 @@
                 android:layout_height="@dimen/dimen_Small"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/margin_Medium"
-                android:clickable="true"  android:focusable="true"
+                android:clickable="true"
+                android:focusable="true"
                 android:onClick="setting"
                 app:srcCompat="@drawable/logo_profile" />
 
@@ -144,10 +146,10 @@
                     android:layout_alignStart="@id/clientName"
                     android:layout_below="@id/clientName"
                     android:layout_gravity="center"
-                    app:drawableEndCompat="@drawable/star"
                     android:drawablePadding="@dimen/margin_Medium"
                     android:text="5"
-                    android:textSize="@dimen/text_VerySmall" />
+                    android:textSize="@dimen/text_VerySmall"
+                    app:drawableEndCompat="@drawable/star" />
 
                 <Switch
                     android:id="@+id/online"
@@ -172,8 +174,9 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
+                android:clickable="true"
+                android:focusable="true"
                 android:onClick="home"
-                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -209,8 +212,9 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
+                android:clickable="true"
+                android:focusable="true"
                 android:onClick="agenda"
-                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -246,8 +250,9 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
+                android:clickable="true"
+                android:focusable="true"
                 android:onClick="reservations"
-                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -283,8 +288,9 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
+                android:clickable="true"
+                android:focusable="true"
                 android:onClick="Wallet"
-                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -320,8 +326,9 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
+                android:clickable="true"
+                android:focusable="true"
                 android:onClick="payment"
-                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -340,7 +347,7 @@
                     android:layout_gravity="center"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@string/addPayment"
+                    android:text="@string/wallet"
                     android:textColor="@color/black_8am2"
                     android:textSize="@dimen/text_Small" />
 
@@ -357,8 +364,9 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
+                android:clickable="true"
+                android:focusable="true"
                 android:onClick="promotions"
-                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -394,8 +402,9 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
+                android:clickable="true"
+                android:focusable="true"
                 android:onClick="share"
-                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -431,8 +440,9 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
+                android:clickable="true"
+                android:focusable="true"
                 android:onClick="langauge"
-                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -469,8 +479,9 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
+                android:clickable="true"
+                android:focusable="true"
                 android:onClick="termAndConditions"
-                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -508,8 +519,9 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
+                android:clickable="true"
+                android:focusable="true"
                 android:onClick="help"
-                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 
@@ -547,8 +559,9 @@
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
                 android:background="@drawable/shadow"
+                android:clickable="true"
+                android:focusable="true"
                 android:onClick="logout"
-                android:clickable="true"  android:focusable="true"
                 android:orientation="horizontal"
                 android:paddingBottom="@dimen/margin_Small">
 

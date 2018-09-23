@@ -1,5 +1,7 @@
 package com.example.snosey.balto.payment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v4.app.Fragment;
@@ -44,11 +46,13 @@ public class MakePayMobApi {
     private String paymentKey;
     boolean HasToken = true;
     String integrationId;
+    String paymentType;
 
-    public MakePayMobApi(FragmentActivity activity, String price, Fragment agenda, String token, String integrationId) {
+    public MakePayMobApi(FragmentActivity activity, String price, Fragment agenda, String token, String integrationId, String paymentType) {
         this.activity = activity;
         this.integrationId = integrationId;
         this.price = price;
+        this.paymentType = paymentType;
         this.fragment = agenda;
         this.TOKEN = token;
         if (TOKEN.equals("null") || TOKEN.equals(""))
@@ -173,10 +177,14 @@ public class MakePayMobApi {
                     JSONObject jsonObject = new JSONObject(response);
                     //add id of payment in payment database
                     paymentKey = jsonObject.getString("token");
-                    if (HasToken) {
+                    if (paymentType.equals(WebService.Booking.cash))
                         payNowAman();
-                    } else {
-                        startPayActivityNoToken();
+                    else if (paymentType.equals(WebService.Booking.credit)) {
+                        if (HasToken) {
+                            payNowVisa();
+                        } else {
+                            startPayActivityNoToken();
+                        }
                     }
                 } catch (JSONException e) {
                     Toast.makeText(activity, activity.getString(R.string.error_null_cursor), Toast.LENGTH_SHORT).show();
@@ -457,12 +465,32 @@ public class MakePayMobApi {
             @Override
             public void onResponse(String response) {
                 Log.e("Pay Response", response);
+                try {
+                    final JSONObject jsonObject = new JSONObject(response);
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(activity);
+                            try {
+                                alertDialogBuilder.setTitle(activity.getString(R.string.payWithAman)).setMessage(activity.getString(R.string.amanDetails) + " " + jsonObject.getJSONObject("data").getString("bill_reference"))
+                                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                                            public void onClick(DialogInterface dialog, int which) {
+                                            }
+                                        }).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 dialog.setVisibility(View.GONE);
                 //This code is executed if the server responds, whether or not the response contains data.
                 //The String 'response' contains the server's response.
-                Intent intent = new Intent();
+                /*Intent intent = new Intent();
                 intent.putExtra("response", response);
-                fragment.onActivityResult(6666, 6666, intent);
+                fragment.onActivityResult(6666, 6666, intent);*/
             }
         }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
             @Override

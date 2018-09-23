@@ -98,4 +98,20 @@
     <string name="soon">قريبا</string>
     <string name="cantCancel">لا يمكن إلغاء الحجز قبل موعده بأقل من ساعه</string>
     <string name="all">الكل</string>
+    <string name="delete">حذف</string>
+    <string name="addToWallet">+ اضف الى المحفظه</string>
+    <string name="payWithAman">الدفع بواسطه أمان</string>
+    <string name="amanDetails">اذهب الى احد نوافذ دفع أمان واسال على مدفوعات متنوعة اكسبت و ادفع بهذا الرقم:</string>
+    <string name="Settled">قيمة المعامالت: </string>
+    <string name="TotalOutstanding">مجموع المدفوعات المعلقه: </string>
+    <string name="TotalPending">مجموع المدفوعات المعلقه: </string>
+    <string name="transactionNumber"># عدد المعاملات: </string>
+    <string name="balance">الرصيد: </string>
+    <string name="Amount">المبلغ: </string>
+    <string name="state">الحاله: </string>
+    <string name="paymentWay">طريقة الدفع</string>
+    <string name="aman">أمان</string>
+    <string name="ewallet">موبايل كاش</string>
+    <string name="wrongAmount">برجاء ادخال المبلغ الصحيح</string>
+
 </resources>

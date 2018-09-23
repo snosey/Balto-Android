@@ -40,7 +40,7 @@ android {
             dataBinding {
                 enabled = true
             }
-            versionCode 25
+            versionCode 26
             multiDexEnabled true
             versionName "1.011"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -52,7 +52,7 @@ android {
             dataBinding {
                 enabled = true
             }
-            versionCode 23
+            versionCode 24
             versionName "1.003"
             testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
             minSdkVersion 17

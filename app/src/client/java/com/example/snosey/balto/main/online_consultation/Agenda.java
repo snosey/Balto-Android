@@ -25,11 +25,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
+import com.example.snosey.balto.Support.CustomTextView;
 import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.notification.NotifyService;
 import com.example.snosey.balto.Support.webservice.GetData;
@@ -503,6 +514,54 @@ public class Agenda extends android.support.v4.app.Fragment {
                             estimatedFare.setText(price.getText().toString());
                             com.example.snosey.balto.Support.CustomTextView time = (com.example.snosey.balto.Support.CustomTextView) dialog.findViewById(R.id.time);
                             final AppCompatEditText promoCode = (AppCompatEditText) dialog.findViewById(R.id.promoCode);
+                            final RadioButton credit = (RadioButton) dialog.findViewById(R.id.credit);
+                            final RadioButton wallet = (RadioButton) dialog.findViewById(R.id.wallet);
+                            final CustomTextView saved_card = (CustomTextView) dialog.findViewById(R.id.saved_card);
+                            UrlData urlData = new UrlData();
+                            try {
+                                urlData.add(WebService.Payment.id, MainActivity.jsonObject.getString(WebService.Payment.id));
+                                new GetData(new GetData.AsyncResponse() {
+                                    @Override
+                                    public void processFinish(String output) throws JSONException {
+                                        final JSONObject jsonObject = new JSONObject(output);
+                                        showCardNumber();
+                                        credit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                            @Override
+                                            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                                if (b) {
+                                                    showCardNumber();
+                                                } else {
+                                                    try {
+                                                        saved_card.setText(getActivity().getString(R.string.Settled) + " ( " + jsonObject.getString(WebService.Payment.total_amount) + " " +
+                                                                getActivity().getString(R.string.egp) + " ) ");
+                                                        saved_card.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.money, 0, 0, 0);
+                                                    } catch (JSONException e) {
+                                                        e.printStackTrace();
+                                                    }
+
+                                                }
+                                            }
+                                        });
+                                    }
+
+                                    private void showCardNumber() {
+                                        try {
+                                            if (!MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("") && !MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("null")) {
+                                                saved_card.setText(MainActivity.jsonObject.getString(WebService.Login.card_number));
+                                                if (MainActivity.jsonObject.getString(WebService.Login.card_type).equals("MasterCard"))
+                                                    saved_card.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.master_card, 0, 0, 0);
+                                                else
+                                                    saved_card.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.visa, 0, 0, 0);
+
+                                            }
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.selectUserTransactionApi, urlData.get());
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             final AppCompatButton confirmCode = (AppCompatButton) dialog.findViewById(R.id.confirmCode);
                             final int tempLatestPrice = Integer.parseInt(price.getText().toString().replace(" " + getActivity().getString(R.string.egp), ""));
                             confirmCode.setOnClickListener(new View.OnClickListener() {
@@ -541,20 +600,6 @@ public class Agenda extends android.support.v4.app.Fragment {
                                 }
                             });
                             time.setText(holder.timeFrom.getText().toString() + " - " + holder.timeTo.getText().toString());
-
-                            com.example.snosey.balto.Support.CustomTextView saved_card = (com.example.snosey.balto.Support.CustomTextView) dialog.findViewById(R.id.saved_card);
-                            try {
-                                if (!MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("") && !MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("null")) {
-                                    saved_card.setText(MainActivity.jsonObject.getString(WebService.Login.card_number));
-                                    if (MainActivity.jsonObject.getString(WebService.Login.card_type).equals("MasterCard"))
-                                        saved_card.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.master_card, 0, 0, 0);
-                                    else
-                                        saved_card.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.visa, 0, 0, 0);
-
-                                }
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
 
 
                             com.example.snosey.balto.Support.CustomTextView doctorKind = (com.example.snosey.balto.Support.CustomTextView) dialog.findViewById(R.id.doctorKind);
@@ -626,7 +671,7 @@ public class Agenda extends android.support.v4.app.Fragment {
                     confirmRequest(timeSceduale, "");
                     //  new MakePayMobApi(getActivity(), latestPrice + "00", Agenda.this, MainActivity.jsonObject.getString("payment_token"), WebService.Payment.payLive2);
                 } else {
-                    new MakePayMobApi(getActivity(), "100", Agenda.this, "", WebService.Payment.payLive1);
+                    new MakePayMobApi(getActivity(), "100", Agenda.this, "", WebService.Payment.payLive1, WebService.Booking.credit);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -655,7 +700,7 @@ public class Agenda extends android.support.v4.app.Fragment {
 
 
     private void confirmRequest(final AgendaAdapter.TimeScheduale timeScheduale, final String orderId) {
-        UrlData urlData = new UrlData();
+        final UrlData urlData = new UrlData();
         //  if (getArguments().containsKey(WebService.HomeVisit.promoCode))
         //    urlData.add(WebService.Booking.id_coupon_client, getArguments().getString(WebService.HomeVisit.promoCode));
         try {
@@ -684,6 +729,8 @@ public class Agenda extends android.support.v4.app.Fragment {
             public void processFinish(String output) {
                 if (output.contains("true")) {
                     try {
+
+                        sendSMS("201222272346", "لديك حجز جديد");
                         final JSONObject jsonBooking = new JSONObject(output).getJSONObject("booking");
 
                         {
@@ -984,5 +1031,62 @@ public class Agenda extends android.support.v4.app.Fragment {
     }
 
 
+    private void sendSMS(final String mobile, final String message) {
+        UrlData urlData = new UrlData();
+        urlData.add(WebService.SMS.language, "2");
+        urlData.add(WebService.SMS.Username, WebService.SMS.usernameBalto);
+        urlData.add(WebService.SMS.password, WebService.SMS.passwordBalto);
+        urlData.add(WebService.SMS.sender, WebService.SMS.senderElbalto);
+        urlData.add(WebService.SMS.Mobile, mobile);
+        urlData.add(WebService.SMS.message, message);
+        RequestQueue MyRequestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, WebService.SMS.url + urlData.get(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.e("Pay Response", response);
+            }
+        }, new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //This code is executed if there is an error.
+
+            }
+        }
+        )
+
+        {
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+
+                JSONObject MyData = new JSONObject();
+                try {
+
+                  /*  MyData.put(WebService.SMS.language, "2");
+                    MyData.put(WebService.SMS.Username, WebService.SMS.usernameBalto);
+                    MyData.put(WebService.SMS.password, WebService.SMS.passwordBalto);
+                    MyData.put(WebService.SMS.sender, WebService.SMS.senderElbalto);
+                    MyData.put(WebService.SMS.Mobile, mobile);
+                    MyData.put(WebService.SMS.message, message);
+                  */
+                    Log.e("MyData", MyData.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return MyData.toString().getBytes();
+            }
+
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+        };
+        MyStringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                0,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        MyRequestQueue.add(MyStringRequest);
+    }
 }
 

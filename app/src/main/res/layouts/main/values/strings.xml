@@ -98,5 +98,15 @@
     <string name="soon">SOON</string>
     <string name="cantCancel">Reservation can not be cancelled less than 1 hour in advance</string>
     <string name="all">All</string>
+    <string name="delete">DELETE</string>
+    <string name="addToWallet">+ Add to wallet</string>
+    <string name="payWithAman">Pay by AMAN</string>
+    <string name="amanDetails">Go to AMAN shops and ask about Madfouaat Mutanouea Accept then pay by this bill number</string>
+    <string name="Amount">Amount: </string>
+    <string name="state">State: </string>
+    <string name="paymentWay">Payment Way: </string>
+    <string name="aman">AMAN</string>
+    <string name="ewallet">E-Wallet</string>
+    <string name="wrongAmount">Please enter correct amount</string>
 
 </resources>
