@@ -625,7 +625,13 @@ public class DoctorProfile extends Fragment {
             ArrayList<in.myinnos.awesomeimagepicker.models.Image> images = data.getParcelableArrayListExtra(ConstantsCustomGallery.INTENT_EXTRA_IMAGES);
             CompressImage compressImage = new CompressImage();
             for (int i = 0; i < images.size(); i++) {
-                Uri uri = Uri.fromFile(compressImage.compress(new File(images.get(i).path)));
+                Uri uri = null;
+                try {
+                    uri = Uri.fromFile(compressImage.compress(new File(images.get(i).path)));
+                } catch (Exception e) {
+                    Toast.makeText(getActivity(), "Error, Please try again", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
                 newLogo = uri.toString();
                 Picasso.with(getActivity()).load(newLogo).transform(new CircleTransform()).into(logo);
             }

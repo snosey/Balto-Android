@@ -1,21 +1,21 @@
 package com.example.snosey.balto.payment;
 
-import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v7.widget.AppCompatImageButton;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -34,6 +34,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
+import com.example.snosey.balto.Support.CustomTextView;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
@@ -66,6 +67,8 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
     RadioButton cash;
     @InjectView(R.id.credit)
     RadioButton credit;
+    @InjectView(R.id.wallet)
+    RadioButton wallet;
     @InjectView(R.id.addEditCredit)
     com.example.snosey.balto.Support.CustomTextView addEditCredit;
 
@@ -76,6 +79,12 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
     ImageButton next;
     @InjectView(R.id.amount)
     EditText amount;
+
+    @InjectView(R.id.phone)
+    EditText phone;
+
+    @InjectView(R.id.phoneCashWays)
+    CustomTextView phoneCashWays;
 
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
@@ -90,6 +99,18 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.VISIBLE);
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
 
+        wallet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    phone.setVisibility(View.VISIBLE);
+                    phoneCashWays.setVisibility(View.VISIBLE);
+                } else {
+                    phone.setVisibility(View.GONE);
+                    phoneCashWays.setVisibility(View.GONE);
+                }
+            }
+        });
 
         try {
             if (!MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("") && !MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("null")) {
@@ -183,7 +204,6 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
                 }
 
                 final ProgressBar dialog = getActivity().findViewById(R.id.progress);
-                dialog.setVisibility(View.VISIBLE);
                 MyRequestQueue = Volley.newRequestQueue(getActivity());
                 if (joinAgain) {
                     new Handler().postDelayed(new Runnable() {
@@ -195,9 +215,14 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
                     String api = "";
                     if (radioGroup.getCheckedRadioButtonId() == R.id.aman)
                         api = WebService.Payment.amanPaymentApi;
-                    else if (radioGroup.getCheckedRadioButtonId() == R.id.wallet)
-                        api = WebService.Payment.walletPaymentApi;
-                    else {
+                    else if (radioGroup.getCheckedRadioButtonId() == R.id.wallet) {
+                        if (phone.getText().toString().startsWith("01") && phone.getText().toString().length() == 11)
+                            api = WebService.Payment.walletPaymentApi;
+                        else {
+                            Toast.makeText(getActivity(), getActivity().getString(R.string.wrongPhone), Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    } else {
                         try {
                             if (!MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("") && !MainActivity.jsonObject.getString(WebService.Login.payment_token).equals("null")) {
                                 api = WebService.Payment.onlinePaymentApi;
@@ -209,85 +234,116 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
                             e.printStackTrace();
                         }
                     }
-                        StringRequest MyStringRequest = new StringRequest(Request.Method.POST, api, new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                Log.e("Response", response);
-                                //This code is executed if the server responds, whether or not the response contains data.
-                                //The String 'response' contains the server's response.
-                                try {
-                                    final JSONObject jsonObject = new JSONObject(response);
-                                    if (radioGroup.getCheckedRadioButtonId() == R.id.aman) {
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getActivity());
-                                                try {
-                                                    alertDialogBuilder.setTitle(getActivity().getString(R.string.payWithAman)).
-                                                            setMessage(getActivity().getString(R.string.amanDetails) + " " +
-                                                                    jsonObject.getString("data"))
-                                                            .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-                                                                public void onClick(DialogInterface dialog, int which) {
-                                                                }
-                                                            }).show();
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
+                    dialog.setVisibility(View.VISIBLE);
+                    StringRequest MyStringRequest = new StringRequest(Request.Method.POST, api, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.e("Response", response);
+                            //This code is executed if the server responds, whether or not the response contains data.
+                            //The String 'response' contains the server's response.
+                            try {
+                                final JSONObject jsonObject = new JSONObject(response);
+                                dialog.setVisibility(View.GONE);
+                                if (radioGroup.getCheckedRadioButtonId() == R.id.aman) {
+                                    getActivity().runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            final Dialog amanDialog = new Dialog(getActivity(), android.R.style.Theme_Holo_Light_NoActionBar_Fullscreen);
+                                            amanDialog.setContentView(R.layout.aman);
+                                            CustomTextView amanText = (CustomTextView) amanDialog.findViewById(R.id.amanText);
+                                            AppCompatImageButton amanNext = (AppCompatImageButton) amanDialog.findViewById(R.id.next);
+                                            try {
+                                                amanText.setText(getActivity().getString(R.string.amanDetails) + " " + jsonObject.getString("data") + getActivity().getString(R.string.amanDetails2));
+                                                amanNext.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View view) {
+                                                        amanDialog.dismiss();
+                                                        getActivity().onBackPressed();
+                                                    }
+                                                });
+                                                amanDialog.show();
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
                                             }
-                                        });
-                                    } else if (radioGroup.getCheckedRadioButtonId() == R.id.wallet) {
-                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(jsonObject.getString("data")));
-                                        startActivity(browserIntent);
-                                    } else {
-                                        Toast.makeText(getActivity(), "Ops", Toast.LENGTH_SHORT).show();
-                                        return;
-                                    }
-                                } catch (
-                                        JSONException e) {
+                                        }
+                                    });
+                                } else if (radioGroup.getCheckedRadioButtonId() == R.id.wallet) {
+                                    Intent browserIntent = new Intent(getActivity(), com.example.snosey.balto.Support.WebView.class);
+                                    browserIntent.putExtra("url", jsonObject.getString("data"));
+                                    startActivity(browserIntent);
+                                } else {
+                                    if (jsonObject.getString(WebService.Payment.status).equals("1")) {
+                                        try {
+                                            dialog.setVisibility(View.VISIBLE);
+                                            new Handler().postDelayed(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    getActivity().runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            dialog.setVisibility(View.GONE);
+                                                            getActivity().onBackPressed();
+                                                        }
+                                                    });
+                                                }
+                                            }, 3000);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    } else
+                                        Toast.makeText(getActivity(), "Ops,Failed", Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (
+                                    JSONException e) {
+                                Toast.makeText(getActivity(), getActivity().getString(R.string.error_null_cursor), Toast.LENGTH_SHORT).show();
+                                dialog.setVisibility(View.GONE);
+                                e.printStackTrace();
+                            }
+                        }
+                    },
+                            new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+
                                     Toast.makeText(getActivity(), getActivity().getString(R.string.error_null_cursor), Toast.LENGTH_SHORT).show();
                                     dialog.setVisibility(View.GONE);
-                                    e.printStackTrace();
+                                    //This code is executed if there is an error.
                                 }
+                            })
+
+                    {
+                        @Override
+                        public byte[] getBody() throws AuthFailureError {
+                            HashMap<String, String> MyData = new HashMap<String, String>();
+                            try {
+                                MyData.put(WebService.Payment.user_id, MainActivity.jsonObject.getString(WebService.Payment.id));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        },
-                                new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
-                                    @Override
-                                    public void onErrorResponse(VolleyError error) {
+                            MyData.put(WebService.Payment.amount, amount.getText().toString());
+                            if (radioGroup.getCheckedRadioButtonId() == R.id.credit)
+                                MyData.put(WebService.Payment.state, WebService.Payment.online);
 
-                                        Toast.makeText(getActivity(), getActivity().getString(R.string.error_null_cursor), Toast.LENGTH_SHORT).show();
-                                        dialog.setVisibility(View.GONE);
-                                        //This code is executed if there is an error.
-                                    }
-                                })
+                            if (radioGroup.getCheckedRadioButtonId() == R.id.wallet)
+                                MyData.put(WebService.Payment.phone, phone.getText().toString());
 
-                        {
-                            @Override
-                            public byte[] getBody() throws AuthFailureError {
-                                HashMap<String, String> MyData = new HashMap<String, String>();
-                                try {
-                                    MyData.put(WebService.Payment.user_id, MainActivity.jsonObject.getString(WebService.Payment.id));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                                MyData.put(WebService.Payment.amount, amount.getText().toString() + "00");
-                                if (radioGroup.getCheckedRadioButtonId() == R.id.credit)
-                                    MyData.put(WebService.Payment.state, WebService.Payment.online);
-                                Log.e("MyData", MyData.toString());
-                                return new JSONObject(MyData).toString().getBytes();
-                            }
+                            Log.e("MyData", MyData.toString());
+                            return new JSONObject(MyData).toString().getBytes();
+                        }
 
-                            @Override
-                            public String getBodyContentType() {
-                                return "application/json";
-                            }
+                        @Override
+                        public String getBodyContentType() {
+                            return "application/json";
+                        }
 
-                        };  MyStringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                    };
+                    MyStringRequest.setRetryPolicy(new DefaultRetryPolicy(
                             0,
                             DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-                        MyRequestQueue.add(MyStringRequest);
-                    }
+                    MyRequestQueue.add(MyStringRequest);
                 }
+            }
         });
         return view;
     }

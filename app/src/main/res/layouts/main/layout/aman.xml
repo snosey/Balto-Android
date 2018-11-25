@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary">
+
+    <com.example.snosey.balto.Support.CustomTextView
+        android:id="@+id/amanText"
+        android:layout_width="match_parent"
+        android:layout_marginTop="@dimen/margin_xlarge"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_Medium"
+        android:padding="@dimen/margin_Medium" />
+
+
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/margin_Medium"
+        android:background="@drawable/circel"
+        android:tint="@color/colorPrimary"
+        app:srcCompat="@drawable/next" />
+
+</LinearLayout>

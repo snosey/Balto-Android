@@ -41,8 +41,8 @@ public class Wallet extends Fragment {
     CustomTextView balance;
     @InjectView(R.id.totalOutstanding)
     CustomTextView totalOutstanding;
-    @InjectView(R.id.totalPending)
-    CustomTextView totalPending;
+    @InjectView(R.id.totalDirectCredit)
+    CustomTextView totalDirectCredit;
     @InjectView(R.id.transactionNumber)
     CustomTextView transactionNumber;
     @InjectView(R.id.walletRV)
@@ -96,7 +96,7 @@ public class Wallet extends Fragment {
                     transactionNumber.setText(getActivity().getString(R.string.transactionNumber) + jsonArray.length());
                     balance.setText(getActivity().getString(R.string.Settled) + jsonObject.getString(WebService.Payment.total_amount) + " " + getActivity().getString(R.string.egp));
                     totalOutstanding.setText(getActivity().getString(R.string.TotalOutstanding) + jsonObject.getString(WebService.Payment.total_outstanding) + " " + getActivity().getString(R.string.egp));
-                    totalPending.setText(getActivity().getString(R.string.TotalPending) + jsonObject.getString(WebService.Payment.total_pending) + " " + getActivity().getString(R.string.egp));
+                    totalDirectCredit.setText(getActivity().getString(R.string.TotalPaidCredit) + jsonObject.getString(WebService.Payment.total_credit) + " " + getActivity().getString(R.string.egp));
                     walletAdapter.notifyDataSetChanged();
                 }
             }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.selectUserTransactionApi, urlData.get());

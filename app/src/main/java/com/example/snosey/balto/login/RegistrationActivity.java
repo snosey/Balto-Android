@@ -16,6 +16,7 @@ import com.example.snosey.balto.BuildConfig;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.GetHashKey;
 import com.example.snosey.balto.login.create_account.Name;
+import com.google.firebase.FirebaseApp;
 
 import java.util.Locale;
 

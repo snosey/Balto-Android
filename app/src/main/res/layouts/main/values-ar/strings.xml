@@ -101,7 +101,8 @@
     <string name="delete">حذف</string>
     <string name="addToWallet">+ اضف الى المحفظه</string>
     <string name="payWithAman">الدفع بواسطه أمان</string>
-    <string name="amanDetails">اذهب الى احد نوافذ دفع أمان واسال على مدفوعات متنوعة اكسبت و ادفع بهذا الرقم:</string>
+    <string name="amanDetails">  رقمك المرجعي لأمان هو  </string>
+    <string name="amanDetails2">. لمتابعة الدفع ، يرجى التوجه إلى أقرب منفذ ، واسأل عن "مدفوعات متنوعة اكسبت " وقدم رقمك المرجعي. للاستفسار عن أقرب فرع لك ، يرجى الاتصال بالخط الساخن الخاص بشركة أمان على رقم 19910</string>
     <string name="Settled">قيمة المعامالت: </string>
     <string name="TotalOutstanding">مجموع المدفوعات المعلقه: </string>
     <string name="TotalPending">مجموع المدفوعات المعلقه: </string>
@@ -113,5 +114,10 @@
     <string name="aman">أمان</string>
     <string name="ewallet">موبايل كاش</string>
     <string name="wrongAmount">برجاء ادخال المبلغ الصحيح</string>
+    <string name="wrongPhone">رقم الهاتف غير صحيح</string>
+    <string name="TotalPaidCredit">اجمالى المدفوعات بالبطاقه الائتمانيه:</string>
+    <string name="myCredit">رصيدي</string>
+    <string name="phoneCashTypes">اتصالات فلوسي - محفظة CIB الذكية - الاهلي فون كاش -القاهرة كاش - عوده Saib - DoPay كاشاتي - محفظة ABK</string>
+
 
 </resources>

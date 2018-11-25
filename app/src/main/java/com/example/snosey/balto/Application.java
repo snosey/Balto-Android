@@ -5,6 +5,8 @@ import android.support.multidex.MultiDex;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
+import com.google.firebase.FirebaseApp;
+
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -17,6 +19,8 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.e("firebase", "true");
+        FirebaseApp.initializeApp(this);
         TimeZone.setDefault(TimeZone.getTimeZone("GMT+02"));
         Log.e("current time=", Calendar.getInstance().getTime().toString());
     }

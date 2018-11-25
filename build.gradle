@@ -9,11 +9,10 @@ buildscript {
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
+        classpath 'com.google.gms:google-services:3.0.0'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
-        classpath 'com.android.tools.build:gradle:3.1.0-alpha02'
-        classpath 'com.android.tools.build:gradle:2.2.0-rc1'
-        classpath 'com.google.gms:google-services:3.1.1'
+        classpath 'com.android.tools.build:gradle:3.3.0-beta02'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
@@ -21,12 +20,13 @@ buildscript {
 
 allprojects {
     repositories {
+
+        google()
         jcenter()
         maven { url "https://maven.google.com" }
         maven { url "https://jitpack.io" }
         maven { url "https://dl.bintray.com/paymobsolutions/paymob_accept_sdk" }
         mavenCentral()
-        google()
     }
 }
 

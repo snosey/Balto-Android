@@ -224,6 +224,11 @@ public class MainActivity extends FragmentActivity {
                 .build()
         );
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
+            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        else
+            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
 
@@ -548,12 +553,13 @@ public class MainActivity extends FragmentActivity {
                             SharedPreferences sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("lang", "en");
-                            editor.commit();
+                            editor.apply();
                             Locale.setDefault(locale);
                             Configuration config = new Configuration();
                             config.locale = locale;
                             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
                             onConfigurationChanged(config);
+                            recreate();
 
                         }
                     });
@@ -565,13 +571,13 @@ public class MainActivity extends FragmentActivity {
                             SharedPreferences sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("lang", "ar");
-                            editor.commit();
+                            editor.apply();
                             Locale.setDefault(locale);
                             Configuration config = new Configuration();
                             config.locale = locale;
                             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
                             onConfigurationChanged(config);
-
+                            recreate();
                         }
                     });
             alertDialog.show();

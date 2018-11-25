@@ -28,6 +28,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.image.CircleTransform;
@@ -38,8 +46,6 @@ import com.example.snosey.balto.login.RegistrationActivity;
 import com.example.snosey.balto.main.DoctorProfile;
 import com.example.snosey.balto.main.VideoCall;
 import com.example.snosey.balto.main.home_visit.ProfissionLocation;
-import com.example.snosey.balto.payment.MakePayMobApi;
-import com.example.snosey.balto.payment.PaymentSlider;
 import com.squareup.picasso.Picasso;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -50,6 +56,7 @@ import org.json.JSONObject;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -307,6 +314,17 @@ public class Coming extends Fragment {
                         alertDialogBuilder.setTitle("").setMessage(getActivity().getString(R.string.areYouSure)).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
+                                    if (reservationObject.getString(WebService.Booking.id_payment_way).equals(WebService.Booking.wallet)) {
+                                        UrlData urlData2 = new UrlData();
+                                        urlData2.add(WebService.Payment.id, reservationObject.getString(WebService.Booking.wallet_id));
+                                        urlData2.add(WebService.Payment.state, WebService.Payment.refunded);
+                                        new GetData(new GetData.AsyncResponse() {
+                                            @Override
+                                            public void processFinish(String output) throws JSONException {
+                                                Log.e("walletOutput", output);
+                                            }
+                                        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.updateWalletStateApi, urlData2.get());
+                                    }
                                     updateBooking(reservationObject.getString("id"), WebService.Booking.bookingStatePatientCancel, reservationObject.getString(WebService.Booking.fcm_token));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -369,8 +387,24 @@ public class Coming extends Fragment {
                         holder.call.setSupportImageTintList(getActivity().getResources().getColorStateList(R.color.silver));
 
                     if (currentTimeMillis >= bookTotal) {
+                        if (reservationObject.getString(WebService.Booking.id_payment_way).equals(WebService.Booking.wallet)) {
+                            {
+                                UrlData urlData = new UrlData();
+                                urlData.add(WebService.Payment.id, reservationObject.getString(WebService.Booking.wallet_id));
+                                urlData.add(WebService.Payment.state, WebService.Payment.done);
+                                new GetData(new GetData.AsyncResponse() {
+                                    @Override
+                                    public void processFinish(String output) throws JSONException {
+                                    }
+                                }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.updateWalletStateApi, urlData.get());
+                            }
+                        }
                         Log.e("left:", currentTimeMillis + " / " + bookTotal);
-                        moveToPast(reservationObject.getString(WebService.Booking.id),
+                        moveToPast(reservationObject.getString(WebService.Booking.id_doctor),
+                                reservationObject.getString(WebService.Booking.id_sub),
+                                reservationObject.getString(WebService.Booking.wallet_id),
+                                reservationObject.getString(WebService.Booking.id_payment_way),
+                                reservationObject.getString(WebService.Booking.id),
                                 reservationObject.getString(WebService.Booking.total_price),
                                 reservationObject.getString(WebService.Booking.id_coupon_client),
                                 reservationObject.getString(WebService.Booking.id_state));
@@ -483,16 +517,41 @@ public class Coming extends Fragment {
         }
     }
 
-    private void moveToPast(String id, String totalPrice, String id_coupon_client, String idState) {
+    private void moveToPast(String idDoctor, String idSub, String walletId, String paymentId, String id, String totalPrice, String id_coupon_client, String idState) {
         if (false)
             return;
         UrlData urlData = new UrlData();
         urlData.add(WebService.Booking.id, id);
         if (idState.equals(WebService.Booking.bookingStateWorking)) {
+            getPercntageDoctor(id, totalPrice, idSub
+                    , idDoctor, paymentId);
+
             urlData.add(WebService.Booking.id_state, WebService.Booking.bookingStateDone);
-            checkIfCodeExist(totalPrice, id_coupon_client);
-        } else
+            if (paymentId.equals(WebService.Booking.wallet)) {
+                UrlData urlData2 = new UrlData();
+                urlData2.add(WebService.Payment.id, walletId);
+                urlData2.add(WebService.Payment.state, WebService.Payment.done);
+                new GetData(new GetData.AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) throws JSONException {
+                    }
+                }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.updateWalletStateApi, urlData2.get());
+            } else {
+                checkIfCodeExist(totalPrice, id_coupon_client);
+            }
+        } else {
+            if (paymentId.equals(WebService.Booking.wallet)) {
+                UrlData urlData2 = new UrlData();
+                urlData2.add(WebService.Payment.id, walletId);
+                urlData2.add(WebService.Payment.state, WebService.Payment.refunded);
+                new GetData(new GetData.AsyncResponse() {
+                    @Override
+                    public void processFinish(String output) throws JSONException {
+                    }
+                }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.updateWalletStateApi, urlData2.get());
+            }
             urlData.add(WebService.Booking.id_state, WebService.Booking.bookingStateTimeout);
+        }
 
         new GetData(new GetData.AsyncResponse() {
             @Override
@@ -500,6 +559,44 @@ public class Coming extends Fragment {
                 getComingReservation();
             }
         }, getActivity(), false).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, WebService.Booking.updateBookingApi, urlData.get());
+    }
+
+    private void getPercntageDoctor(final String id, final String totalPrice, String idSub, final String idDoctor, final String paymentId) {
+        UrlData urlData = new UrlData();
+        urlData.add(WebService.Booking.id_sub, idSub);
+        urlData.add(WebService.Booking.id_doctor_kind, WebService.homeVisit);
+        new GetData(new GetData.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                JSONObject jsonObject = new JSONObject(output);
+                int intTotalPrice = Integer.parseInt(totalPrice);
+                int adminPrice = (int) (intTotalPrice * Double.parseDouble(jsonObject.getString(WebService.Payment.online_percentage)) / 100);
+                int doctorPrice = intTotalPrice - adminPrice;
+                addPaymentToDB(intTotalPrice, adminPrice, doctorPrice, id, idDoctor, paymentId);
+            }
+
+            private void addPaymentToDB(int intTotalPrice, int adminPrice, int doctorPrice, String id, String idDoctor, String paymentId) {
+
+                UrlData urlData = new UrlData();
+                urlData.add(WebService.Payment.type, WebService.Payment.depet);
+                urlData.add(WebService.Payment.total_money, intTotalPrice + "");
+                urlData.add(WebService.Payment.doctor_money, "-" + doctorPrice);
+                urlData.add(WebService.Payment.admin_money, adminPrice + "");
+                urlData.add(WebService.Payment.payMob_id, "");
+                urlData.add(WebService.Payment.id_user, idDoctor);
+                urlData.add(WebService.Payment.id_payment_way, paymentId);
+                urlData.add(WebService.Payment.id_booking, id);
+                new GetData(new GetData.AsyncResponse() {
+                    @Override
+                    public void processFinish(final String output) throws JSONException {
+
+                    }
+                }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.addPayment, urlData.get());
+
+
+            }
+        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.doctorPercentageMoneyApi, urlData.get());
+
     }
 
 
@@ -601,9 +698,7 @@ public class Coming extends Fragment {
     }
 
     private void updateBooking(String id, String state, String regId) {
-        if (state.equals(WebService.Booking.bookingStatePatientCancel)) {
-            sendNotification(regId, state);
-        }
+        sendNotification(regId, state);
         UrlData urlData = new UrlData();
         urlData.add(WebService.Booking.id, id);
         urlData.add(WebService.Booking.id_state, state);
@@ -651,26 +746,85 @@ public class Coming extends Fragment {
         }
     }
 
-    private void PAYNOW(String latestPrice) {
-        {
-            try {
 
-                // String finalPrice = price.getText().toString().substring(0, price.getText().toString().indexOf(" ")) + "00";
-                if (!MainActivity.jsonObject.getString("payment_token").equals("null") || !MainActivity.jsonObject.getString("payment_token").equals("")) {
-                    new MakePayMobApi(getActivity(), latestPrice + "00", Coming.this, MainActivity.jsonObject.getString("payment_token"),
-                            WebService.Payment.payLive2, WebService.Booking.credit);
-                } else {
-                    FragmentManager fm = getActivity().getSupportFragmentManager();
-                    PaymentSlider fragment = new PaymentSlider();
-                    FragmentTransaction ft = fm.beginTransaction();
-                    ft.replace(R.id.fragment, fragment, "payment");
-                    ft.addToBackStack("payment");
-                    ft.commit();
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+    private void PAYNOW(final String latestPrice) {
+        Log.e("latestPrice", latestPrice);
+        String idClient = "";
+        try {
+            idClient = MainActivity.jsonObject.getString(WebService.Booking.id);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+        final RequestQueue MyRequestQueue = Volley.newRequestQueue(getActivity());
+        UrlData urlData = new UrlData();
+        urlData.add(WebService.Booking.id, idClient);
+        urlData.add(WebService.Setting.default_location, "");
+        final String finalIdClient = idClient;
+        new GetData(new GetData.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                JSONObject jsonObject = new JSONObject(output).getJSONObject("user");
+                try {
+
+                    Log.e("output", output);
+                    if (!jsonObject.getString("payment_token").equals("null") || !jsonObject.getString("payment_token").equals("")) {
+                        payByCredit(latestPrice, finalIdClient);
+                    } else
+                        Toast.makeText(getActivity(), "Error in payment!", Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            private void payByCredit(final String latestPrice, final String idClient) {
+                UrlData urlData1 = new UrlData();
+                urlData1.add(WebService.Payment.user_id, idClient);
+                urlData1.add(WebService.Payment.amount, latestPrice);
+                urlData1.add(WebService.Payment.state, WebService.Payment.online);
+                urlData1.add(WebService.Payment.direct, "true");
+                StringRequest MyStringRequest = new StringRequest(Request.Method.POST, WebService.Payment.onlinePaymentApi + "?" + urlData1.get(), new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("Payment Response", response);
+                    }
+                },
+                        new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                                Toast.makeText(getActivity(), getActivity().getString(R.string.error_null_cursor), Toast.LENGTH_SHORT).show();
+                                //This code is executed if there is an error.
+                            }
+                        })
+
+                {
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        HashMap<String, String> MyData = new HashMap<String, String>();
+                     /*   MyData.put(WebService.Payment.user_id, idClient);
+                        MyData.put(WebService.Payment.amount, latestPrice);
+                        MyData.put(WebService.Payment.state, WebService.Payment.online);
+                        MyData.put(WebService.Payment.direct, "true");*/
+                        Log.e("MyData", MyData.toString());
+                        return new JSONObject(MyData).toString().getBytes();
+                    }
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json";
+                    }
+
+                };
+                MyStringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        0,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                MyRequestQueue.add(MyStringRequest);
+            }
+        }, getActivity(), false).
+                executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Setting.updateUserApi, urlData.get());
+
     }
 
 }

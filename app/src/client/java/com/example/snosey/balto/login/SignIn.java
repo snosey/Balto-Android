@@ -31,6 +31,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
@@ -66,7 +67,6 @@ public class SignIn extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.sign_in, container, false);
         ButterKnife.inject(this, view);
-
 
         sharedPreferences = getActivity().getSharedPreferences("login_client", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();

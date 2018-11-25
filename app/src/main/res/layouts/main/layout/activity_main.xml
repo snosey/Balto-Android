@@ -347,7 +347,7 @@
                     android:layout_gravity="center"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:text="@string/wallet"
+                    android:text="@string/myCredit"
                     android:textColor="@color/black_8am2"
                     android:textSize="@dimen/text_Small" />
 

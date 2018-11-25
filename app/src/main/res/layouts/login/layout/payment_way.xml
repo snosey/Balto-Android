@@ -59,56 +59,81 @@
 
         <RadioButton
             android:id="@+id/aman"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_Medium"
             android:buttonTint="@color/black_8am2"
             android:checked="true"
+            android:drawableEnd="@drawable/aman"
             android:text="@string/aman"
             android:textColor="@color/black_8am2" />
 
         <RadioButton
-            android:id="@+id/wallet"
-            android:layout_width="wrap_content"
+            android:id="@+id/credit"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_Medium"
             android:buttonTint="@color/black_8am2"
+            android:drawableEnd="@drawable/payment"
+            android:text="@string/credit"
+            android:textColor="@color/black_8am2"
+            android:visibility="visible" />
+
+        <RadioButton
+            android:id="@+id/wallet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_Medium"
+            android:buttonTint="@color/black_8am2"
+            android:drawableEnd="@drawable/ic_smartphone_black_24dp"
             android:text="@string/ewallet"
             android:textColor="@color/black_8am2" />
 
 
-        <RadioButton
-            android:id="@+id/credit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_Medium"
-            android:buttonTint="@color/black_8am2"
-            android:visibility="gone"
-            android:text="@string/credit"
-            android:textColor="@color/black_8am2" />
     </RadioGroup>
+
+
+    <com.example.snosey.balto.Support.CustomTextView
+        android:id="@+id/phoneCashWays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_Medium"
+        android:padding="@dimen/margin_Small"
+        android:text="@string/phoneCashTypes"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_Medium"
+        android:hint="@string/phoneNumber"
+        android:inputType="number"
+        android:maxLength="11"
+        android:padding="@dimen/margin_Small"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <EditText
+            android:id="@+id/amount"
             android:layout_width="match_parent"
-            android:hint="@string/Amount"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_Medium"
             android:layout_toStartOf="@id/egp"
-            android:maxLength="5"
+            android:hint="@string/Amount"
             android:inputType="number"
-            android:id="@+id/amount"
+            android:maxLength="5"
             android:padding="@dimen/margin_Small" />
 
         <com.example.snosey.balto.Support.CustomTextView
+            android:id="@+id/egp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_Medium"
             android:layout_marginEnd="@dimen/margin_xlarge"
-            android:id="@+id/egp"
+            android:layout_marginTop="@dimen/margin_Medium"
             android:layout_toStartOf="@id/next"
             android:padding="@dimen/margin_Small"
             android:text="@string/egp" />

@@ -45,6 +45,7 @@
         app:drawableStartCompat="@drawable/time" />
 
     <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
@@ -72,7 +73,7 @@
             android:layout_marginTop="@dimen/margin_Medium"
             android:buttonTint="@color/colorPrimary"
             android:gravity="center"
-            android:text="@string/wallet"
+            android:text="@string/cash"
             android:textColor="@color/colorPrimary" />
 
     </RadioGroup>

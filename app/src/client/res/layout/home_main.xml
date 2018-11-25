@@ -93,6 +93,7 @@
             android:textColor="@color/white"
             android:textSize="@dimen/text_Large"
             android:text="@string/soon"
+            android:visibility="gone"
             android:background="@color/black_shfaf"
             android:layout_height="match_parent" />
     </RelativeLayout>

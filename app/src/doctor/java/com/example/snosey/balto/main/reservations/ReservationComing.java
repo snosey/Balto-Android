@@ -28,6 +28,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.image.CircleTransform;
@@ -39,7 +47,6 @@ import com.example.snosey.balto.main.ClientProfile;
 import com.example.snosey.balto.main.MedicalReport;
 import com.example.snosey.balto.main.RateDialog;
 import com.example.snosey.balto.main.VideoCall;
-import com.example.snosey.balto.payment.MakePayMobApi;
 import com.squareup.picasso.Picasso;
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog;
 
@@ -49,6 +56,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -266,7 +274,7 @@ public class ReservationComing extends Fragment {
                                 alertDialogBuilder.setMessage(R.string.areYouSure).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         try {
-                                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateWorking, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorArrive), reservationObject.getString(WebService.Booking.id_state));
+                                            updateBooking(reservationObject.getString(WebService.Booking.wallet_id), reservationObject.getString(WebService.Booking.id_payment_way), reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateWorking, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorArrive), reservationObject.getString(WebService.Booking.id_state));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -290,7 +298,7 @@ public class ReservationComing extends Fragment {
                                         try {
                                             getPercntageDoctor("", reservationObject.getString(WebService.Booking.id), reservationObject.getString(WebService.Booking.total_price),
                                                     reservationObject.getString(WebService.Booking.id_sub), reservationObject.getString(WebService.Booking.id_client), reservationObject.getString(WebService.Booking.id_payment_way));
-                                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorFinished), reservationObject.getString(WebService.Booking.id_state));
+                                            updateBooking(reservationObject.getString(WebService.Booking.wallet_id), reservationObject.getString(WebService.Booking.id_payment_way), reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorFinished), reservationObject.getString(WebService.Booking.id_state));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -314,7 +322,7 @@ public class ReservationComing extends Fragment {
                                 alertDialogBuilder.setMessage(R.string.areYouSure).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         try {
-                                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateStart, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorStart), reservationObject.getString(WebService.Booking.id_state));
+                                            updateBooking(reservationObject.getString(WebService.Booking.wallet_id), reservationObject.getString(WebService.Booking.id_payment_way), reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateStart, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorStart), reservationObject.getString(WebService.Booking.id_state));
                                             String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)",
                                                     Double.parseDouble(reservationObject.getString(WebService.Booking.client_latitude))
                                                     , Double.parseDouble(reservationObject.getString(WebService.Booking.client_longitude)), "");
@@ -390,7 +398,7 @@ public class ReservationComing extends Fragment {
                             alertDialogBuilder.setTitle("").setMessage(getActivity().getString(R.string.areYouSure)).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     try {
-                                        updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDoctorCancel, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.reservationCancel), reservationObject.getString(WebService.Booking.id_state));
+                                        updateBooking(reservationObject.getString(WebService.Booking.wallet_id), reservationObject.getString(WebService.Booking.id_payment_way), reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDoctorCancel, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.reservationCancel), reservationObject.getString(WebService.Booking.id_state));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
@@ -405,9 +413,9 @@ public class ReservationComing extends Fragment {
                     if (currentTimeMillis >= bookTotal) {
                         Log.e("left:", currentTimeMillis + " / " + bookTotal);
                         if (reservationObject.getString(WebService.Booking.id_state).equals(WebService.Booking.bookingStateProcessing))
-                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateTimeout, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorFinished), reservationObject.getString(WebService.Booking.id_state));
+                            updateBooking(reservationObject.getString(WebService.Booking.wallet_id), reservationObject.getString(WebService.Booking.id_payment_way), reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateTimeout, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorFinished), reservationObject.getString(WebService.Booking.id_state));
                         else
-                            updateBooking(reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorFinished), reservationObject.getString(WebService.Booking.id_state));
+                            updateBooking(reservationObject.getString(WebService.Booking.wallet_id), reservationObject.getString(WebService.Booking.id_payment_way), reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorFinished), reservationObject.getString(WebService.Booking.id_state));
                     }
 
                     if (currentTimeMillis < bookTotal - duration)
@@ -553,21 +561,40 @@ public class ReservationComing extends Fragment {
         }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.addPayment, urlData.get());
     }
 
-    private void updateBooking(final String fcm_token, final String id, final String state, final String id_client, final String title, final String previousState) {
+    private void updateBooking(final String walletId, final String paymentId, final String fcm_token, final String id, final String state, final String id_client, final String title, final String previousState) {
         UrlData urlData = new UrlData();
         urlData.add(WebService.Booking.id, id);
         urlData.add(WebService.Booking.id_state, state);
+
         new GetData(new GetData.AsyncResponse() {
             @Override
             public void processFinish(String output) throws JSONException {
                 JSONObject jsonObjectBooking = new JSONObject(output).getJSONObject("booking");
+                if (paymentId.equals(WebService.Booking.wallet)) {
+                    UrlData urlData2 = new UrlData();
+                    urlData2.add(WebService.Payment.id, walletId);
+                    if ((state.equals(WebService.Booking.bookingStateDoctorCancel) ||
+                            state.equals(WebService.Booking.bookingStateTimeout))) {
+                        urlData2.add(WebService.Payment.state, WebService.Payment.refunded);
+                    } else if (!previousState.equals(WebService.Booking.bookingStateProcessing) && state.equals(WebService.Booking.bookingStateDone)) {
+                        urlData2.add(WebService.Payment.state, WebService.Payment.done);
+                    }
+                    new GetData(new GetData.AsyncResponse() {
+                        @Override
+                        public void processFinish(String output) throws JSONException {
+                        }
+                    }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.updateWalletStateApi, urlData2.get());
+                }
+
                 if (!previousState.equals(WebService.Booking.bookingStateProcessing) &&
                         state.equals(WebService.Booking.bookingStateDone)) {
                     getPercntageDoctor("", jsonObjectBooking.getString(WebService.Booking.id), jsonObjectBooking.getString(WebService.Booking.total_price),
                             jsonObjectBooking.getString(WebService.Booking.id_sub), jsonObjectBooking.getString(WebService.Booking.id_client), jsonObjectBooking.getString(WebService.Booking.id_payment_way));
 
-                    checkIfCodeExist(jsonObjectBooking.getString(WebService.Booking.total_price), jsonObjectBooking.getString(WebService.Booking.id_coupon_client),
-                            jsonObjectBooking.getString(WebService.Booking.id_client));
+                    if (!paymentId.equals(WebService.Booking.wallet)) {
+                        checkIfCodeExist(jsonObjectBooking.getString(WebService.Booking.total_price), jsonObjectBooking.getString(WebService.Booking.id_coupon_client),
+                                jsonObjectBooking.getString(WebService.Booking.id_client));
+                    }
                     sendNotification(fcm_token, state, id + "|" + MainActivity.jsonObject.getString("id"), title);
                     {
                         RateDialog rateDialog = new RateDialog(getActivity(), id, id_client);
@@ -613,29 +640,76 @@ public class ReservationComing extends Fragment {
         }
     }
 
-    private void PAYNOW(final String latestPrice, String idClient) {
-        {
-            UrlData urlData = new UrlData();
-            urlData.add(WebService.Booking.id, idClient);
-            urlData.add(WebService.Setting.default_location, "");
-            new GetData(new GetData.AsyncResponse() {
-                @Override
-                public void processFinish(String output) throws JSONException {
-                    JSONObject jsonObject = new JSONObject(output).getJSONObject("user");
-                    try {
+    private void PAYNOW(final String latestPrice, final String idClient) {
+        final RequestQueue MyRequestQueue = Volley.newRequestQueue(getActivity());
+        UrlData urlData = new UrlData();
+        urlData.add(WebService.Booking.id, idClient);
+        urlData.add(WebService.Setting.default_location, "");
+        new GetData(new GetData.AsyncResponse() {
+            @Override
+            public void processFinish(String output) throws JSONException {
+                JSONObject jsonObject = new JSONObject(output).getJSONObject("user");
+                try {
 
-                        Log.e("output", output);
-                        if (!jsonObject.getString("payment_token").equals("null") || !jsonObject.getString("payment_token").equals("")) {
-                            new MakePayMobApi(getActivity(), latestPrice + "00", ReservationComing.this, jsonObject.getString("payment_token"), WebService.Payment.payLive2);
-                        } else
-                            Toast.makeText(getActivity(), "Error in payment!", Toast.LENGTH_SHORT).show();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                    Log.e("output", output);
+                    if (!jsonObject.getString("payment_token").equals("null") || !jsonObject.getString("payment_token").equals("")) {
+                        payByCredit(latestPrice, idClient);
+                    } else
+                        Toast.makeText(getActivity(), "Error in payment!", Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            private void payByCredit(final String latestPrice, final String idClient) {
+                UrlData urlData1 = new UrlData();
+                urlData1.add(WebService.Payment.user_id, idClient);
+                urlData1.add(WebService.Payment.amount, latestPrice);
+                urlData1.add(WebService.Payment.state, WebService.Payment.online);
+                urlData1.add(WebService.Payment.direct, "true");
+                StringRequest MyStringRequest = new StringRequest(Request.Method.POST, WebService.Payment.onlinePaymentApi + "?" + urlData1.get(), new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.e("Payment Response", response);
+                    }
+                },
+                        new Response.ErrorListener() { //Create an error listener to handle errors appropriately.
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+
+                                Toast.makeText(getActivity(), getActivity().getString(R.string.error_null_cursor), Toast.LENGTH_SHORT).show();
+                                //This code is executed if there is an error.
+                            }
+                        })
+
+                {
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        HashMap<String, String> MyData = new HashMap<String, String>();
+                     /*   MyData.put(WebService.Payment.user_id, idClient);
+                        MyData.put(WebService.Payment.amount, latestPrice);
+                        MyData.put(WebService.Payment.state, WebService.Payment.online);
+                        MyData.put(WebService.Payment.direct, "true");*/
+                        Log.e("MyData", MyData.toString());
+                        return new JSONObject(MyData).toString().getBytes();
                     }
 
-                }
-            }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Setting.updateUserApi, urlData.get());
-        }
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json";
+                    }
+
+                };
+                MyStringRequest.setRetryPolicy(new DefaultRetryPolicy(
+                        0,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+                MyRequestQueue.add(MyStringRequest);
+            }
+        }, getActivity(), false).
+                executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Setting.updateUserApi, urlData.get());
+
     }
 
     @SuppressLint("RestrictedApi")

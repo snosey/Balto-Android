@@ -1,0 +1,53 @@
+<resources>
+
+    <string name="facebook_app_id">188036931788216</string>
+    <string name="fb_login_protocol_scheme">fb188036931788216</string>
+    <string name="balance">Balance: </string>
+    <string name="Settled">Total Credit: </string>
+    <string name="TotalPending">Total Pending: </string>
+    <string name="TotalOutstanding">Total Outstanding: </string>
+    <string name="transactionNumber"># of transactions:</string>
+    <string name="signup">Sign Up</string>
+    <string name="login">Log In</string>
+    <string name="forget_password">Forgot password?</string>
+    <string name="signup_facebook">Sign Up with Facebook</string>
+    <string name="create_account">Create Account</string>
+    <string name="password">PASSWORD</string>
+    <string name="email">EMAIL</string>
+    <string name="name">NAME</string>
+    <string name="last_name">Last name</string>
+    <string name="first_name">First name</string>
+    <string name="ask_name">What is your name?</string>
+    <string name="checkName">Please enter your name</string>
+
+    <string name="arabic">عربي</string>
+    <string name="english">English</string>
+
+    <!--<string name="english">English</string>  -->
+    <string name="or">Or</string>
+    <string name="ask_email">What is your email?</string>
+    <string name="invalidEmail">Email is invalid</string>
+    <string name="emailIsExist">Email already exists!</string>
+    <string name="gender">GENDER</string>
+    <string name="emailSent">We sent you an email!</string>
+    <string name="confirmation_Code">Enter the confirmation code you received</string>
+    <string name="resend">Resend</string>
+    <string name="smsSent">We have sent you an SMS!</string>
+    <string name="confirm">Confirm</string>
+    <string name="promoCode">Enter Referral ID if you have</string>
+    <string name="upload">Upload your profile picture</string>
+    <string name="profilePic">Profile Pic</string>
+    <string name="ask_password">What is your password?</string>
+    <string name="wrongEmailOrPassword">Email or password is incorrect</string>
+    <string name="create_password">Create Password</string>
+    <string name="password_constraints">Your password shouldn\'t be more than 16 characters</string>
+    <string name="addPhone">Add your mobile number</string>
+    <string name="phoneNumber">PHONE NUMBER</string>
+    <string name="didntReciveCode">Didn\'t receive code?</string>
+    <string name="emailIsNotExist">Email is not found!</string>
+    <string name="codeIsInvalid">Code is invalid!</string>
+    <string name="profession">Choose Your Profession</string>
+    <string name="specialization">Specialization</string>
+    <string name="chooseLocation">Where can you provide this service?</string>
+    <string name="typeOfService">Choose type of services</string>
+</resources>

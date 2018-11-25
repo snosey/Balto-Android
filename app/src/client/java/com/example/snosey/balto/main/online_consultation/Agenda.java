@@ -28,6 +28,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -46,6 +47,7 @@ import com.example.snosey.balto.Support.notification.NotifyService;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.login.RegistrationActivity;
 import com.example.snosey.balto.main.reservation.Reservations;
 import com.example.snosey.balto.payment.MakePayMobApi;
 import com.example.snosey.balto.payment.PaymentSlider;
@@ -138,6 +140,7 @@ public class Agenda extends android.support.v4.app.Fragment {
     private AgendaAdapter.TimeScheduale timeSceduale;
     private int latestPrice;
     private String id_coupon_client = "";
+    private String walletId = "";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -439,9 +442,11 @@ public class Agenda extends android.support.v4.app.Fragment {
                         Log.e("afterTime", afterTime + "");
                         Log.e("sameHour", sameHour + "");
 
-                        if (calendarNow.get(Calendar.HOUR) == 0) {
+                        Log.e("CalenderNow", calendarNow.get(Calendar.HOUR) + " ");
+                       /* if (calendarNow.get(Calendar.HOUR) == 0) {
                             continue;
-                        } else if ((sameHour || afterTime) && sameDay) {
+                        } else*/
+                        if ((sameHour || afterTime) && sameDay) {
                             if (true)
                                 continue;
                             Log.e("Agenda", "past");
@@ -482,14 +487,16 @@ public class Agenda extends android.support.v4.app.Fragment {
             final TimeScheduale timeScheduale = newAgendaList.get(position);
             final boolean[] clickAble = {true};
             if (timeScheduale.fromHour >= 12)
-                holder.timeFrom.setText(addZeroToString(timeScheduale.fromHour - 12 + "") + ":" + addZeroToString(timeScheduale.fromMin + "") + " " + getActivity().getString(R.string.mdtp_pm));
+                holder.timeFrom.setText
+                        (addZeroToString(timeScheduale.fromHour - 12 + "")
+                                + ":" + addZeroToString(timeScheduale.fromMin + "") + " " + "PM");
             else
-                holder.timeFrom.setText(addZeroToString(timeScheduale.fromHour + "") + ":" + addZeroToString(timeScheduale.fromMin + "") + " " + getActivity().getString(R.string.mdtp_am));
+                holder.timeFrom.setText(addZeroToString(timeScheduale.fromHour + "") + ":" + addZeroToString(timeScheduale.fromMin + "") + " " + "AM");
 
             if (timeScheduale.toHour >= 12)
-                holder.timeTo.setText(addZeroToString(timeScheduale.toHour - 12 + "") + ":" + addZeroToString(timeScheduale.toMin + "") + " " + getActivity().getString(R.string.mdtp_pm));
+                holder.timeTo.setText(addZeroToString(timeScheduale.toHour - 12 + "") + ":" + addZeroToString(timeScheduale.toMin + "") + " " + "PM");
             else
-                holder.timeTo.setText(addZeroToString(timeScheduale.toHour + "") + ":" + addZeroToString(timeScheduale.toMin + "") + " " + getActivity().getString(R.string.mdtp_am));
+                holder.timeTo.setText(addZeroToString(timeScheduale.toHour + "") + ":" + addZeroToString(timeScheduale.toMin + "") + " " + "AM");
 
             if (clickAble[0])
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -508,6 +515,7 @@ public class Agenda extends android.support.v4.app.Fragment {
                             ft.commit();
                             return;
                         } else {
+                            final String[] amount = {"0"};
                             final Dialog dialog = new Dialog(getActivity());
                             dialog.setContentView(R.layout.payment_confirm);
                             final com.example.snosey.balto.Support.CustomTextView estimatedFare = (com.example.snosey.balto.Support.CustomTextView) dialog.findViewById(R.id.estimatedFare);
@@ -516,14 +524,17 @@ public class Agenda extends android.support.v4.app.Fragment {
                             final AppCompatEditText promoCode = (AppCompatEditText) dialog.findViewById(R.id.promoCode);
                             final RadioButton credit = (RadioButton) dialog.findViewById(R.id.credit);
                             final RadioButton wallet = (RadioButton) dialog.findViewById(R.id.wallet);
+                            final RadioGroup radioGroup = (RadioGroup) dialog.findViewById(R.id.radioGroup);
                             final CustomTextView saved_card = (CustomTextView) dialog.findViewById(R.id.saved_card);
                             UrlData urlData = new UrlData();
+                            final JSONObject[] jsonObject = {new JSONObject()};
                             try {
                                 urlData.add(WebService.Payment.id, MainActivity.jsonObject.getString(WebService.Payment.id));
+                                urlData.add(WebService.Payment.lng, RegistrationActivity.sharedPreferences.getString("lang", "en"));
                                 new GetData(new GetData.AsyncResponse() {
                                     @Override
                                     public void processFinish(String output) throws JSONException {
-                                        final JSONObject jsonObject = new JSONObject(output);
+                                        jsonObject[0] = new JSONObject(output);
                                         showCardNumber();
                                         credit.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                                             @Override
@@ -531,13 +542,16 @@ public class Agenda extends android.support.v4.app.Fragment {
                                                 if (b) {
                                                     showCardNumber();
                                                 } else {
+
                                                     try {
-                                                        saved_card.setText(getActivity().getString(R.string.Settled) + " ( " + jsonObject.getString(WebService.Payment.total_amount) + " " +
-                                                                getActivity().getString(R.string.egp) + " ) ");
-                                                        saved_card.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.money, 0, 0, 0);
+                                                        amount[0] = jsonObject[0].getString(WebService.Payment.total_amount);
                                                     } catch (JSONException e) {
                                                         e.printStackTrace();
                                                     }
+                                                    saved_card.setText(getActivity().getString(R.string.Settled) + " ( " + amount[0] + " " +
+                                                            getActivity().getString(R.string.egp) + " ) ");
+                                                    saved_card.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.money, 0, 0, 0);
+
 
                                                 }
                                             }
@@ -564,6 +578,7 @@ public class Agenda extends android.support.v4.app.Fragment {
                             }
                             final AppCompatButton confirmCode = (AppCompatButton) dialog.findViewById(R.id.confirmCode);
                             final int tempLatestPrice = Integer.parseInt(price.getText().toString().replace(" " + getActivity().getString(R.string.egp), ""));
+                            latestPrice = tempLatestPrice;
                             confirmCode.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
@@ -609,7 +624,47 @@ public class Agenda extends android.support.v4.app.Fragment {
                                 @Override
                                 public void onClick(View view) {
                                     timeSceduale = timeScheduale;
-                                    makePayment();
+                                    if (radioGroup.getCheckedRadioButtonId() == R.id.credit)
+                                        makePayment(WebService.Booking.credit);
+                                    else {
+                                        try {
+                                            try {
+                                                Log.e("Amount", "LatestPrice:" + latestPrice + " , current Amount:" + Integer.parseInt(jsonObject[0].getString(WebService.Payment.total_amount)));
+                                            } catch (Exception e) {
+                                                e.printStackTrace();
+                                            }
+                                            if (latestPrice <= Integer.parseInt(amount[0])) {
+                                                UrlData urlData = new UrlData();
+                                                urlData.add(WebService.Payment.amount, "" + latestPrice);
+                                                urlData.add(WebService.Payment.way, WebService.Booking.wallet);
+                                                urlData.add(WebService.Payment.state, WebService.Payment.outstanding);
+                                                urlData.add(WebService.Payment.user, MainActivity.jsonObject.getString(WebService.Payment.id));
+                                                new GetData(new GetData.AsyncResponse() {
+                                                    @Override
+                                                    public void processFinish(String output) throws JSONException {
+                                                        Log.e("Transaction output", output);
+                                                        JSONObject object = new JSONObject(output);
+                                                        if (object.getString(WebService.Payment.status).equals("0"))
+                                                            Toast.makeText(getActivity(), object.getString(WebService.Payment.error), Toast.LENGTH_SHORT).show();
+                                                        else {
+                                                            walletId = object.getJSONObject("data").getString("id");
+                                                            makePayment(WebService.Booking.wallet);
+                                                        }
+                                                    }
+                                                }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Payment.addTransactionApi, urlData.get());
+                                            } else {
+                                                FragmentManager fm = getActivity().getSupportFragmentManager();
+                                                PaymentSlider fragment = new PaymentSlider();
+                                                FragmentTransaction ft = fm.beginTransaction();
+                                                ft.replace(R.id.fragment, fragment, "payment");
+                                                ft.addToBackStack("payment");
+                                                ft.commit();
+                                            }
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+
                                     dialog.dismiss();
                                 }
                             });
@@ -663,12 +718,14 @@ public class Agenda extends android.support.v4.app.Fragment {
             }
         }
 
-        private void makePayment() {
+        private void makePayment(String paymentType) {
             try {
                 Log.e("payment_token", MainActivity.jsonObject.getString("payment_token"));
                 // String finalPrice = price.getText().toString().substring(0, price.getText().toString().indexOf(" ")) + "00";
-                if (!MainActivity.jsonObject.getString("payment_token").equals("null") && !MainActivity.jsonObject.getString("payment_token").equals("")) {
-                    confirmRequest(timeSceduale, "");
+                if (paymentType.equals(WebService.Booking.wallet)) {
+                    confirmRequest(timeSceduale, "", paymentType);
+                } else if (!MainActivity.jsonObject.getString("payment_token").equals("null") && !MainActivity.jsonObject.getString("payment_token").equals("")) {
+                    confirmRequest(timeSceduale, "", paymentType);
                     //  new MakePayMobApi(getActivity(), latestPrice + "00", Agenda.this, MainActivity.jsonObject.getString("payment_token"), WebService.Payment.payLive2);
                 } else {
                     new MakePayMobApi(getActivity(), "100", Agenda.this, "", WebService.Payment.payLive1, WebService.Booking.credit);
@@ -699,7 +756,7 @@ public class Agenda extends android.support.v4.app.Fragment {
     }
 
 
-    private void confirmRequest(final AgendaAdapter.TimeScheduale timeScheduale, final String orderId) {
+    private void confirmRequest(final AgendaAdapter.TimeScheduale timeScheduale, final String orderId, String paymentWay) {
         final UrlData urlData = new UrlData();
         //  if (getArguments().containsKey(WebService.HomeVisit.promoCode))
         //    urlData.add(WebService.Booking.id_coupon_client, getArguments().getString(WebService.HomeVisit.promoCode));
@@ -710,19 +767,25 @@ public class Agenda extends android.support.v4.app.Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        urlData.add(WebService.Booking.id_payment_way, "2");
+        urlData.add(WebService.Booking.id_payment_way, paymentWay);
         if (!id_coupon_client.equals("")) {
             increaseCoupon(id_coupon_client);
         }
         urlData.add(WebService.Booking.id_coupon_client, id_coupon_client);
         urlData.add(WebService.Booking.receive_year, chooseYear + "");
+        urlData.add(WebService.Booking.wallet_id, walletId);
         urlData.add(WebService.Booking.receive_month, chooseMonth + "");
         urlData.add(WebService.Booking.receive_day, chooseDay + "");
         urlData.add(WebService.Booking.receive_hour, addZeroToString(timeScheduale.fromHour + ""));
         urlData.add(WebService.Booking.receive_minutes, addZeroToString(timeScheduale.fromMin + ""));
         urlData.add(WebService.Booking.id_doctor_kind, WebService.onlineConsult);
         urlData.add(WebService.Booking.duration, "" + timeScheduale.estimated_time);
-
+        try {
+            urlData.add(WebService.Booking.id_doctor, doctorObject.getString("id"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        urlData.add(WebService.Booking.id_state, WebService.Booking.bookingStateProcessing);
 
         new GetData(new GetData.AsyncResponse() {
             @Override
@@ -753,37 +816,12 @@ public class Agenda extends android.support.v4.app.Fragment {
                             new GetData(new GetData.AsyncResponse() {
                                 @Override
                                 public void processFinish(String output) {
-                                    UrlData updateData = new UrlData();
-                                    try {
-                                        updateData.add(WebService.Booking.id_doctor, doctorObject.getString("id"));
-                                        updateData.add(WebService.Booking.id_state, WebService.Booking.bookingStateProcessing);
-                                        updateData.add(WebService.Booking.id, jsonBooking.getString("id"));
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                    new GetData(new GetData.AsyncResponse() {
-                                        @Override
-                                        public void processFinish(String output) {
-
-                                            FragmentManager fm = getActivity().getSupportFragmentManager();
-                                            Reservations fragment = new Reservations();
-                                            FragmentTransaction ft = fm.beginTransaction();
-                                            ft.replace(R.id.fragment, fragment, "Reservations");
-                                            ft.addToBackStack("Reservations");
-                                            ft.commit();
-
-                                      /*      {
-                                                try {
-                                                    getPercntageDoctor(orderId, new JSONObject(output).getJSONObject("booking").getString("id"),
-                                                            new JSONObject(output).getJSONObject("booking").getString(WebService.Booking.total_price));
-                                                } catch (JSONException e) {
-                                                    e.printStackTrace();
-                                                }
-                                            }
-                           */
-                                        }
-                                    }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.updateBookingApi, updateData.get());
-
+                                    FragmentManager fm = getActivity().getSupportFragmentManager();
+                                    Reservations fragment = new Reservations();
+                                    FragmentTransaction ft = fm.beginTransaction();
+                                    ft.replace(R.id.fragment, fragment, "Reservations");
+                                    ft.addToBackStack("Reservations");
+                                    ft.commit();
                                 }
                             }, getActivity(), false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Notification.notificationApi, urlData.get());
                         }
@@ -875,9 +913,9 @@ public class Agenda extends android.support.v4.app.Fragment {
                 try {
                     JSONObject jsonObject = new JSONObject(data.getStringExtra("response"));
                     if (jsonObject.getString("success").equals("true"))
-                        confirmRequest(timeSceduale, jsonObject.getString("id"));
+                        confirmRequest(timeSceduale, jsonObject.getString("id"), WebService.Booking.credit);
                     else
-                        Toast.makeText(getContext(), getActivity().getString(R.string.error_null_cursor), Toast.LENGTH_LONG).show();
+                        Toast.makeText(getContext(), getActivity().getString(android.R.string.httpErrorBadUrl), Toast.LENGTH_LONG).show();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1024,7 +1062,7 @@ public class Agenda extends android.support.v4.app.Fragment {
                 MainActivity.jsonObject.put(WebService.Login.card_type, type);
                 MainActivity.jsonObject.put(WebService.Login.card_number, number);
                 // ToastMaker.displayShortToast(getActivity(), "Saved");
-                confirmRequest(timeSceduale, "");
+                confirmRequest(timeSceduale, "", WebService.Booking.credit);
             }
         }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Setting.updateUserApi, urlData.get());
 
@@ -1052,9 +1090,7 @@ public class Agenda extends android.support.v4.app.Fragment {
 
             }
         }
-        )
-
-        {
+        ) {
             @Override
             public byte[] getBody() throws AuthFailureError {
 

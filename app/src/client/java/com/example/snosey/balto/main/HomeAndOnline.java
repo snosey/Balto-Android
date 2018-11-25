@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
@@ -82,9 +83,10 @@ public class HomeAndOnline extends Fragment {
 
     @OnClick(R.id.homeVisiting)
     public void onHomeVisitingClicked() {
-        if (true)
+        if (true) {
+            Toast.makeText(getActivity(), getActivity().getString(R.string.soon), Toast.LENGTH_LONG).show();
             return;
-
+        }
         FragmentManager fm = getActivity().getSupportFragmentManager();
         Bundle bundle = new Bundle();
         try {

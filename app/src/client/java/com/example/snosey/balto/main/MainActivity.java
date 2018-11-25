@@ -34,6 +34,7 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.snosey.balto.Support.ContextWrapper;
 import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.notification.NotifyService;
 import com.example.snosey.balto.Support.webservice.GetData;
@@ -62,7 +63,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by Snosey on 2/7/2018.
@@ -156,8 +156,19 @@ public class MainActivity extends FragmentActivity {
 
     @Override
     protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+
+        Locale newLocale;
+        if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
+            newLocale = new Locale("ar");
+        else
+            newLocale = new Locale("en");
+
+        // .. create or get your new Locale object here.
+
+        Context context = ContextWrapper.wrap(newBase, newLocale);
+        super.attachBaseContext(context);
     }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,6 +189,11 @@ public class MainActivity extends FragmentActivity {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+        if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
+            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        else
+            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+
 
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
@@ -205,6 +221,7 @@ public class MainActivity extends FragmentActivity {
                 clientName.setText(jsonObject.getString("first_name_ar"));
             else
                 clientName.setText(jsonObject.getString("first_name_en"));
+
 
             if (!jsonObject.getString("image").equals("")) {
                 String imageLink = jsonObject.getString("image");
@@ -280,9 +297,7 @@ public class MainActivity extends FragmentActivity {
                     }
                 }
             });
-        } else
-
-        {
+        } else {
             online.setVisibility(View.GONE);
             agenda.setVisibility(View.GONE);
             waller.setVisibility(View.GONE);
@@ -449,9 +464,7 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void langauge(View view) {
-
         {
-
             if (drawerLayout.isDrawerOpen(drawer))
                 drawerLayout.closeDrawer(drawer);
             final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
@@ -464,12 +477,13 @@ public class MainActivity extends FragmentActivity {
                             SharedPreferences sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("lang", "en");
-                            editor.commit();
+                            editor.apply();
                             Locale.setDefault(locale);
                             Configuration config = new Configuration();
                             config.locale = locale;
                             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
                             onConfigurationChanged(config);
+                            recreate();
 
                         }
                     });
@@ -481,12 +495,19 @@ public class MainActivity extends FragmentActivity {
                             SharedPreferences sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("lang", "ar");
-                            editor.commit();
+                            editor.apply();
                             Locale.setDefault(locale);
                             Configuration config = new Configuration();
-                            config.locale = locale;
+                            if (Build.VERSION.SDK_INT >= 17) {
+                                config.setLocale(locale);
+                            } else {
+                                config.locale = locale;
+                            }
+                            getBaseContext().createConfigurationContext(config);
+                            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
                             getResources().updateConfiguration(config, getResources().getDisplayMetrics());
                             onConfigurationChanged(config);
+                            recreate();
 
                         }
                     });
@@ -684,5 +705,6 @@ public class MainActivity extends FragmentActivity {
     public void onViewClicked() {
         onBackPressed();
     }
+
 
 }

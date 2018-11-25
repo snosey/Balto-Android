@@ -36,7 +36,7 @@
     <string name="noProfissional">No professional available</string>
     <string name="bookingRequestMessage">New Request</string>
     <string name="searching">Searching</string>
-    <string name="credit">Credit</string>
+    <string name="credit">Card</string>
     <string name="requestNotAvailable">This request has been taken</string>
     <string name="coming">Upcoming</string>
     <string name="past">Past</string>
@@ -99,14 +99,19 @@
     <string name="cantCancel">Reservation can not be cancelled less than 1 hour in advance</string>
     <string name="all">All</string>
     <string name="delete">DELETE</string>
-    <string name="addToWallet">+ Add to wallet</string>
+    <string name="addToWallet">+ Add credit</string>
     <string name="payWithAman">Pay by AMAN</string>
-    <string name="amanDetails">Go to AMAN shops and ask about Madfouaat Mutanouea Accept then pay by this bill number</string>
+    <string name="amanDetails"> Your reference number for Aman is  </string>
+    <string name="amanDetails2">. To proceed with the payment, please head to the nearest Aman outlet, ask for ~ مدفوعات متنوعه اكسبت ~ and provide your reference number. To ask about your nearest outlet, please contact Aman\'s hotline on 19910</string>
     <string name="Amount">Amount: </string>
-    <string name="state">State: </string>
-    <string name="paymentWay">Payment Way: </string>
+    <string name="state">Status: </string>
+    <string name="paymentWay">Payment Method: </string>
     <string name="aman">AMAN</string>
-    <string name="ewallet">E-Wallet</string>
+    <string name="ewallet">Phone cash</string>
     <string name="wrongAmount">Please enter correct amount</string>
+    <string name="wrongPhone">Wrong phone number</string>
+    <string name="TotalPaidCredit">Total pay by credit card:</string>
+    <string name="myCredit">My Credit</string>
+    <string name="phoneCashTypes">Etisalat Felosy - CIB Smart Wallet - Ahly PhoneCash - Qahera Cash - Audi DoPay - Saib Cashati - ABK Wallet</string>
 
 </resources>
