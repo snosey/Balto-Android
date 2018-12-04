@@ -83,6 +83,8 @@ public class WebService {
         public static String id_coupon_doctor = "id_coupon_doctor";
         public static String getBookDataApi = "http://haseboty.com/doctor/public/api/bookingData?";
         public static String rateBookingApi = "http://haseboty.com/doctor/public/api/rateBooking?";
+        public static String editRateBookingApi = "http://haseboty.com/doctor/public/api/editRateBooking?";
+
         public static String rate = "rate";
         public static String coming = "coming";
         public static String past = "past";
@@ -116,6 +118,7 @@ public class WebService {
         public static String deleteRateApi = "http://haseboty.com/doctor/public/api/deleteRateBooking?";
         public static String wallet = "6";
         public static String wallet_id = "wallet_id";
+        public static String id_rate = "id_rate";
     }
 
     public static class HomeVisit {

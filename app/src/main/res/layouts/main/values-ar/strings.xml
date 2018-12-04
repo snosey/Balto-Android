@@ -81,7 +81,7 @@
     <string name="shareOfferDoctor">حمل تطبيق البالطو دلوقتي! و إستمتع ب20% خصم على أول إستشارة أو خدمه طبيه عن طريق الكود ده: </string>
     <string name="shareOfferPatient">حمل تطبيق البالطو دلوقتي! و إستمتع ب20% خصم على أول إستشارة أو خدمه طبيه عن طريق الكود ده: </string>
     <string name="chooseLang">اختر اللغه</string>
-
+    <string name="ENAR">انجليزي / عربي</string>
     <string name="doctorStart">لقد بدأ المتخصص بالتحرك</string>
     <string name="doctorArrive">لقد وصل المتخصص لموقعك</string>
     <string name="doctorFinished">لقد انتهى المتخصص من الكشف, برجاء كتابة تقييمك</string>
@@ -118,6 +118,7 @@
     <string name="TotalPaidCredit">اجمالى المدفوعات بالبطاقه الائتمانيه:</string>
     <string name="myCredit">رصيدي</string>
     <string name="phoneCashTypes">اتصالات فلوسي - محفظة CIB الذكية - الاهلي فون كاش -القاهرة كاش - عوده Saib - DoPay كاشاتي - محفظة ABK</string>
+    <string name="currnetLang">english</string>
 
 
 </resources>

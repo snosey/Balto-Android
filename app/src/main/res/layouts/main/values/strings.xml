@@ -81,7 +81,7 @@
     <string name="shareOfferDoctor">Download Doctor ElBalto Now! and enjoy extra 20% on your 1st medical service fee by using this code: </string>
     <string name="shareOfferPatient">Download ElBalto Now! and enjoy 20% discount on your 1st medical service fee by using this code: </string>
     <string name="chooseLang">Choose Language</string>
-
+    <string name="ENAR">EN / AR</string>
     <string name="doctorStart">The professional is on the way</string>
     <string name="doctorArrive">The professional has arrived to your location</string>
     <string name="doctorFinished">The consultation has been ended, please add your review.</string>
@@ -113,5 +113,6 @@
     <string name="TotalPaidCredit">Total pay by credit card:</string>
     <string name="myCredit">My Credit</string>
     <string name="phoneCashTypes">Etisalat Felosy - CIB Smart Wallet - Ahly PhoneCash - Qahera Cash - Audi DoPay - Saib Cashati - ABK Wallet</string>
+    <string name="currnetLang">عربي</string>
 
 </resources>

@@ -123,7 +123,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationUtils.playNotificationSound();
                 //    Intent resultIntent = new Intent(getApplicationContext(), RegistrationActivity.class);
                 //  resultIntent.putExtra("data", payload.toString());
-                notificationUtils.showDialog(payload.toString(), title, message);
+//                notificationUtils.showDialog(payload.toString(), title, message);
                 //showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
                 Log.e(TAG, "isBackGround: " + "no");
             }

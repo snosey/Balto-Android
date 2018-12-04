@@ -464,7 +464,26 @@ public class MainActivity extends FragmentActivity {
     }
 
     public void langauge(View view) {
-        {
+        if (false) {
+            SharedPreferences sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
+            String lang = "en";
+            if (sharedPreferences.getString("en", "en").equals("en"))
+                lang = "ar";
+            Toast.makeText(this, lang, Toast.LENGTH_SHORT).show();
+
+            recreate();
+            Locale locale = new Locale(lang);
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putString("lang", lang);
+            editor.apply();
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+            onConfigurationChanged(config);
+            recreate();
+        } else {
+
             if (drawerLayout.isDrawerOpen(drawer))
                 drawerLayout.closeDrawer(drawer);
             final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
