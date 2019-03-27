@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.WebService;
@@ -42,7 +43,7 @@ public class ReservationsMain extends Fragment {
         View view = inflater.inflate(R.layout.reservation_main, container, false);
 
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.GONE);
-        ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.VISIBLE);
+        ((RelativeLayout) getActivity().getWindow().getDecorView().findViewById(R.id.menuHome)).setVisibility(View.VISIBLE);
         ButterKnife.inject(this, view);
 
         viewpager = (ViewPager) view.findViewById(R.id.viewpager);

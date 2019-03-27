@@ -8,6 +8,7 @@
     <dimen name="dimen_VerySmall">40dp</dimen>
     <dimen name="dimen_VeryVerySmall">20dp</dimen>
 
+    <dimen name="text_SoLarge">28sp</dimen>
     <dimen name="text_Large">18sp</dimen>
     <dimen name="text_Medium">16sp</dimen>
     <dimen name="text_Small">14sp</dimen>
@@ -15,6 +16,7 @@
 
     <dimen name="margin_Large">20dp</dimen>
     <dimen name="margin_Medium">10dp</dimen>
+    <dimen name="dimen_VMedium">15dp</dimen>
     <dimen name="margin_Small">5dp</dimen>
     <dimen name="margin_VerySmall">2dp</dimen>
 </resources>

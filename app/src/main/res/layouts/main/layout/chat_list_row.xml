@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/margin_Medium"
+    android:background="@drawable/shadow3"
+    android:gravity="start"
+    android:orientation="horizontal"
+    android:padding="@dimen/margin_Medium">
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/dimen_Small"
+        android:layout_height="@dimen/dimen_Small"
+        android:layout_marginEnd="@dimen/margin_Medium"
+        android:src="@drawable/logo_icon" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <com.example.snosey.balto.Support.CustomTextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text=""
+            android:textColor="@color/black_8am2" />
+
+        <com.example.snosey.balto.Support.CustomTextView
+            android:id="@+id/secondCategory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text=""
+            android:textColor="@color/black_8am2" />
+
+        <com.example.snosey.balto.Support.CustomTextView
+            android:id="@+id/msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text=""
+            android:textColor="@color/black_fat7" />
+
+
+
+
+        <com.example.snosey.balto.Support.CustomTextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:maxLines="1"
+            android:text=""
+            android:textColor="@color/black_8am2" />
+
+
+    </LinearLayout>
+</LinearLayout>

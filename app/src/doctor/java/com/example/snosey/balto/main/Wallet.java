@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
@@ -57,7 +58,7 @@ public class Wallet extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.wallet, container, false);
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.VISIBLE);
-        ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
+        ((RelativeLayout) getActivity().getWindow().getDecorView().findViewById(R.id.menuHome)).setVisibility(View.GONE);
         ButterKnife.inject(this, view);
 
         dueCalendar = Calendar.getInstance();
@@ -186,13 +187,13 @@ public class Wallet extends Fragment {
                 }
 
                 if (dueCalendar.get(Calendar.DAY_OF_MONTH) == 16) {
-                    if (cal.get(Calendar.MONTH) < dueCalendar.get(Calendar.MONTH)) {
+                    if ((cal.get(Calendar.YEAR) < dueCalendar.get(Calendar.YEAR))||(cal.get(Calendar.MONTH) < dueCalendar.get(Calendar.MONTH))) {
                         holder.cashReceived.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
                     } else {
                         holder.cashReceived.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.not_paid, 0, 0, 0);
                     }
                 } else {
-                    if (cal.get(Calendar.MONTH) < currentMonth || (cal.get(Calendar.MONTH) == currentMonth && cal.get(Calendar.DAY_OF_MONTH) < 16)) {
+                    if (cal.get(Calendar.YEAR) < dueCalendar.get(Calendar.YEAR)||(cal.get(Calendar.MONTH) < currentMonth || (cal.get(Calendar.MONTH) == currentMonth && cal.get(Calendar.DAY_OF_MONTH) < 16))) {
                         holder.cashReceived.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
                     } else {
                         holder.cashReceived.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.not_paid, 0, 0, 0);

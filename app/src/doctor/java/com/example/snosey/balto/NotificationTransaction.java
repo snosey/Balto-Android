@@ -17,6 +17,7 @@ import com.example.snosey.balto.Support.notification.NotifyService;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.main.ChatRoom;
 import com.example.snosey.balto.main.ComingRequest;
 import com.example.snosey.balto.main.VideoCall;
 import com.example.snosey.balto.main.reservations.ReservationsMain;
@@ -54,6 +55,8 @@ public class NotificationTransaction {
                 joinVideoRoom(data);
             } else if (kind.equals(WebService.Notification.Types.alarm) || kind.equals(WebService.Booking.bookingStatePatientCancel)) {
                 ReservationsAlarm(data);
+            } else if (kind.equals(WebService.Notification.Types.newMsg)) {
+                openChatRoom(data);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -79,6 +82,24 @@ public class NotificationTransaction {
             }
         }, activity, true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Booking.getBookDataApi, urlData.get());
 
+    }
+
+    private void openChatRoom(String data) {
+        try {
+            JSONObject jsonObject = new JSONObject(data);
+            String chatId = jsonObject.getString("id_chat");
+            FragmentManager fm = activity.getSupportFragmentManager();
+            Bundle bundle = new Bundle();
+            bundle.putString("id", chatId);
+            ChatRoom fragment = new ChatRoom();
+            FragmentTransaction ft = fm.beginTransaction();
+            fragment.setArguments(bundle);
+            ft.replace(R.id.fragment, fragment, "ChatRoom");
+            ft.addToBackStack("Chat");
+            ft.commit();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 

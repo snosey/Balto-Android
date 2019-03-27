@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.snosey.balto.MainActivity;
@@ -35,13 +36,12 @@ public class HomeAndOnline extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.home_main, container, false);
+        View view = inflater.inflate(R.layout.home_main_new, container, false);
 
 
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.GONE);
-        ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.VISIBLE);
+        ((RelativeLayout) getActivity().getWindow().getDecorView().findViewById(R.id.menuHome)).setVisibility(View.VISIBLE);
         ((com.example.snosey.balto.Support.CustomTextView) getActivity().getWindow().getDecorView().findViewById(R.id.title)).setText("");
-        ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.right_icon)).setVisibility(View.GONE);
 
         ButterKnife.inject(this, view);
 

@@ -86,8 +86,7 @@ public class ComingRequest extends Fragment {
         ButterKnife.inject(this, view);
 
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.VISIBLE);
-        ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
-        ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.right_icon)).setVisibility(View.GONE);
+        ((RelativeLayout) getActivity().getWindow().getDecorView().findViewById(R.id.menuHome)).setVisibility(View.GONE);
 
         final UrlData urlData = new UrlData();
         urlData.add(WebService.Booking.type, RegistrationActivity.sharedPreferences.getString("lang", "en"));

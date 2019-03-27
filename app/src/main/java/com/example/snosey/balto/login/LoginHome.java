@@ -36,35 +36,8 @@ public class LoginHome extends Fragment {
         View view = inflater.inflate(R.layout.login_home, container, false);
         ButterKnife.inject(this, view);
 
-        if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar")) {
-            lang.setText(getActivity().getString(R.string.english));
-        } else {
-            lang.setText(getActivity().getString(R.string.arabic));
-        }
-        lang.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String lang = ((com.example.snosey.balto.Support.CustomTextView) view).getText().toString();
-                if (lang.equals(getString(R.string.arabic)))
-                    lang = "ar";
-                else
-                    lang = "en";
-
-                getActivity().recreate();
-                Locale locale = new Locale(lang);
-                Locale.setDefault(locale);
-                Configuration config = new Configuration();
-                config.locale = locale;
-                getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-                onConfigurationChanged(config);
 
 
-                SharedPreferences.Editor editor =  RegistrationActivity.sharedPreferences.edit();
-                editor.putString("lang", lang);
-                editor.commit();
-
-            }
-        });
 
         return view;
     }

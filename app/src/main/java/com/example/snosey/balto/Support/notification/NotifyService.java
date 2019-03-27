@@ -26,9 +26,9 @@ public class NotifyService extends BroadcastReceiver {
                 "\",\"kind\":\"" + WebService.Notification.Types.alarm + "\"}";
         myIntent.putExtra("data", json);
         if (intent.getBooleanExtra("now", true))
-            notificationUtils.showNotificationMessage(context.getString(R.string.reservation), context.getString(R.string.alarmComingReservationNow), Calendar.getInstance().getTime().toString(), myIntent);
+            notificationUtils.showNotificationMessage(context.getString(R.string.reservation), context.getString(R.string.alarmComingReservationNow), Calendar.getInstance().getTime().toString(), myIntent, null);
         else
-            notificationUtils.showNotificationMessage(context.getString(R.string.reservation), context.getString(R.string.alarmComingReservation), Calendar.getInstance().getTime().toString(), myIntent);
+            notificationUtils.showNotificationMessage(context.getString(R.string.reservation), context.getString(R.string.alarmComingReservation), Calendar.getInstance().getTime().toString(), myIntent, null);
 
     }
 }

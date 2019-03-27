@@ -81,7 +81,7 @@
     <string name="shareOfferDoctor">حمل تطبيق البالطو دلوقتي! و إستمتع ب20% خصم على أول إستشارة أو خدمه طبيه عن طريق الكود ده: </string>
     <string name="shareOfferPatient">حمل تطبيق البالطو دلوقتي! و إستمتع ب20% خصم على أول إستشارة أو خدمه طبيه عن طريق الكود ده: </string>
     <string name="chooseLang">اختر اللغه</string>
-    <string name="ENAR">انجليزي / عربي</string>
+    <string name="ENAR">E</string>
     <string name="doctorStart">لقد بدأ المتخصص بالتحرك</string>
     <string name="doctorArrive">لقد وصل المتخصص لموقعك</string>
     <string name="doctorFinished">لقد انتهى المتخصص من الكشف, برجاء كتابة تقييمك</string>
@@ -119,6 +119,20 @@
     <string name="myCredit">رصيدي</string>
     <string name="phoneCashTypes">اتصالات فلوسي - محفظة CIB الذكية - الاهلي فون كاش -القاهرة كاش - عوده Saib - DoPay كاشاتي - محفظة ABK</string>
     <string name="currnetLang">english</string>
+    <string name="whatNext">ما التالي؟</string>
+    <string name="hi">مرحبا,</string>
+    <string name="version">اصدار</string>
+    <string name="chatting">مراسلة طبيب</string>
+    <string name="chatRoom">غرفة المحادثه</string>
+    <string name="writeYourMsgHere">اكتب رسالتك هنا</string>
+    <string name="emptyMsg">لا تستطيع ارسال رساله فارغه</string>
+    <string name="messages">الرسائل</string>
+    <string name="stop">انهاء المحادثه</string>
+    <string name="resume">تكملة المحادثه</string>
+    <string name="newMsg">لديك رساله جديده</string>
+    <string name="finshChatDoctor">هل انهيت الرد على الاستشارة؟</string>
+    <string name="finshChatPatient">هل تم الرد على الاستشارة؟</string>
+    <string name="arrow"><![CDATA[<]]></string>
 
 
 </resources>

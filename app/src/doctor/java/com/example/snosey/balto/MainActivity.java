@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.location.LocationManager;
@@ -28,6 +29,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatDelegate;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -37,6 +39,7 @@ import android.widget.ScrollView;
 import android.widget.Switch;
 import android.widget.Toast;
 
+import com.example.snosey.balto.Support.ContextWrapper;
 import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.notification.NotifyService;
 import com.example.snosey.balto.Support.webservice.GetData;
@@ -44,6 +47,7 @@ import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
 import com.example.snosey.balto.login.RegistrationActivity;
 import com.example.snosey.balto.main.Agenda;
+import com.example.snosey.balto.main.ChatList;
 import com.example.snosey.balto.main.DoctorProfile;
 import com.example.snosey.balto.main.Help;
 import com.example.snosey.balto.main.Promotions;
@@ -65,7 +69,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
  * Created by Snosey on 2/7/2018.
@@ -75,6 +78,8 @@ public class MainActivity extends FragmentActivity {
     private static final int ACCESS_LOCATION = 55555;
     public static JSONObject jsonObject;
 
+    @InjectView(R.id.messagesText)
+    com.example.snosey.balto.Support.CustomTextView messagesText;
     @InjectView(R.id.clientName)
     com.example.snosey.balto.Support.CustomTextView clientName;
     @InjectView(R.id.clientRate)
@@ -199,10 +204,6 @@ public class MainActivity extends FragmentActivity {
             super.onBackPressed();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -237,6 +238,7 @@ public class MainActivity extends FragmentActivity {
                 "fonts/arial.ttf");
         title.setTypeface(font, Typeface.BOLD);
         clientName.setTypeface(font, Typeface.BOLD);
+        messagesText.setTypeface(font, Typeface.BOLD);
         logoutText.setTypeface(font, Typeface.BOLD);
         termsAndConditionsText.setTypeface(font, Typeface.BOLD);
         languageText.setTypeface(font, Typeface.BOLD);
@@ -365,9 +367,7 @@ public class MainActivity extends FragmentActivity {
                     }
                 }
             });
-        } else
-
-        {
+        } else {
             online.setVisibility(View.GONE);
             agenda.setVisibility(View.GONE);
             waller.setVisibility(View.GONE);
@@ -537,53 +537,46 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-    public void langauge(View view) {
 
-        {
-
-            if (drawerLayout.isDrawerOpen(drawer))
-                drawerLayout.closeDrawer(drawer);
-            final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setMessage(getString(R.string.chooseLang));
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, ("english"),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            recreate();
-                            Locale locale = new Locale("en");
-                            SharedPreferences sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("lang", "en");
-                            editor.apply();
-                            Locale.setDefault(locale);
-                            Configuration config = new Configuration();
-                            config.locale = locale;
-                            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-                            onConfigurationChanged(config);
-                            recreate();
-
-                        }
-                    });
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, ("عربي"),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            recreate();
-                            Locale locale = new Locale("ar");
-                            SharedPreferences sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("lang", "ar");
-                            editor.apply();
-                            Locale.setDefault(locale);
-                            Configuration config = new Configuration();
-                            config.locale = locale;
-                            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-                            onConfigurationChanged(config);
-                            recreate();
-                        }
-                    });
-            alertDialog.show();
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
+            SharedPreferences sharedPreferences;
+            if (BuildConfig.APPLICATION_ID.contains("doctor")) {
+                sharedPreferences = newBase.getSharedPreferences("login_doctor", MODE_PRIVATE);
+            } else {
+                sharedPreferences = newBase.getSharedPreferences("login_client", MODE_PRIVATE);
+            }
+            super.attachBaseContext(ContextWrapper.wrap(newBase, new Locale(sharedPreferences.getString("lang", "en"))));
+        } else {
+            super.attachBaseContext(newBase);
         }
-
     }
+
+    public void langauge(View view) {
+        SharedPreferences sharedPreferences;
+        if (BuildConfig.APPLICATION_ID.contains("doctor")) {
+            sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
+        } else {
+            sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
+        }
+        String lang;
+        if (sharedPreferences.getString("lang", "en").equals("en"))
+            lang = "ar";
+        else
+            lang = "en";
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("lang", lang);
+        editor.apply();
+        Resources res = getBaseContext().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.setLocale(new Locale(lang));
+        res.updateConfiguration(conf, dm);
+        recreate();
+        return;
+    }
+
 
     void checkLang() {
         Locale locale;
@@ -741,19 +734,8 @@ public class MainActivity extends FragmentActivity {
         @Override
         public void onLocationResult(LocationResult locationResult) {
             for (Location location : locationResult.getLocations()) {
-                UrlData urlData = new UrlData();
-                try {
-                    urlData.add(WebService.Location.id, jsonObject.getString("id"));
-                    urlData.add(WebService.Location.latitude, location.getLatitude() + "");
-                    urlData.add(WebService.Location.longitude, location.getLongitude() + "");
-                    new GetData(new GetData.AsyncResponse() {
-                        @Override
-                        public void processFinish(String output) {
-                        }
-                    }, MainActivity.this, false).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.Location.updateLocationApi, urlData.get());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                //location.getLatitude()
+                //location.getLongitude()
             }
         }
 
@@ -784,5 +766,23 @@ public class MainActivity extends FragmentActivity {
     @OnClick(R.id.back)
     public void onViewClicked() {
         onBackPressed();
+    }
+
+
+    public void messages(View view) {
+        if (drawerLayout.isDrawerOpen(drawer))
+            drawerLayout.closeDrawer(drawer);
+
+        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("ChatList");
+        if (myFragment == null || !myFragment.isVisible()) {
+
+            FragmentManager fm = getSupportFragmentManager();
+            ChatList fragment = new ChatList();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment, fragment, "ChatList");
+            ft.addToBackStack("ChatList");
+            ft.commit();
+        }
+
     }
 }

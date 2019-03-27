@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 
 import com.example.snosey.balto.Support.webservice.WebService;
+import com.example.snosey.balto.main.ChatRoom;
 import com.example.snosey.balto.main.RateDialog;
 import com.example.snosey.balto.main.VideoCall;
 import com.example.snosey.balto.main.home_visit.ProfissionLocation;
@@ -25,7 +26,7 @@ public class NotificationTransaction {
             JSONObject notification = new JSONObject(jsonString);
             String kind = notification.getString("kind");
             String data = notification.getString("data");
-            if (kind.equals(WebService.Notification.Types.alarm)||kind.equals(WebService.Booking.bookingStateDoctorCancel)) {
+            if (kind.equals(WebService.Notification.Types.alarm) || kind.equals(WebService.Booking.bookingStateDoctorCancel)) {
                 ReservationsAlarm(data);
             } else if (kind.equals(WebService.Notification.Types.video_call)) {
                 joinVideoRoom(data);
@@ -35,8 +36,28 @@ public class NotificationTransaction {
                 openDoctorLocation(data);
             } else if (kind.equals(WebService.Booking.bookingStateDone)) {
                 rateDoctor(data);
+            } else if (kind.equals(WebService.Notification.Types.newMsg)) {
+                openChatRoom(data);
             }
 
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void openChatRoom(String data) {
+        try {
+            JSONObject jsonObject = new JSONObject(data);
+            String chatId = jsonObject.getString("id_chat");
+            FragmentManager fm = activity.getSupportFragmentManager();
+            Bundle bundle = new Bundle();
+            bundle.putString("id", chatId);
+            ChatRoom fragment = new ChatRoom();
+            FragmentTransaction ft = fm.beginTransaction();
+            fragment.setArguments(bundle);
+            ft.replace(R.id.fragment, fragment, "ChatRoom");
+            ft.addToBackStack("Chat");
+            ft.commit();
         } catch (JSONException e) {
             e.printStackTrace();
         }

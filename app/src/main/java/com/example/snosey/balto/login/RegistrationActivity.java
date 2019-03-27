@@ -3,27 +3,29 @@ package com.example.snosey.balto.login;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.Resources;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.AppCompatImageView;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.example.snosey.balto.BuildConfig;
 import com.example.snosey.balto.R;
+import com.example.snosey.balto.Support.ContextWrapper;
 import com.example.snosey.balto.Support.webservice.GetHashKey;
 import com.example.snosey.balto.login.create_account.Name;
-import com.google.firebase.FirebaseApp;
 
 import java.util.Locale;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 
 public class RegistrationActivity extends FragmentActivity {
@@ -31,13 +33,22 @@ public class RegistrationActivity extends FragmentActivity {
     @InjectView(R.id.back)
     AppCompatImageView back;
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-        super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if (BuildConfig.APPLICATION_ID.contains("doctor")) {
+            sharedPreferences = getSharedPreferences("login_doctor", Context.MODE_PRIVATE);
+        } else {
+            sharedPreferences = getSharedPreferences("login_client", Context.MODE_PRIVATE);
+        }
+
+
+        if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
+            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_RTL);
+        else
+            getWindow().getDecorView().setLayoutDirection(View.LAYOUT_DIRECTION_LTR);
+
         super.onCreate(savedInstanceState);
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
@@ -54,12 +65,6 @@ public class RegistrationActivity extends FragmentActivity {
             LoginHome fragment = new LoginHome();
             ft.replace(R.id.fragment, fragment);
             ft.commit();
-        }
-
-        if (BuildConfig.APPLICATION_ID.contains("doctor")) {
-            sharedPreferences = getSharedPreferences("login_doctor", Context.MODE_PRIVATE);
-        } else {
-            sharedPreferences = getSharedPreferences("login_client", Context.MODE_PRIVATE);
         }
         if (sharedPreferences.contains("type")) {
             Bundle bundle = new Bundle();
@@ -100,31 +105,46 @@ public class RegistrationActivity extends FragmentActivity {
         ft.commit();
     }
 
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
+            SharedPreferences sharedPreferences;
+            if (BuildConfig.APPLICATION_ID.contains("doctor")) {
+                sharedPreferences = newBase.getSharedPreferences("login_doctor", MODE_PRIVATE);
+            } else {
+                sharedPreferences = newBase.getSharedPreferences("login_client", MODE_PRIVATE);
+            }
+            super.attachBaseContext(ContextWrapper.wrap(newBase, new Locale(sharedPreferences.getString("lang", "en"))));
+        } else {
+            super.attachBaseContext(newBase);
+        }
+    }
+
     public void lang(View view) {
-        String lang = ((com.example.snosey.balto.Support.CustomTextView) view).getText().toString();
-        if (lang.equals(getString(R.string.arabic)))
+        SharedPreferences sharedPreferences;
+        if (BuildConfig.APPLICATION_ID.contains("doctor")) {
+            sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
+        } else {
+            sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
+        }
+        String lang;
+        if (sharedPreferences.getString("lang", "en").equals("en"))
             lang = "ar";
         else
             lang = "en";
-
-        recreate();
-        Locale locale = new Locale(lang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-        onConfigurationChanged(config);
-
-        if (BuildConfig.APPLICATION_ID.contains("doctor"))
-            sharedPreferences = getSharedPreferences("login_doctor", MODE_PRIVATE);
-        else
-            sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
-
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("lang", lang);
-        editor.commit();
-
+        editor.apply();
+        Resources res = getBaseContext().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.setLocale(new Locale(lang));
+        res.updateConfiguration(conf, dm);
+        recreate();
+        return;
     }
+
 
     void checkLang() {
         Locale locale;

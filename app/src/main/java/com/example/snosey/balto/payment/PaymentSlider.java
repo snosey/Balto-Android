@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -97,7 +98,7 @@ public class PaymentSlider extends android.support.v4.app.Fragment {
         ButterKnife.inject(this, view);
 
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.VISIBLE);
-        ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
+        ((RelativeLayout) getActivity().getWindow().getDecorView().findViewById(R.id.menuHome)).setVisibility(View.GONE);
 
         wallet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

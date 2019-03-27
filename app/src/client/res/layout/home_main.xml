@@ -97,20 +97,7 @@
             android:background="@color/black_shfaf"
             android:layout_height="match_parent" />
 
-        <com.example.snosey.balto.Support.CustomTextView
-            android:id="@+id/language"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="@dimen/margin_Medium"
-            android:ellipsize="end"
-            android:padding="@dimen/margin_Medium"
-            android:maxLines="1"
-            android:onClick="langauge"
-            android:text="@string/ENAR"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_VerySmall"
-            />
+
     </RelativeLayout>
 
 

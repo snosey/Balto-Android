@@ -48,14 +48,10 @@ public class NotificationUtils {
         this.mContext = mContext;
     }
 
-    public void showNotificationMessage(String title, String message, String timeStamp, Intent intent) {
-        showNotificationMessage(title, message, timeStamp, intent, null);
-    }
 
     public void showNotificationMessage(final String title, final String message, final String timeStamp, Intent intent, String imageUrl) {
         // Check for empty push message
 
-        Log.e(TAG, "isBackGround: " + "yea");
         if (TextUtils.isEmpty(message))
             return;
 
@@ -93,59 +89,6 @@ public class NotificationUtils {
     }
 
 
-    private void showSmallNotification(int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound) {
-
-        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
-
-        inboxStyle.addLine(message);
-
-        Notification notification;
-        notification = new Notification.Builder(mContext).setSmallIcon(icon).setTicker(title).setWhen(0)
-                .setAutoCancel(true)
-                .setContentTitle(title)
-                .setContentIntent(resultPendingIntent)
-                .setSound(alarmSound)
-                .setWhen(getTimeMilliSec(timeStamp))
-                .setSmallIcon(R.drawable.logo_icon)
-                .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
-                .setContentText(message)
-                .build();
-        NotificationManager mNotificationManager =
-                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mNotificationManager.createNotificationChannel(new NotificationChannel(channelId,
-                    "Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT));
-        }
-        mNotificationManager.notify(Config.NOTIFICATION_ID_BIG_IMAGE, notification);
-
-    }
-
-    private void showBigNotification(Bitmap bitmap, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound) {
-        NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
-        bigPictureStyle.setBigContentTitle(title);
-        bigPictureStyle.setSummaryText(Html.fromHtml(message).toString());
-        bigPictureStyle.bigPicture(bitmap);
-        Notification notification;
-        notification = new Notification.Builder(mContext).setSmallIcon(icon).setTicker(title).setWhen(0)
-                .setAutoCancel(true)
-                .setContentTitle(title)
-                .setContentIntent(resultPendingIntent)
-                .setSound(alarmSound)
-                .setWhen(getTimeMilliSec(timeStamp))
-                .setSmallIcon(R.drawable.logo_icon)
-                .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
-                .setContentText(message)
-                .build();
-
-        NotificationManager mNotificationManager =
-                (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            mNotificationManager.createNotificationChannel(new NotificationChannel(channelId,
-                    "Channel human readable title", NotificationManager.IMPORTANCE_DEFAULT));
-        }
-        mNotificationManager.notify(Config.NOTIFICATION_ID_BIG_IMAGE, notification);
-
-    }
 
     private void showNotification(int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound) {
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -165,7 +108,7 @@ public class NotificationUtils {
 
             NotificationChannel channel = new NotificationChannel(channelId,
                     "Channel human readable title",
-                    NotificationManager.IMPORTANCE_LOW);
+                    NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
         notificationManager.notify(10, builderNotification.build());

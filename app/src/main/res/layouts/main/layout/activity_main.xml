@@ -4,7 +4,7 @@
     android:id="@+id/DrawerLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/whiteDark">
+    android:background="@drawable/background_new">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -19,7 +19,7 @@
             tools:context=".login.RegistrationActivity" />
 
         <!-- header -->
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/top"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,56 +31,76 @@
                 android:layout_height="30dp"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/margin_Small"
-                android:background="@drawable/shadow"
                 android:clickable="true"
                 android:focusable="true"
                 android:visibility="gone"
-                app:backgroundTint="#94ffffff"
-                app:srcCompat="@drawable/back"
-                app:tint="@color/red" />
-
-
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/menu"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/margin_Small"
-                android:clickable="true"
-                android:focusable="true"
-                android:onClick="menu"
-                android:paddingTop="@dimen/margin_VerySmall"
-                android:tint="@color/white"
-                android:visibility="visible"
-                app:srcCompat="@drawable/menu" />
+                app:srcCompat="@drawable/back"  />
 
             <com.example.snosey.balto.Support.CustomTextView
                 android:id="@+id/title"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_width="@dimen/dimen_VeryVerySmall"
+                android:layout_height="@dimen/dimen_VeryVerySmall"
+                android:layout_centerInParent="true"
                 android:layout_margin="@dimen/margin_Medium"
-                android:layout_weight=".8"
                 android:ellipsize="end"
                 android:gravity="center"
                 android:maxLines="1"
                 android:textColor="@color/silver"
                 android:textSize="@dimen/text_Small"
                 android:textStyle="bold"
-                android:visibility="gone" />
+                android:visibility="invisible" />
+
+            <RelativeLayout
+                android:id="@+id/menuHome"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:id="@+id/menu"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/margin_Small"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:layout_centerVertical="true"
+                    android:onClick="menu"
+                    android:paddingTop="@dimen/margin_VerySmall"
+                    android:tint="@color/white"
+                    android:visibility="visible"
+                    app:srcCompat="@drawable/menu" />
 
 
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/right_icon"
-                android:layout_width="23dp"
-                android:layout_height="23dp"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/margin_Medium"
-                android:layout_weight=".1"
-                android:tint="@color/colorPrimary"
-                android:visibility="gone" />
+                <com.example.snosey.balto.Support.CustomTextView
+                    android:id="@+id/languageButton"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="@dimen/margin_Medium"
+                    android:layout_toEndOf="@id/menu"
+                    android:background="@drawable/rounded_shape_stroke"
+                    android:backgroundTint="@color/white"
+                    android:paddingTop="@dimen/margin_VerySmall"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
+                    android:maxLines="1"
+                    android:onClick="langauge"
+                    android:text="@string/ENAR"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_Small"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="@dimen/dimen_VerySmall"
+                    android:layout_margin="@dimen/margin_Small"
+                    android:src="@drawable/logo_icon"
+                    android:layout_alignParentEnd="true"
+                    android:layout_height="@dimen/dimen_VerySmall" />
+            </RelativeLayout>
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
         <ProgressBar
             android:id="@+id/progress"
@@ -123,9 +143,9 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_Medium"
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Medium"
+                android:layout_marginEnd="@dimen/margin_Medium"
                 android:background="@drawable/shadow"
                 android:paddingBottom="@dimen/margin_Medium">
 
@@ -143,8 +163,8 @@
                     android:id="@+id/clientRate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignStart="@id/clientName"
                     android:layout_below="@id/clientName"
+                    android:layout_alignStart="@id/clientName"
                     android:layout_gravity="center"
                     android:drawablePadding="@dimen/margin_Medium"
                     android:text="5"
@@ -169,10 +189,10 @@
                 android:id="@+id/home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_Small"
-                android:layout_marginEnd="@dimen/margin_Medium"
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginBottom="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:clickable="true"
                 android:focusable="true"
@@ -207,10 +227,10 @@
                 android:id="@+id/agenda"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_Small"
-                android:layout_marginEnd="@dimen/margin_Medium"
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginBottom="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:clickable="true"
                 android:focusable="true"
@@ -245,10 +265,10 @@
                 android:id="@+id/reservation"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_Small"
-                android:layout_marginEnd="@dimen/margin_Medium"
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginBottom="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:clickable="true"
                 android:focusable="true"
@@ -278,15 +298,54 @@
 
             </LinearLayout>
 
+
+            <!-- Messages -->
+            <LinearLayout
+                android:id="@+id/messages"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_Medium"
+                android:layout_marginTop="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginBottom="@dimen/margin_Small"
+                android:background="@drawable/shadow"
+                android:clickable="true"
+                android:focusable="true"
+                android:onClick="messages"
+                android:orientation="horizontal"
+                android:paddingBottom="@dimen/margin_Small">
+
+
+                <android.support.v7.widget.AppCompatImageView
+                    android:layout_width="@dimen/dimen_VeryVerySmall"
+                    android:layout_height="@dimen/dimen_VeryVerySmall"
+                    android:layout_margin="@dimen/margin_Small"
+                    android:tint="@color/colorPrimary"
+                    app:srcCompat="@drawable/chat" />
+
+                <com.example.snosey.balto.Support.CustomTextView
+                    android:id="@+id/messagesText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@string/messages"
+                    android:textColor="@color/black_8am2"
+                    android:textSize="@dimen/text_Small" />
+
+
+            </LinearLayout>
+
             <!-- Wallet -->
             <LinearLayout
                 android:id="@+id/waller"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_Small"
-                android:layout_marginEnd="@dimen/margin_Medium"
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginBottom="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:clickable="true"
                 android:focusable="true"
@@ -321,10 +380,10 @@
                 android:id="@+id/add_payment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_Small"
-                android:layout_marginEnd="@dimen/margin_Medium"
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginBottom="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:clickable="true"
                 android:focusable="true"
@@ -359,10 +418,10 @@
                 android:id="@+id/promotions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_Small"
-                android:layout_marginEnd="@dimen/margin_Medium"
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginBottom="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:clickable="true"
                 android:focusable="true"
@@ -397,10 +456,10 @@
                 android:id="@+id/share"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_Small"
-                android:layout_marginEnd="@dimen/margin_Medium"
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginBottom="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:clickable="true"
                 android:focusable="true"
@@ -435,17 +494,17 @@
                 android:id="@+id/language"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_marginBottom="@dimen/margin_Small"
-                android:layout_marginEnd="@dimen/margin_Medium"
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginBottom="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:clickable="true"
                 android:focusable="true"
                 android:onClick="langauge"
                 android:orientation="horizontal"
-                android:paddingBottom="@dimen/margin_Small">
+                android:paddingBottom="@dimen/margin_Small"
+                android:visibility="gone">
 
 
                 <android.support.v7.widget.AppCompatImageView
@@ -475,10 +534,10 @@
                 android:id="@+id/termsAndConditions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_Small"
-                android:layout_marginEnd="@dimen/margin_Medium"
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginBottom="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:clickable="true"
                 android:focusable="true"
@@ -515,10 +574,10 @@
                 android:id="@+id/help"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_Small"
-                android:layout_marginEnd="@dimen/margin_Medium"
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginBottom="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:clickable="true"
                 android:focusable="true"
@@ -555,10 +614,10 @@
                 android:id="@+id/logout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/margin_Small"
-                android:layout_marginEnd="@dimen/margin_Medium"
                 android:layout_marginStart="@dimen/margin_Medium"
                 android:layout_marginTop="@dimen/margin_Small"
+                android:layout_marginEnd="@dimen/margin_Medium"
+                android:layout_marginBottom="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:clickable="true"
                 android:focusable="true"
@@ -590,6 +649,14 @@
             </LinearLayout>
 
 
+
+            <com.example.snosey.balto.Support.CustomTextView
+                android:layout_width="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margin_Large"
+                android:id="@+id/version"
+                android:layout_height="wrap_content" />
         </LinearLayout>
 
     </ScrollView>

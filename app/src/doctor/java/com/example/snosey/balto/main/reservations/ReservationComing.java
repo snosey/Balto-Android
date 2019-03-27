@@ -261,7 +261,7 @@ public class ReservationComing extends Fragment {
                 holder.kind.setTypeface(font, Typeface.BOLD);
 
 
-                if (reservationObject.getString(WebService.Booking.id_doctor_kind).toString().equals(WebService.homeVisit)) {
+                if (reservationObject.getString(WebService.Booking.id_doctor_kind).equals(WebService.homeVisit)) {
                     holder.done.setVisibility(View.VISIBLE);
                     holder.cancelOrStart.setVisibility(View.VISIBLE);
                     holder.arrive.setVisibility(View.VISIBLE);
@@ -298,7 +298,10 @@ public class ReservationComing extends Fragment {
                                         try {
                                             getPercntageDoctor("", reservationObject.getString(WebService.Booking.id), reservationObject.getString(WebService.Booking.total_price),
                                                     reservationObject.getString(WebService.Booking.id_sub), reservationObject.getString(WebService.Booking.id_client), reservationObject.getString(WebService.Booking.id_payment_way));
-                                            updateBooking(reservationObject.getString(WebService.Booking.wallet_id), reservationObject.getString(WebService.Booking.id_payment_way), reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorFinished), reservationObject.getString(WebService.Booking.id_state));
+                                            updateBooking(reservationObject.getString(WebService.Booking.wallet_id),
+                                                    reservationObject.getString(WebService.Booking.id_payment_way), reservationObject.getString(WebService.Booking.fcm_token),
+                                                    reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDone, reservationObject.getString(WebService.Booking.id_client)
+                                                    , getActivity().getString(R.string.doctorFinished), reservationObject.getString(WebService.Booking.id_state));
                                         } catch (JSONException e) {
                                             e.printStackTrace();
                                         }
@@ -322,7 +325,11 @@ public class ReservationComing extends Fragment {
                                 alertDialogBuilder.setMessage(R.string.areYouSure).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int which) {
                                         try {
-                                            updateBooking(reservationObject.getString(WebService.Booking.wallet_id), reservationObject.getString(WebService.Booking.id_payment_way), reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateStart, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorStart), reservationObject.getString(WebService.Booking.id_state));
+                                            updateBooking(reservationObject.getString(WebService.Booking.wallet_id), reservationObject.getString(WebService.Booking.id_payment_way),
+                                                    reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id),
+                                                    WebService.Booking.bookingStateStart, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.doctorStart),
+                                                    reservationObject.getString(WebService.Booking.id_state));
+
                                             String uri = String.format(Locale.ENGLISH, "http://maps.google.com/maps?daddr=%f,%f (%s)",
                                                     Double.parseDouble(reservationObject.getString(WebService.Booking.client_latitude))
                                                     , Double.parseDouble(reservationObject.getString(WebService.Booking.client_longitude)), "");
@@ -398,7 +405,14 @@ public class ReservationComing extends Fragment {
                             alertDialogBuilder.setTitle("").setMessage(getActivity().getString(R.string.areYouSure)).setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     try {
-                                        updateBooking(reservationObject.getString(WebService.Booking.wallet_id), reservationObject.getString(WebService.Booking.id_payment_way), reservationObject.getString(WebService.Booking.fcm_token), reservationObject.getString(WebService.Booking.id), WebService.Booking.bookingStateDoctorCancel, reservationObject.getString(WebService.Booking.id_client), getActivity().getString(R.string.reservationCancel), reservationObject.getString(WebService.Booking.id_state));
+                                        updateBooking(reservationObject.getString(WebService.Booking.wallet_id),
+                                                reservationObject.getString(WebService.Booking.id_payment_way),
+                                                reservationObject.getString(WebService.Booking.fcm_token),
+                                                reservationObject.getString(WebService.Booking.id),
+                                                WebService.Booking.bookingStateDoctorCancel,
+                                                reservationObject.getString(WebService.Booking.id_client),
+                                                getActivity().getString(R.string.reservationCancel),
+                                                reservationObject.getString(WebService.Booking.id_state));
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }

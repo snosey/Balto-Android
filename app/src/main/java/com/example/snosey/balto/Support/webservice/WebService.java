@@ -30,6 +30,7 @@ public class WebService {
             public static String bookingRequestOnline = "bookingRequestOnline";
             public static String newReservation = "New Reservation";
             public static String video_call = "video_call";
+            public static String newMsg = "newMsg";
         }
 
         public static String reg_id = "reg_id[]";
@@ -221,7 +222,8 @@ public class WebService {
     }
 
     public static class PromoCode {
-        public static String promoCodeCheckApi = "http://haseboty.com/doctor/public/api/checkCoupon?";
+        public static String promoCodeCheckApi = "http://haseboty.com/doctor/public/api/checkCouponNew?";
+        public static String promoCodeCheckApiNew = "http://haseboty.com/doctor/public/api/checkCouponNew?";
         public static String code = "code";
         public static String newPromoCodeApi = "http://haseboty.com/doctor/public/api/Add_coupon?";
         public static String increasePromoCodeUsageApi = "http://haseboty.com/doctor/public/api/addCouponCurrent?";
@@ -262,6 +264,7 @@ public class WebService {
     public static class OnlineConsult {
         public static String getFilterDataApi = "http://haseboty.com/doctor/public/api/doctorFiltterData?";
         public static String getDoctorsApi = "http://haseboty.com/doctor/public/api/fillterOnlineDoctor?";
+        public static String getAvailableDoctorToChatApi = "http://haseboty.com/doctor/public/api/getAvailableDoctorToChat?";
         public static String doctorBookingTimeApi = "http://haseboty.com/doctor/public/api/doctorBookingTime?";
         public static String id_sub = "id_sub";
         public static String day = "day";
@@ -277,6 +280,12 @@ public class WebService {
         public static String firstName = "firstName";
         public static String subName = "subName";
         public static String price = "price";
+        public static String createChatApi = "http://haseboty.com/doctor/public/api/createChat?";
+        public static String getMessagesApi = "http://haseboty.com/doctor/public/api/getMessages?";
+        public static String getChatsApi = "http://haseboty.com/doctor/public/api/getChats?";
+        public static String updateChatApi = "http://haseboty.com/doctor/public/api/updateChat?";
+        public static String sendMessagesApi = "http://haseboty.com/doctor/public/api/createMessage";
+
     }
 
     public static class Credit {

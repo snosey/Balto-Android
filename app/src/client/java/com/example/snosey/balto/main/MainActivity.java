@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Typeface;
 import android.location.Location;
 import android.net.Uri;
@@ -25,6 +26,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -41,9 +43,10 @@ import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
 import com.example.snosey.balto.login.RegistrationActivity;
+import com.example.snosey.balto.main.ChatList;
 import com.example.snosey.balto.main.ClientProfile;
 import com.example.snosey.balto.main.Help;
-import com.example.snosey.balto.main.HomeAndOnline;
+import com.example.snosey.balto.main.HomeAndOnline2;
 import com.example.snosey.balto.main.Promotions;
 import com.example.snosey.balto.main.Wallet;
 import com.example.snosey.balto.main.reservation.Reservations;
@@ -128,8 +131,15 @@ public class MainActivity extends FragmentActivity {
     @InjectView(R.id.logoutText)
     com.example.snosey.balto.Support.CustomTextView logoutText;
 
+
+    @InjectView(R.id.version)
+    com.example.snosey.balto.Support.CustomTextView version;
+
     @InjectView(R.id.helpText)
     com.example.snosey.balto.Support.CustomTextView helpText;
+    @InjectView(R.id.messagesText)
+    com.example.snosey.balto.Support.CustomTextView messagesText;
+    private Context newBase;
 
     @Override
     public void onBackPressed() {
@@ -154,26 +164,10 @@ public class MainActivity extends FragmentActivity {
             super.onBackPressed();
     }
 
-    @Override
-    protected void attachBaseContext(Context newBase) {
-
-        Locale newLocale;
-        if (RegistrationActivity.sharedPreferences.getString("lang", "en").equals("ar"))
-            newLocale = new Locale("ar");
-        else
-            newLocale = new Locale("en");
-
-        // .. create or get your new Locale object here.
-
-        Context context = ContextWrapper.wrap(newBase, newLocale);
-        super.attachBaseContext(context);
-    }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
         Intent intent = new Intent(MainActivity.this, NotifyService.class);
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -201,6 +195,7 @@ public class MainActivity extends FragmentActivity {
         Typeface font = Typeface.createFromAsset(getAssets(),
                 "fonts/arial.ttf");
         title.setTypeface(font, Typeface.BOLD);
+        messagesText.setTypeface(font, Typeface.BOLD);
         clientName.setTypeface(font, Typeface.BOLD);
         logoutText.setTypeface(font, Typeface.BOLD);
         termsAndConditionsText.setTypeface(font, Typeface.BOLD);
@@ -211,7 +206,9 @@ public class MainActivity extends FragmentActivity {
         reservationText.setTypeface(font, Typeface.BOLD);
         HomeText.setTypeface(font, Typeface.BOLD);
         helpText.setTypeface(font, Typeface.BOLD);
+        version.setTypeface(font, Typeface.BOLD);
 
+        version.setText(getString(R.string.version) + " " + BuildConfig.VERSION_NAME);
         clientRate.setVisibility(View.GONE);
 
 
@@ -329,7 +326,7 @@ public class MainActivity extends FragmentActivity {
         }
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        HomeAndOnline fragment = new HomeAndOnline();
+        HomeAndOnline2 fragment = new HomeAndOnline2();
         fragment.setArguments(bundle);
         ft.replace(R.id.fragment, fragment);
         ft.commit();
@@ -351,7 +348,7 @@ public class MainActivity extends FragmentActivity {
 
 
             FragmentManager fm = getSupportFragmentManager();
-            HomeAndOnline fragment = new HomeAndOnline();
+            HomeAndOnline2 fragment = new HomeAndOnline2();
             FragmentTransaction ft = fm.beginTransaction();
             ft.replace(R.id.fragment, fragment, "HomeAndOnline");
             ft.commit();
@@ -463,76 +460,34 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-    public void langauge(View view) {
-        if (false) {
-            SharedPreferences sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
-            String lang = "en";
-            if (sharedPreferences.getString("en", "en").equals("en"))
-                lang = "ar";
-            Toast.makeText(this, lang, Toast.LENGTH_SHORT).show();
 
-            recreate();
-            Locale locale = new Locale(lang);
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.putString("lang", lang);
-            editor.apply();
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-            onConfigurationChanged(config);
-            recreate();
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N_MR1) {
+            SharedPreferences sharedPreferences = newBase.getSharedPreferences("login_client", MODE_PRIVATE);
+            super.attachBaseContext(ContextWrapper.wrap(newBase, new Locale(sharedPreferences.getString("lang", "en"))));
         } else {
-
-            if (drawerLayout.isDrawerOpen(drawer))
-                drawerLayout.closeDrawer(drawer);
-            final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setMessage(getString(R.string.chooseLang));
-            alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, ("english"),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            recreate();
-                            Locale locale = new Locale("en");
-                            SharedPreferences sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("lang", "en");
-                            editor.apply();
-                            Locale.setDefault(locale);
-                            Configuration config = new Configuration();
-                            config.locale = locale;
-                            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-                            onConfigurationChanged(config);
-                            recreate();
-
-                        }
-                    });
-            alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, ("عربي"),
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            recreate();
-                            Locale locale = new Locale("ar");
-                            SharedPreferences sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("lang", "ar");
-                            editor.apply();
-                            Locale.setDefault(locale);
-                            Configuration config = new Configuration();
-                            if (Build.VERSION.SDK_INT >= 17) {
-                                config.setLocale(locale);
-                            } else {
-                                config.locale = locale;
-                            }
-                            getBaseContext().createConfigurationContext(config);
-                            getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
-                            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-                            onConfigurationChanged(config);
-                            recreate();
-
-                        }
-                    });
-            alertDialog.show();
+            super.attachBaseContext(newBase);
         }
+    }
 
+    public void langauge(View view) {
+        SharedPreferences sharedPreferences = getSharedPreferences("login_client", MODE_PRIVATE);
+        String lang;
+        if (sharedPreferences.getString("lang", "en").equals("en"))
+            lang = "ar";
+        else
+            lang = "en";
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("lang", lang);
+        editor.apply();
+        Resources res = getBaseContext().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+        android.content.res.Configuration conf = res.getConfiguration();
+        conf.setLocale(new Locale(lang));
+        res.updateConfiguration(conf, dm);
+        recreate();
+        return;
     }
 
     public void termAndConditions(View view) {
@@ -726,4 +681,20 @@ public class MainActivity extends FragmentActivity {
     }
 
 
+    public void messages(View view) {
+        if (drawerLayout.isDrawerOpen(drawer))
+            drawerLayout.closeDrawer(drawer);
+
+        Fragment myFragment = (Fragment) getSupportFragmentManager().findFragmentByTag("ChatList");
+        if (myFragment == null || !myFragment.isVisible()) {
+
+            FragmentManager fm = getSupportFragmentManager();
+            ChatList fragment = new ChatList();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.fragment, fragment, "ChatList");
+            ft.addToBackStack("ChatList");
+            ft.commit();
+        }
+
+    }
 }

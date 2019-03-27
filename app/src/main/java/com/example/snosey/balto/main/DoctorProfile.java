@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.snosey.balto.BuildConfig;
@@ -124,7 +125,7 @@ public class DoctorProfile extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.doctor_profile, container, false);
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.VISIBLE);
-        ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
+        ((RelativeLayout) getActivity().getWindow().getDecorView().findViewById(R.id.menuHome)).setVisibility(View.GONE);
         ButterKnife.inject(this, view);
 
 
@@ -391,7 +392,7 @@ public class DoctorProfile extends Fragment {
             image = (ImageView) v.findViewById(R.id.image);
             try {
                 if (MainActivity.jsonObject.getString("id").equals(getArguments().getString(WebService.Booking.id_user)))
-                    delete.setVisibility(View.VISIBLE);
+                    ;//     delete.setVisibility(View.VISIBLE);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

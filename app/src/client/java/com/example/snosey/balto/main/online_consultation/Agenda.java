@@ -402,7 +402,7 @@ public class Agenda extends android.support.v4.app.Fragment {
                             scheduale.toMin) -
                             (scheduale.fromHour * 60 + scheduale.fromMin);
                     Log.e("maxOfBooking", maxOfBooking + "/" + estimated_time);
-                    maxOfBooking = maxOfBooking / estimated_time;
+                        maxOfBooking = maxOfBooking / estimated_time;
                     Log.e("final maxOfBooking", maxOfBooking + "");
                     for (int k = 0; k < maxOfBooking; k++) {
                         Calendar from = Calendar.getInstance();
@@ -590,6 +590,11 @@ public class Agenda extends android.support.v4.app.Fragment {
                                         }
                                         UrlData urlDataPromo = new UrlData();
                                         urlDataPromo.add(WebService.PromoCode.code, promoCode.getText().toString());
+                                        try {
+                                            urlDataPromo.add(WebService.PromoCode.id_user, MainActivity.jsonObject.getString("id"));
+                                        } catch (JSONException e) {
+                                            e.printStackTrace();
+                                        }
                                         new GetData(new GetData.AsyncResponse() {
                                             @Override
                                             public void processFinish(String output) {
@@ -609,7 +614,7 @@ public class Agenda extends android.support.v4.app.Fragment {
                                                     }
                                                 }
                                             }
-                                        }, getActivity(), true).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, WebService.PromoCode.promoCodeCheckApi, urlDataPromo.get());
+                                        }, getActivity(), true).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, WebService.PromoCode.promoCodeCheckApiNew, urlDataPromo.get());
 
                                     }
                                 }
@@ -793,7 +798,8 @@ public class Agenda extends android.support.v4.app.Fragment {
                 if (output.contains("true")) {
                     try {
 
-                        sendSMS("201222272346", "لديك حجز جديد");
+                        if (false)
+                            sendSMS("201222272346", "لديك حجز جديد");
                         final JSONObject jsonBooking = new JSONObject(output).getJSONObject("booking");
 
                         {

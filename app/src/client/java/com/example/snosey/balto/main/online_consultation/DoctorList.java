@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.image.CircleTransform;
@@ -59,7 +60,7 @@ public class DoctorList extends Fragment {
         arrayDoctor = new ArrayList<JSONObject>();
 
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.VISIBLE);
-        ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
+        ((RelativeLayout) getActivity().getWindow().getDecorView().findViewById(R.id.menuHome)).setVisibility(View.GONE);
         try {
             doctorsArray = new JSONArray(getArguments().getString("json"));
             LinearLayoutManager layoutManager
@@ -145,7 +146,7 @@ public class DoctorList extends Fragment {
                         + " " + getActivity().getString(R.string.egp));
 
                 if (!doctorObject.getString("image").equals("")) {
-                    holder.logo.setImageResource(R.drawable.doctor_logo);
+                    holder.logo.setImageResource(R.drawable.logo_icon);
                     String imageLink = doctorObject.getString("image");
                     if (!imageLink.startsWith("https://"))
                         imageLink = WebService.Image.fullPathImage + imageLink;
@@ -157,11 +158,11 @@ public class DoctorList extends Fragment {
 
                         @Override
                         public void onError() {
-                            holder.logo.setImageResource(R.drawable.doctor_logo);
+                            holder.logo.setImageResource(R.drawable.logo_icon);
                         }
                     });
                 } else
-                    holder.logo.setImageResource(R.drawable.doctor_logo);
+                    holder.logo.setImageResource(R.drawable.logo_icon);
                 if (!doctorObject.getString(WebService.Slider.total_rate).equals("null") && !doctorObject.getString(WebService.Slider.total_rate).equals("0"))
                     holder.rate.setText(doctorObject.getString(WebService.Slider.total_rate));
 

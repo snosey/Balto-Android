@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_new"
+    android:orientation="vertical">
+
+
+    <com.example.snosey.balto.Support.CustomTextView
+        android:id="@+id/medicalReportText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:background="@color/colorPrimaryShfaf"
+        android:gravity="center"
+        android:padding="@dimen/margin_Medium"
+        android:text="@string/chatRoom"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_Large" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/chatBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/sendLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margin_Medium">
+
+                <ImageView
+                    android:id="@+id/sendText"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/circel"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:padding="@dimen/margin_Medium"
+                    android:src="@drawable/send_icon" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_Medium"
+                    android:layout_marginEnd="@dimen/margin_Medium"
+                    android:layout_marginBottom="@dimen/margin_Medium"
+                    android:layout_toStartOf="@id/sendText"
+                    android:layout_toEndOf="@id/sendImage"
+                    android:background="@drawable/shadow3"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/margin_Small">
+
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/messageText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_Small"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/writeYourMsgHere" />
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/sendImage"
+                    android:layout_width="@dimen/dimen_VerySmall"
+                    android:layout_height="@dimen/dimen_VerySmall"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_margin="@dimen/margin_Small"
+                    android:src="@drawable/send_camera" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/changeStatePatient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_Medium"
+                android:background="@drawable/rounded_shape_stroke"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.example.snosey.balto.Support.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_Medium"
+                    android:text="@string/finshChatPatient"
+                    android:textSize="@dimen/text_Medium" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/patientNo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_VerySmall"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:background="@drawable/button_rounded"
+                        android:text="@android:string/no"
+                        android:textColor="@color/white"
+                        android:visibility="visible"
+                        app:backgroundTint="@color/red" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/patientYes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_VerySmall"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:background="@drawable/button_rounded"
+                        android:text="@android:string/ok"
+                        android:textColor="@color/white"
+                        android:visibility="visible"
+                        app:backgroundTint="@color/colorPrimary" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/chatBottom"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/changeStateDoctor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_Medium"
+                android:background="@drawable/rounded_shape_stroke"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <com.example.snosey.balto.Support.CustomTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_Medium"
+                    android:text="@string/finshChatDoctor"
+                    android:textSize="@dimen/text_Medium" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/drNo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_VerySmall"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:background="@drawable/button_rounded"
+                        android:text="@android:string/no"
+                        android:textColor="@color/white"
+                        android:visibility="visible"
+                        app:backgroundTint="@color/red" />
+
+                    <android.support.v7.widget.AppCompatButton
+                        android:id="@+id/drYes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/dimen_VerySmall"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:background="@drawable/button_rounded"
+                        android:text="@android:string/ok"
+                        android:textColor="@color/white"
+                        android:visibility="visible"
+                        app:backgroundTint="@color/colorPrimary" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/messagesRV"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</LinearLayout>

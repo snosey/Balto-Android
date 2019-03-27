@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.snosey.balto.R;
@@ -98,7 +99,7 @@ public class Main extends Fragment implements OnMapReadyCallback {
         ButterKnife.inject(this, view);
 
         ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.back)).setVisibility(View.VISIBLE);
-        ((ImageView) getActivity().getWindow().getDecorView().findViewById(R.id.menu)).setVisibility(View.GONE);
+        ((RelativeLayout) getActivity().getWindow().getDecorView().findViewById(R.id.menuHome)).setVisibility(View.GONE);
 
 
         title = ((com.example.snosey.balto.Support.CustomTextView) getActivity().getWindow().getDecorView().findViewById(R.id.title));

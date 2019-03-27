@@ -2,13 +2,18 @@ package com.example.snosey.balto.Support.notification;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.content.LocalBroadcastManager;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.example.snosey.balto.Application;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.webservice.WebService;
 import com.example.snosey.balto.login.RegistrationActivity;
+import com.example.snosey.balto.main.ChatRoom;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -17,6 +22,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Iterator;
 
 import static com.example.snosey.balto.Support.webservice.WebService.Notification.Types.bookingRequest;
 
@@ -26,7 +32,7 @@ import static com.example.snosey.balto.Support.webservice.WebService.Notificatio
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
-    @Override
+   /* @Override
     public void handleIntent(Intent intent) {
         Log.e("messageIntent", intent.getExtras().toString() + " !");
         try {
@@ -35,7 +41,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             e.printStackTrace();
             super.handleIntent(intent);
         }
-    }
+    }*/
 
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
 
@@ -43,15 +49,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
-         if (remoteMessage == null)
+        if (remoteMessage == null)
             return;
 
-        // Check if message contains a notification payload.
-        if (remoteMessage.getNotification() != null) {
-            Log.e(TAG, "Notification Body: " + remoteMessage.getNotification().getBody());
-            handleNotification(remoteMessage.getNotification().getBody());
+        try {
+            for (Iterator<String> it = remoteMessage.getData().values().iterator(); it.hasNext(); ) {
+                String value = it.next();
+                JSONObject object = new JSONObject(value);
+                handleDataMessage(object);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
+        // Check if message contains a notification payload.
+
+        Log.e("remoteMessage Id ", remoteMessage.getMessageId());
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.e(TAG, "Data Payload: " + remoteMessage.getData().toString());
@@ -65,18 +79,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    private void handleNotification(String message) {
-        // if (!com.example.snosey.balto.Support.notification.NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-        if (false) {
-            // app is in foreground, broadcast the push message
-            Intent pushNotification = new Intent(Config.PUSH_NOTIFICATION);
-            pushNotification.putExtra("message", message);
-            LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
-            // play notification sound
-            com.example.snosey.balto.Support.notification.NotificationUtils notificationUtils = new com.example.snosey.balto.Support.notification.NotificationUtils(getApplicationContext());
-            //  notificationUtils.playNotificationSound();
-        }
-    }
 
     private void handleDataMessage(JSONObject data) {
 
@@ -96,6 +98,34 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
             //String title = data.getString("title");
             //String message = data.getString("message");
+
+            if (payload.getString("kind").equals(WebService.Notification.Types.newMsg)) {
+                JSONObject jsonObject = new JSONObject(payload.getString("data"));
+                String chatId = jsonObject.getString("id_chat");
+                if (((Application) getApplication()).getCurrentActivity() != null) {
+                    FragmentActivity activity = ((Application) getApplication()).getCurrentActivity();
+
+
+                    ChatRoom myFragment = (ChatRoom) activity.getSupportFragmentManager().findFragmentByTag("ChatRoom");
+                    if ((myFragment != null && myFragment.isVisible())) {
+
+                        if (myFragment.chatId.equals(chatId)) {
+                            myFragment.newMsg(jsonObject);
+                            return;
+                        }
+                        FragmentManager fm = activity.getSupportFragmentManager();
+                        Bundle bundle = new Bundle();
+                        bundle.putString("id", chatId);
+                        ChatRoom fragment = new ChatRoom();
+                        FragmentTransaction ft = fm.beginTransaction();
+                        fragment.setArguments(bundle);
+                        ft.addToBackStack("ChatRoom");
+                        ft.replace(R.id.fragment, fragment, "ChatRoom");
+                        ft.commit();
+                        return;
+                    }
+                }
+            }
             NotificationHeader notificationText = replaceHeader(payload.getString("kind"));
             // String message = data.getJSONObject("notification").getString("body");
             //String title = data.getJSONObject("notification").getString("title");
@@ -113,7 +143,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
             //  if (!com.example.snosey.balto.Support.notification.NotificationUtils.isAppIsInBackground(getApplicationContext())) {
-            if (false) {
+      /*      if (false) {
                 Intent pushNotification = new Intent(com.example.snosey.balto.Support.notification.Config.PUSH_NOTIFICATION);
                 pushNotification.putExtra("data", payload.toString());
                 pushNotification.putExtra("title", title);
@@ -124,7 +154,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 //    Intent resultIntent = new Intent(getApplicationContext(), RegistrationActivity.class);
                 //  resultIntent.putExtra("data", payload.toString());
 //                notificationUtils.showDialog(payload.toString(), title, message);
-                //showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
+                //showNotificationMessageFireBase(getApplicationContext(), title, message, timestamp, resultIntent);
                 Log.e(TAG, "isBackGround: " + "no");
             }
             // app is in foreground, broadcast the push message
@@ -132,17 +162,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             // play notification sound
             //     NotificationUtils notificationUtils = new NotificationUtils(getApplicationContext());
             //      notificationUtils.playNotificationSound();
-            else {
+            else*/
+            {
                 // app is in background, show the notification in notification tray
                 Intent resultIntent = new Intent(getApplicationContext(), RegistrationActivity.class);
                 resultIntent.putExtra("data", payload.toString());
 
                 // check for image attachment
                 if (TextUtils.isEmpty(imageUrl)) {
-                    showNotificationMessage(getApplicationContext(), title, message, timestamp, resultIntent);
-                } else {
-                    // image is present, show notification with image
-                    showNotificationMessageWithBigImage(getApplicationContext(), title, message, timestamp, resultIntent, imageUrl);
+                    showNotificationMessageFireBase(getApplicationContext(), title, message, timestamp, resultIntent);
                 }
                 Log.e(TAG, "isBackGround: " + "yea");
             }
@@ -168,6 +196,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         } else if (kind.equals(WebService.Notification.Types.bookingRequestOnline)) {
             text.title = getString(R.string.newReservation);
             text.message = " ";
+        } else if (kind.equals(WebService.Notification.Types.newMsg)) {
+            text.title = getString(R.string.newMsg);
+            text.message = " ";
         } else if (kind.equals(WebService.Notification.Types.video_call)) {
             text.title = getString(R.string.video_room_is_created);
             text.message = " ";
@@ -183,8 +214,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         } else if (kind.equals(WebService.Booking.bookingStateDoctorCancel)) {
             text.title = getString(R.string.reservationCancel);
             text.message = " ";
-        }
-        else if (kind.equals(WebService.Booking.bookingStatePatientCancel)) {
+        } else if (kind.equals(WebService.Booking.bookingStatePatientCancel)) {
             text.title = getString(R.string.reservationPatientCancel);
             text.message = " ";
         }
@@ -197,19 +227,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
      * Showing notification with text only
      */
 
-    private void showNotificationMessage(Context context, String title, String message, String timeStamp, Intent intent) {
+    private void showNotificationMessageFireBase(Context context, String title, String message, String timeStamp, Intent intent) {
         notificationUtils = new com.example.snosey.balto.Support.notification.NotificationUtils(context);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        notificationUtils.showNotificationMessage(title, message, timeStamp, intent);
+        notificationUtils.showNotificationMessage(title, message, timeStamp, intent, null);
     }
 
     /**
      * Showing notification with text and image
      */
-    private void showNotificationMessageWithBigImage(Context context, String title, String message, String timeStamp, Intent intent, String imageUrl) {
-        notificationUtils = new com.example.snosey.balto.Support.notification.NotificationUtils(context);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        notificationUtils.showNotificationMessage(title, message, timeStamp, intent, imageUrl);
-    }
+
 
 }
