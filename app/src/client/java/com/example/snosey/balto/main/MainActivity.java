@@ -169,6 +169,7 @@ public class MainActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ((Application) this.getApplicationContext()).setCurrentActivity(MainActivity.this);
         Intent intent = new Intent(MainActivity.this, NotifyService.class);
         AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this,

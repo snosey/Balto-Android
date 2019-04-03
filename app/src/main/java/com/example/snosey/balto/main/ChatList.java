@@ -142,21 +142,18 @@ public class ChatList extends Fragment {
                 else
                     holder.secondCategory.setText(jsonObject.getJSONObject("category").getString("name_en"));
 
-
-                if (jsonObject.getJSONObject("message").toString().equals("null")) {
-                return;
-                }
-                else {
-                    if (jsonObject.getJSONObject("message").getString("message").equals("null"))
+                try {
+                    JSONObject objectMsg = jsonObject.getJSONObject("message");
+                    if (objectMsg.getString("message").equals("null"))
                         holder.msg.setText("Image");
                     else
-                        holder.msg.setText(jsonObject.getJSONObject("message").getString("message"));
+                        holder.msg.setText(objectMsg.getString("message"));
 
                     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     sdf.setTimeZone(TimeZone.getTimeZone("GMT+02"));
                     long time = 0;
                     try {
-                        time = sdf.parse(jsonObject.getJSONObject("message").getString("created_at")).getTime();
+                        time = sdf.parse(objectMsg.getString("created_at")).getTime();
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
@@ -166,6 +163,7 @@ public class ChatList extends Fragment {
                             DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
 
                     holder.date.setText(ago);
+                } catch (Exception e) {
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

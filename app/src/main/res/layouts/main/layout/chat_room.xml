@@ -109,7 +109,7 @@
                         android:layout_height="@dimen/dimen_VerySmall"
                         android:layout_margin="@dimen/margin_Medium"
                         android:background="@drawable/button_rounded"
-                        android:text="@android:string/no"
+                        android:text="@string/no"
                         android:textColor="@color/white"
                         android:visibility="visible"
                         app:backgroundTint="@color/red" />
@@ -120,7 +120,7 @@
                         android:layout_height="@dimen/dimen_VerySmall"
                         android:layout_margin="@dimen/margin_Medium"
                         android:background="@drawable/button_rounded"
-                        android:text="@android:string/ok"
+                        android:text="@string/yes"
                         android:textColor="@color/white"
                         android:visibility="visible"
                         app:backgroundTint="@color/colorPrimary" />
@@ -162,7 +162,7 @@
                         android:layout_height="@dimen/dimen_VerySmall"
                         android:layout_margin="@dimen/margin_Medium"
                         android:background="@drawable/button_rounded"
-                        android:text="@android:string/no"
+                        android:text="@string/no"
                         android:textColor="@color/white"
                         android:visibility="visible"
                         app:backgroundTint="@color/red" />
@@ -173,7 +173,7 @@
                         android:layout_height="@dimen/dimen_VerySmall"
                         android:layout_margin="@dimen/margin_Medium"
                         android:background="@drawable/button_rounded"
-                        android:text="@android:string/ok"
+                        android:text="@string/yes"
                         android:textColor="@color/white"
                         android:visibility="visible"
                         app:backgroundTint="@color/colorPrimary" />

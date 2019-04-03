@@ -237,20 +237,30 @@ public class ChatRoom extends Fragment {
                     try {
                         String userId = newMsg.getString("user_id");
                         if (BuildConfig.APPLICATION_ID.contains("doctor")) {
-                            if (userId.equals(MainActivity.jsonObject.getString("id"))) {
+                            if (!userId.equals(MainActivity.jsonObject.getString("id"))) {
                                 changeStatePatient.setVisibility(View.GONE);
-                                changeStateDoctor.setVisibility(View.VISIBLE);
+                                changeStateDoctor.setVisibility(View.GONE);
                                 sendLayout.setVisibility(View.VISIBLE);
-                            } else if (newMsg.getString("isActive").equals("1")) {
+                            } else if (newMsg.getString("isActive").equals("0") || newMsg.getString("isActive").equals("-1")) {
                                 changeStatePatient.setVisibility(View.GONE);
                                 changeStateDoctor.setVisibility(View.GONE);
                                 sendLayout.setVisibility(View.GONE);
-                            } else {
+                            } else if (userId.equals(MainActivity.jsonObject.getString("id"))) {
+                                changeStatePatient.setVisibility(View.GONE);
+                                changeStateDoctor.setVisibility(View.VISIBLE);
                                 sendLayout.setVisibility(View.VISIBLE);
                             }
                         } else {
-                            if (newMsg.getString("isActive").equals("0") && !userId.equals(MainActivity.jsonObject.getString("id"))) {
+                            if (newMsg.getString("isActive").equals("0")) {
                                 changeStatePatient.setVisibility(View.VISIBLE);
+                                changeStateDoctor.setVisibility(View.GONE);
+                                sendLayout.setVisibility(View.GONE);
+                            } else if (newMsg.getString("isActive").equals("1")) {
+                                changeStatePatient.setVisibility(View.GONE);
+                                changeStateDoctor.setVisibility(View.GONE);
+                                sendLayout.setVisibility(View.VISIBLE);
+                            } else {
+                                changeStatePatient.setVisibility(View.GONE);
                                 changeStateDoctor.setVisibility(View.GONE);
                                 sendLayout.setVisibility(View.GONE);
                             }
@@ -314,9 +324,13 @@ public class ChatRoom extends Fragment {
             @Override
             public void processFinish(String output) throws JSONException {
                 getMessages();
-                if (state.equals("0"))
+                if (state.equals("0")) {
                     messageText.setText(getActivity().getString(R.string.finshChatPatient));
-                sendMsg("");
+                    sendMsg("");
+                } else if (state.equals("-1")) {
+                    messageText.setText(getActivity().getString(R.string.yes));
+                    sendMsg("");
+                }
             }
         }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, updateChatApi, urlDataState.get());
     }

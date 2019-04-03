@@ -44,25 +44,6 @@ public class NotificationTransaction {
             e.printStackTrace();
         }
     }
-
-    private void openChatRoom(String data) {
-        try {
-            JSONObject jsonObject = new JSONObject(data);
-            String chatId = jsonObject.getString("id_chat");
-            FragmentManager fm = activity.getSupportFragmentManager();
-            Bundle bundle = new Bundle();
-            bundle.putString("id", chatId);
-            ChatRoom fragment = new ChatRoom();
-            FragmentTransaction ft = fm.beginTransaction();
-            fragment.setArguments(bundle);
-            ft.replace(R.id.fragment, fragment, "ChatRoom");
-            ft.addToBackStack("Chat");
-            ft.commit();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void rateDoctor(String data) {
         RateDialog rateDialog = new RateDialog(activity, data.substring(0, data.indexOf("|")), data.substring(data.indexOf("|") + 1));
         rateDialog.show();
@@ -112,4 +93,21 @@ public class NotificationTransaction {
         ft.commit();
     }
 
+    private void openChatRoom(String data) {
+        try {
+            JSONObject jsonObject = new JSONObject(data);
+            String chatId = jsonObject.getString("id_chat");
+            FragmentManager fm = activity.getSupportFragmentManager();
+            Bundle bundle = new Bundle();
+            bundle.putString("id", chatId);
+            ChatRoom fragment = new ChatRoom();
+            FragmentTransaction ft = fm.beginTransaction();
+            fragment.setArguments(bundle);
+            ft.replace(R.id.fragment, fragment, "ChatRoom");
+            ft.addToBackStack("Chat");
+            ft.commit();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_new"
+    android:orientation="vertical">
+
+
+    <com.example.snosey.balto.Support.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:padding="@dimen/margin_Medium"
+        android:text="@string/chatting"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_Medium" />
+
+    <android.support.v7.widget.AppCompatImageView
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/red" />
+
+
+    <com.example.snosey.balto.Support.CustomTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_Medium"
+        android:gravity="center"
+        android:text="@string/questionDescription"
+        android:textColor="@color/black_8am2"
+        android:textSize="@dimen/text_Medium" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/start">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="@dimen/margin_Medium">
+
+
+                <!-- select age -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_Medium"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.example.snosey.balto.Support.CustomTextView
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:text="@string/age"
+                        android:textColor="@color/black_8am2"
+                        android:textSize="@dimen/text_Small" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_rounded"
+                        android:backgroundTint="@color/colorPrimary">
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/ageSpinner"
+                            android:layout_marginStart="@dimen/margin_Medium"
+                            android:popupBackground="@color/colorPrimary"
+                            app:backgroundTint="@color/white" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+                <!-- select age -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_Medium"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <com.example.snosey.balto.Support.CustomTextView
+                        android:layout_width="180dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:text="@string/chooseGender"
+                        android:textColor="@color/black_8am2"
+                        android:textSize="@dimen/text_Small" />
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/button_rounded"
+                        android:backgroundTint="@color/colorPrimary">
+
+                        <android.support.v7.widget.AppCompatSpinner
+                            android:layout_width="@dimen/dimen_Medium"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/genderSpinner"
+                            android:layout_marginStart="@dimen/margin_Medium"
+                            android:popupBackground="@color/colorPrimary"
+                            app:backgroundTint="@color/white" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+
+                <!-- 7ml -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_Medium"
+                    android:gravity="center_vertical"
+                    android:id="@+id/hamlLayout"
+                    android:orientation="vertical">
+
+                    <com.example.snosey.balto.Support.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:gravity="center"
+                        android:text="@string/hml"
+                        android:textColor="@color/black_8am2"
+                        android:textSize="@dimen/text_Small" />
+
+                    <RadioGroup
+                        android:id="@+id/hmlGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_Medium"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:id="@+id/hmlGroupYes"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_Medium"
+                            android:text="@string/yes" />
+
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:id="@+id/hmlGroupNo"
+                            android:text="@string/no" />
+                    </RadioGroup>
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/howFarHaml"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_Medium"
+                        android:layout_marginEnd="@dimen/margin_Medium"
+                        android:layout_marginBottom="@dimen/margin_Medium"
+                        android:background="@drawable/button_rounded"
+                        android:hint="@string/howManyMonth"
+                        android:padding="@dimen/margin_Medium"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textSize="@dimen/text_VerySmall"
+                        android:visibility="gone"
+                        app:backgroundTint="@color/colorPrimary" />
+                </LinearLayout>
+
+                <!-- hasasya -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_Medium"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <com.example.snosey.balto.Support.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:gravity="center"
+                        android:text="@string/hasasya"
+                        android:textColor="@color/black_8am2"
+                        android:textSize="@dimen/text_Small" />
+
+                    <RadioGroup
+                        android:id="@+id/hasasyaGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_Medium"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/hasasyaGroupYes"
+                            android:layout_marginEnd="@dimen/margin_Medium"
+                            android:text="@string/yes" />
+
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:id="@+id/hasasyaGroupNo"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="@string/no" />
+                    </RadioGroup>
+
+                </LinearLayout>
+
+
+                <!-- mozmna -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_Medium"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <com.example.snosey.balto.Support.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:gravity="center"
+                        android:text="@string/mozmna"
+                        android:textColor="@color/black_8am2"
+                        android:textSize="@dimen/text_Small" />
+
+                    <RadioGroup
+                        android:id="@+id/mozmnaGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_Medium"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/mozmnaGroupYes"
+                            android:layout_marginEnd="@dimen/margin_Medium"
+                            android:text="@string/yes" />
+
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:id="@+id/mozmnaGroupNo"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="@string/no" />
+                    </RadioGroup>
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/mozmnaText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_Medium"
+                        android:layout_marginEnd="@dimen/margin_Medium"
+                        android:layout_marginBottom="@dimen/margin_Medium"
+                        android:background="@drawable/button_rounded"
+                        android:hint="@string/whatIsIt"
+                        android:padding="@dimen/margin_Medium"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textSize="@dimen/text_VerySmall"
+                        android:visibility="gone"
+                        app:backgroundTint="@color/colorPrimary" />
+                </LinearLayout>
+
+
+                <!-- 7ml -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margin_Large"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical">
+
+                    <com.example.snosey.balto.Support.CustomTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/margin_Medium"
+                        android:text="@string/adwya"
+                        android:textColor="@color/black_8am2"
+                        android:textSize="@dimen/text_Small" />
+
+                    <RadioGroup
+                        android:id="@+id/adwyaGroup"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_Medium"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:id="@+id/adwyaGroupYes"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/margin_Medium"
+                            android:text="@string/yes" />
+
+
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:id="@+id/adwyaGroupNo"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            android:text="@string/no" />
+                    </RadioGroup>
+
+                    <android.support.v7.widget.AppCompatEditText
+                        android:id="@+id/adwyaText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dimen_Medium"
+                        android:layout_marginEnd="@dimen/margin_Medium"
+                        android:layout_marginBottom="@dimen/margin_Medium"
+                        android:background="@drawable/button_rounded"
+                        android:hint="@string/whatIsIt"
+                        android:padding="@dimen/margin_Medium"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textSize="@dimen/text_VerySmall"
+                        android:visibility="gone"
+                        app:backgroundTint="@color/colorPrimary" />
+                </LinearLayout>
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/consultation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/margin_Medium"
+                    android:layout_marginEnd="@dimen/margin_Medium"
+                    android:layout_marginBottom="@dimen/margin_Medium"
+                    android:background="@drawable/button_rounded"
+                    android:hint="@string/whatIsConsultation"
+                    android:padding="@dimen/margin_Medium"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    android:textSize="@dimen/text_VerySmall"
+                    app:backgroundTint="@color/colorPrimary" />
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dimen_VerySmall"
+            android:layout_alignParentBottom="true"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/margin_Medium"
+            android:background="@drawable/button_rounded"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/start"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+</LinearLayout>

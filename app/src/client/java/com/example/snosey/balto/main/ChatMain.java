@@ -10,7 +10,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -136,38 +135,29 @@ public class ChatMain extends Fragment {
                                 @Override
                                 public void processFinish(String output) {
                                     try {
-                                        JSONArray jsonArray = new JSONObject(output).getJSONArray("users");
-                                        if (jsonArray.length() == 0)
+                                        JSONArray doctorJsonArray = new JSONObject(output).getJSONArray("users");
+                                        if (doctorJsonArray.length() == 0)
                                             Toast.makeText(getActivity(), getActivity().getString(R.string.noProfissional), Toast.LENGTH_LONG).show();
                                         else {
-                                            String id_doctor = jsonArray.getJSONObject(0).getString("id");
+                                            String id_doctor = doctorJsonArray.getJSONObject(0).getString("id");
                                             String id_patient = MainActivity.jsonObject.getString("id");
                                             String Fk_SecondCategoryProgram = jsonObject.getString("id");
                                             UrlData urlDataCreateChat = new UrlData();
                                             urlDataCreateChat.add("id_doctor", id_doctor);
                                             urlDataCreateChat.add("Fk_SecondCategoryProgram", Fk_SecondCategoryProgram);
                                             urlDataCreateChat.add("id_patient", id_patient);
-                                            new GetData(new GetData.AsyncResponse() {
-                                                @Override
-                                                public void processFinish(String output) throws JSONException {
-                                                    JSONObject jsonObject = new JSONObject(output);
-                                                    if (jsonObject.getBoolean("status")) {
-                                                        String chatId = jsonObject.getJSONObject("chat").getString("id");
-                                                        FragmentManager fm = getActivity().getSupportFragmentManager();
-                                                        Bundle bundle = new Bundle();
-                                                        bundle.putString("id", chatId);
-                                                        ChatRoom fragment = new ChatRoom();
-                                                        FragmentTransaction ft = fm.beginTransaction();
-                                                        fragment.setArguments(bundle);
-                                                        ft.replace(R.id.fragment, fragment, "ChatRoom");
-                                                        ft.addToBackStack("Chat");
-                                                        ft.commit();
-                                                    } else {
-                                                        Toast.makeText(getActivity(), "Error, please try again", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                    Log.e("chatCreated", output);
-                                                }
-                                            }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.OnlineConsult.createChatApi, urlDataCreateChat.get());
+
+                                            FragmentManager fm = getActivity().getSupportFragmentManager();
+                                            Bundle bundle = new Bundle();
+                                            bundle.putString("fcm_token", doctorJsonArray.getJSONObject(0).getString("fcm_token"));
+                                            bundle.putString("url", urlDataCreateChat.get());
+                                            ChatQuestion fragment = new ChatQuestion();
+                                            FragmentTransaction ft = fm.beginTransaction();
+                                            fragment.setArguments(bundle);
+                                            ft.replace(R.id.fragment, fragment, "ChatQuestion");
+                                            ft.addToBackStack("ChatQuestion");
+                                            ft.commit();
+
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
@@ -199,4 +189,5 @@ public class ChatMain extends Fragment {
             logo = v.findViewById(R.id.logo);
         }
     }
+
 }
