@@ -34,7 +34,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_Medium"
                 android:layout_margin="@dimen/margin_Medium"
-                android:src="@drawable/chatting_en" />
+                android:src="@drawable/chatting_en"
+                android:visibility="gone" />
 
 
             <ImageView
@@ -50,7 +51,6 @@
                 android:layout_height="@dimen/dimen_Medium"
                 android:layout_margin="@dimen/margin_Medium"
                 android:src="@drawable/see_medical" />
-
 
 
             <ImageView

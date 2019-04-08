@@ -29,14 +29,13 @@
             android:orientation="vertical">
 
 
-
-
             <ImageView
                 android:id="@+id/chatting"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dimen_Medium"
                 android:layout_margin="@dimen/margin_Medium"
-                android:src="@drawable/chatting_ar" />
+                android:src="@drawable/chatting_ar"
+                android:visibility="gone" />
 
 
             <ImageView

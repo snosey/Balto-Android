@@ -7,7 +7,7 @@ android {
         config {
             keyAlias 'restaurant'
             keyPassword '01332330323'
-            storeFile file('E:/work/Android/restaurant')
+            storeFile file('/Users/mac/work/android/keys/restaurant')
             storePassword '01332330323'
         }
     }

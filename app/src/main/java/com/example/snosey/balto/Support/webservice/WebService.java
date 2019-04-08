@@ -163,7 +163,6 @@ public class WebService {
         public static String senderElbalto = "ElBalto";
         public static String message = "message";
         public static String Mobile = "Mobile";
-        // public static String fullUrl = url + "&" + username + "&" + password + "&" + langArabic + "&" + sender + "&";
     }
 
     public static class Image {
