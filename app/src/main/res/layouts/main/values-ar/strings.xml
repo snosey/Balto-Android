@@ -143,11 +143,12 @@
     <string name="mozmna">هل تعاني من أي أمراض مزمنة؟</string>
     <string name="adwya">هل تتلقى أى علاجات أو أدوية لفترات طويلة؟</string>
     <string name="whatIsIt">ما هي؟</string>
-    <string name="whatIsConsultation">ما هي استشارتك ؟</string>
+    <string name="whatIsConsultation">من فضلك وضح استفسارك الطبى هنا</string>
     <string name="chooseGender">يرجى تحديد النوع</string>
     <string name="male">ذكر</string>
     <string name="female">انثى</string>
     <string name="emptyField">برجاء ادخال البيانات المطلوبه</string>
+    <string name="alreadyReserved">تسطيع فقط الشاتنج مع الطبيب مره واحده في اليوم</string>
 
 
 </resources>

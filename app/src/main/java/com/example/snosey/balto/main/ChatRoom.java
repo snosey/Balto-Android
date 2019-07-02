@@ -19,6 +19,7 @@ import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatEditText;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import com.example.snosey.balto.BuildConfig;
 import com.example.snosey.balto.MainActivity;
 import com.example.snosey.balto.R;
 import com.example.snosey.balto.Support.CustomTextView;
+import com.example.snosey.balto.Support.image.CircleTransform;
 import com.example.snosey.balto.Support.image.FullScreen;
 import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
@@ -45,7 +47,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -92,6 +97,7 @@ public class ChatRoom extends Fragment {
     private JSONArray arrayMessage = new JSONArray();
     MessageAdapter messageAdapter = new MessageAdapter();
     String fcm_token = "";
+    String userLogo,doctorLogo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -287,7 +293,8 @@ public class ChatRoom extends Fragment {
             public void processFinish(String output) throws JSONException {
                 JSONObject jsonObject = new JSONObject(output).getJSONObject("chats");
                 arrayMessage = jsonObject.getJSONArray("messages");
-
+                userLogo=WebService.Image.fullPathImage+jsonObject.getJSONObject("patient").getString("image");
+                doctorLogo=WebService.Image.fullPathImage+jsonObject.getJSONObject("doctor").getString("image");
                 if (BuildConfig.APPLICATION_ID.contains("doctor"))
                     fcm_token = jsonObject.getJSONObject("patient").getString("fcm_token");
                 else
@@ -336,7 +343,7 @@ public class ChatRoom extends Fragment {
     }
 
     private class MessageAdapter extends RecyclerView.Adapter<MyViewHolder> {
-
+        int sender=0,reciever=1;
         @Override
         public int getItemViewType(int position) {
             int type = 0;
@@ -362,19 +369,49 @@ public class ChatRoom extends Fragment {
             View viewReciver = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.chat_row_reciver, parent, false);
             if (position == 0)
-                return new MyViewHolder(viewSender);
+                return new MyViewHolder(viewSender,sender);
             else
-                return new MyViewHolder(viewReciver);
+                return new MyViewHolder(viewReciver,reciever);
         }
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
             try {
                 JSONObject jsonObject = arrayMessage.getJSONObject(position);
+                String logo="";
+                if(holder.userType==sender)
+                {
+                    if (BuildConfig.APPLICATION_ID.contains("doctor"))
+                        logo = doctorLogo;
+                    else
+                        logo = userLogo;
+
+                }
+                else{
+                    if (BuildConfig.APPLICATION_ID.contains("doctor"))
+                        logo = userLogo;
+                    else
+                        logo = doctorLogo;
+                }
+                Picasso.with(getActivity()).load(logo).transform(new CircleTransform()).into(holder.logo);
+                //  Picasso.with(getActivity()).load(url).into(holder.image);
                 if (!jsonObject.getString("message").equals("null")) {
                     holder.text.setVisibility(View.VISIBLE);
                     holder.image.setVisibility(View.GONE);
-                    holder.text.setText(jsonObject.getString("message"));
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    sdf.setTimeZone(TimeZone.getTimeZone("GMT+02"));
+                    long time = 0;
+                    try {
+                        time = sdf.parse(jsonObject.getString("created_at")).getTime();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    long now = System.currentTimeMillis();
+
+                    CharSequence ago =
+                            DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
+
+                    holder.text.setText(jsonObject.getString("message")+"\n\n"+ago);
                 } else {
                     holder.image.setVisibility(View.VISIBLE);
                     holder.text.setVisibility(View.GONE);
@@ -406,12 +443,15 @@ public class ChatRoom extends Fragment {
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public CustomTextView text;
-        public ImageView image;
+        public ImageView image,logo;
+        public  int userType=-1;
 
-        public MyViewHolder(View v) {
+        public MyViewHolder(View v,int userType) {
             super(v);
+            this.userType=userType;
             text = (CustomTextView) v.findViewById(R.id.text);
             image = (ImageView) v.findViewById(R.id.image);
+            logo = (ImageView) v.findViewById(R.id.logo);
         }
     }
 

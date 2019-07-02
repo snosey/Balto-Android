@@ -13,7 +13,7 @@
         android:background="@color/colorPrimary"
         android:gravity="center"
         android:padding="@dimen/margin_Medium"
-        android:text="@string/chatting"
+        android:text=   "@string/chatting"
         android:textColor="@color/white"
         android:textSize="@dimen/text_Medium" />
 
@@ -341,8 +341,11 @@
                     android:background="@drawable/button_rounded"
                     android:hint="@string/whatIsConsultation"
                     android:padding="@dimen/margin_Medium"
+                    android:gravity="start"
+                    android:lines="3"
+                    android:cursorVisible="true"
                     android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColorHint="@color/black_fat7"
                     android:textSize="@dimen/text_VerySmall"
                     app:backgroundTint="@color/colorPrimary" />
             </LinearLayout>

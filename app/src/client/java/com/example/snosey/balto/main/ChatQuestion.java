@@ -194,7 +194,8 @@ public class ChatQuestion extends Fragment {
                 }
                 Log.e("chatCreated", output);
             }
-        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.OnlineConsult.createChatApi, getArguments().getString("url"));
+        }, getActivity(), true).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, WebService.OnlineConsult.createChatApi,
+                getArguments().getString("url"));
 
     }
 
@@ -210,7 +211,7 @@ public class ChatQuestion extends Fragment {
             e.printStackTrace();
         }
         new WebServiceVolley(getActivity(), Request.Method.POST, sendMessagesApi, true,
-                "Error, please try again", jsonObject, new Response.Listener<String>() {
+                getActivity().getString(R.string.alreadyReserved), jsonObject, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 if (userId.equals(patientId)) {

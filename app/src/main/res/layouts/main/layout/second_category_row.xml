@@ -39,9 +39,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:tint="@color/black_8am2"
             android:rotation="180"
-            app:srcCompat="@drawable/back"/>
+            android:tint="@color/black_8am2"
+            app:srcCompat="@drawable/back" />
 
 
     </RelativeLayout>

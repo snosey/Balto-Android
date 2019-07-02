@@ -2,9 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="end"
-    android:orientation="vertical"
+    android:orientation="horizontal"
+    android:layoutDirection="rtl"
     android:padding="@dimen/margin_Medium">
+
+
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="@dimen/dimen_Small"
+        android:layout_marginEnd="@dimen/margin_Medium"
+        android:layout_height="@dimen/dimen_Small" />
 
     <ImageView
         android:id="@+id/image"
@@ -19,4 +27,5 @@
         android:backgroundTint="@color/colorPrimary"
         android:padding="@dimen/margin_Medium"
         android:textColor="@color/white" />
+
 </LinearLayout>

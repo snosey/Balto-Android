@@ -9,6 +9,8 @@ import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -32,6 +34,7 @@ import com.example.snosey.balto.Support.webservice.GetData;
 import com.example.snosey.balto.Support.webservice.UrlData;
 import com.example.snosey.balto.Support.webservice.WebService;
 import com.example.snosey.balto.login.RegistrationActivity;
+import com.twilio.video.AudioOptions;
 import com.twilio.video.CameraCapturer;
 import com.twilio.video.ConnectOptions;
 import com.twilio.video.EncodingParameters;
@@ -198,7 +201,11 @@ public class VideoCall extends Fragment {
 
         }
         boolean enable = true;
-        localAudioTrack = LocalAudioTrack.create(getContext(), enable);
+        AudioOptions.Builder audioOptions=new AudioOptions.Builder();
+        audioOptions.echoCancellation(true);
+        audioOptions.noiseSuppression(true);
+        audioOptions.autoGainControl(true);
+        localAudioTrack = LocalAudioTrack.create(getContext(), enable,audioOptions.build());
 
 // A video track requires an implementation of VideoCapturer
         cameraCapturer = new CameraCapturer(getContext(),
@@ -304,305 +311,185 @@ public class VideoCall extends Fragment {
 
         room = Video.connect(getActivity(), connectOptions, new Room.Listener() {
             @Override
-            public void onConnected(Room room) {
-                for (RemoteParticipant participant : room.getRemoteParticipants()) {
-                    participant.setListener(new RemoteParticipant.Listener() {
+            public void onConnected(@NonNull Room room) {
+                roomConnect(room);
+            }
+
+            @Override
+            public void onConnectFailure(@NonNull Room room, @NonNull TwilioException twilioException) {
+                Log.e("onConnectFailure",twilioException.getExplanation());
+            }
+
+            @Override
+            public void onReconnecting(@NonNull Room room, @NonNull TwilioException twilioException) {
+                Log.e("onReconnecting",twilioException.getExplanation());
+            }
+
+            @Override
+            public void onReconnected(@NonNull Room room) {
+                Log.e("onReconnected",room.getName());
+            }
+
+            @Override
+            public void onDisconnected(@NonNull Room room, @Nullable TwilioException twilioException) {
+                Log.e("onDisconnected",room.getName());
+            }
+
+            @Override
+            public void onParticipantConnected(@NonNull Room room, @NonNull RemoteParticipant remoteParticipant) {
+                roomConnect(room);
+            }
+
+            @Override
+            public void onParticipantDisconnected(@NonNull Room room, @NonNull RemoteParticipant remoteParticipant) {
+                Log.e("onParticipantDisco",remoteParticipant.getIdentity());
+            }
+
+            @Override
+            public void onRecordingStarted(@NonNull Room room) {
+
+            }
+
+            @Override
+            public void onRecordingStopped(@NonNull Room room) {
+
+            }
+        });
+    }
+
+    private void roomConnect(Room room) {
+        for (RemoteParticipant participant : room.getRemoteParticipants()) {
+            participant.setListener(new RemoteParticipant.Listener() {
 
 
-                        @Override
-                        public void onAudioTrackPublished(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication) {
+                @Override
+                public void onAudioTrackPublished(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication) {
 
-                        }
+                }
 
-                        @Override
-                        public void onAudioTrackUnpublished(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication) {
+                @Override
+                public void onAudioTrackUnpublished(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication) {
 
-                        }
+                }
 
-                        @Override
-                        public void onAudioTrackSubscribed(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication, RemoteAudioTrack remoteAudioTrack) {
+                @Override
+                public void onAudioTrackSubscribed(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication, RemoteAudioTrack remoteAudioTrack) {
 
-                        }
+                }
 
-                        @Override
-                        public void onAudioTrackSubscriptionFailed(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication, TwilioException twilioException) {
+                @Override
+                public void onAudioTrackSubscriptionFailed(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication, TwilioException twilioException) {
 
-                        }
+                }
 
-                        @Override
-                        public void onAudioTrackUnsubscribed(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication, RemoteAudioTrack remoteAudioTrack) {
+                @Override
+                public void onAudioTrackUnsubscribed(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication, RemoteAudioTrack remoteAudioTrack) {
 
-                        }
+                }
 
-                        @Override
-                        public void onVideoTrackPublished(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
+                @Override
+                public void onVideoTrackPublished(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
 
-                        }
+                }
 
-                        @Override
-                        public void onVideoTrackUnpublished(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
+                @Override
+                public void onVideoTrackUnpublished(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
 
-                        }
+                }
 
-                        @Override
-                        public void onVideoTrackSubscribed(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication, RemoteVideoTrack remoteVideoTrack) {
-                            remoteVideoTrack.addRenderer(videoViewClient);
-                            try {
-                                waitingImage.setVisibility(View.GONE);
-                            } catch (Exception e) {
+                @Override
+                public void onVideoTrackSubscribed(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication, RemoteVideoTrack remoteVideoTrack) {
+                    remoteVideoTrack.addRenderer(videoViewClient);
+                    try {
+                        waitingImage.setVisibility(View.GONE);
+                    } catch (Exception e) {
 
-                            }
-                        }
+                    }
+                }
 
-                        @Override
-                        public void onVideoTrackSubscriptionFailed(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication, TwilioException twilioException) {
+                @Override
+                public void onVideoTrackSubscriptionFailed(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication, TwilioException twilioException) {
 
-                        }
+                }
 
-                        @Override
-                        public void onVideoTrackUnsubscribed(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication, RemoteVideoTrack remoteVideoTrack) {
-                            try {
-                                waitingImage.setVisibility(View.VISIBLE);
-                            } catch (Exception e) {
-
-                            }
-                        }
-
-                        @Override
-                        public void onDataTrackPublished(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication) {
-
-                        }
-
-                        @Override
-                        public void onDataTrackUnpublished(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication) {
-
-                        }
-
-                        @Override
-                        public void onDataTrackSubscribed(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication, RemoteDataTrack remoteDataTrack) {
-
-                        }
-
-                        @Override
-                        public void onDataTrackSubscriptionFailed(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication, TwilioException twilioException) {
-
-                        }
-
-                        @Override
-                        public void onDataTrackUnsubscribed(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication, RemoteDataTrack remoteDataTrack) {
-
-                        }
-
-                        @Override
-                        public void onAudioTrackEnabled(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication) {
-
-                        }
-
-                        @Override
-                        public void onAudioTrackDisabled(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication) {
-
-                        }
-
-                        @Override
-                        public void onVideoTrackEnabled(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
-                            try {
-                                waitingImage.setVisibility(View.GONE);
-                            } catch (Exception e) {
-
-                            }
-                        }
-
-                        @Override
-                        public void onVideoTrackDisabled(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
-                            try {
-                                waitingImage.setVisibility(View.VISIBLE);
-                            } catch (Exception e) {
-
-                            }
-                        }
-                    });
+                @Override
+                public void onVideoTrackUnsubscribed(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication, RemoteVideoTrack remoteVideoTrack) {
                     try {
                         waitingImage.setVisibility(View.VISIBLE);
                     } catch (Exception e) {
 
                     }
-                    break;
                 }
 
-                try {
-                    Toast.makeText(getContext(), "connect", Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getContext(), getActivity().getString(R.string.SuccessConnected), Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
+                @Override
+                public void onDataTrackPublished(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication) {
+                    Log.e("onDataTrackPublished",remoteParticipant.getIdentity());
+                }
+
+                @Override
+                public void onDataTrackUnpublished(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication) {
+                    Log.e("onDataTrackUnpublished",remoteParticipant.getIdentity());
+                }
+
+                @Override
+                public void onDataTrackSubscribed(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication, RemoteDataTrack remoteDataTrack) {
+                    Log.e("onDataTrackSubscribed",remoteParticipant.getIdentity());
 
                 }
-            }
 
-            @Override
-            public void onConnectFailure(Room room, TwilioException twilioException) {
-                try {
-                    Log.e("Error in room creation", twilioException.getMessage() + "...");
-                    twilioException.printStackTrace();
-                } catch (Exception e) {
+                @Override
+                public void onDataTrackSubscriptionFailed(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication, TwilioException twilioException) {
+                    Log.e("onDataTrackSubscript",remoteParticipant.getIdentity());
 
                 }
-                try {
-                    Toast.makeText(getContext(), twilioException + "", Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
+
+                @Override
+                public void onDataTrackUnsubscribed(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication, RemoteDataTrack remoteDataTrack) {
+                    Log.e("onDataTrackUnsubscribed",remoteParticipant.getIdentity());
                 }
-            }
 
-            @Override
-            public void onDisconnected(Room room, TwilioException twilioException) {
-
-                try {
-                    waitingImage.setVisibility(View.VISIBLE);
-                    twilioException.printStackTrace();
-                } catch (Exception e) {
-
+                @Override
+                public void onAudioTrackEnabled(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication) {
+                    Log.e("onAudioTrackEnabled",remoteParticipant.getIdentity());
                 }
-            }
 
-            @Override
-            public void onParticipantConnected(Room room, RemoteParticipant participant) {
-                participant.setListener(new RemoteParticipant.Listener() {
-
-
-                    @Override
-                    public void onAudioTrackPublished(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication) {
-
-                    }
-
-                    @Override
-                    public void onAudioTrackUnpublished(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication) {
-
-                    }
-
-                    @Override
-                    public void onAudioTrackSubscribed(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication, RemoteAudioTrack remoteAudioTrack) {
-
-                    }
-
-                    @Override
-                    public void onAudioTrackSubscriptionFailed(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication, TwilioException twilioException) {
-
-                    }
-
-                    @Override
-                    public void onAudioTrackUnsubscribed(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication, RemoteAudioTrack remoteAudioTrack) {
-
-                    }
-
-                    @Override
-                    public void onVideoTrackPublished(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
-
-                    }
-
-                    @Override
-                    public void onVideoTrackUnpublished(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
-
-                    }
-
-                    @Override
-                    public void onVideoTrackSubscribed(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication, RemoteVideoTrack remoteVideoTrack) {
-                        remoteVideoTrack.addRenderer(videoViewClient);
-                        try {
-                            waitingImage.setVisibility(View.GONE);
-                        } catch (Exception e) {
-
-                        }
-                    }
-
-                    @Override
-                    public void onVideoTrackSubscriptionFailed(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication, TwilioException twilioException) {
-
-                    }
-
-                    @Override
-                    public void onVideoTrackUnsubscribed(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication, RemoteVideoTrack remoteVideoTrack) {
-                        try {
-                            waitingImage.setVisibility(View.VISIBLE);
-                        } catch (Exception e) {
-
-                        }
-                    }
-
-                    @Override
-                    public void onDataTrackPublished(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication) {
-
-                    }
-
-                    @Override
-                    public void onDataTrackUnpublished(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication) {
-
-                    }
-
-                    @Override
-                    public void onDataTrackSubscribed(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication, RemoteDataTrack remoteDataTrack) {
-
-                    }
-
-                    @Override
-                    public void onDataTrackSubscriptionFailed(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication, TwilioException twilioException) {
-
-                    }
-
-                    @Override
-                    public void onDataTrackUnsubscribed(RemoteParticipant remoteParticipant, RemoteDataTrackPublication remoteDataTrackPublication, RemoteDataTrack remoteDataTrack) {
-
-                    }
-
-                    @Override
-                    public void onAudioTrackEnabled(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication) {
-
-                    }
-
-                    @Override
-                    public void onAudioTrackDisabled(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication) {
-
-                    }
-
-                    @Override
-                    public void onVideoTrackEnabled(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
-                        try {
-                            waitingImage.setVisibility(View.GONE);
-                        } catch (Exception e) {
-
-                        }
-                    }
-
-                    @Override
-                    public void onVideoTrackDisabled(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
-                        try {
-                            waitingImage.setVisibility(View.VISIBLE);
-                        } catch (Exception e) {
-
-                        }
-                    }
-                });
-                Toast.makeText(getContext(), getActivity().getString(R.string.Connected), Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onParticipantDisconnected(Room room, RemoteParticipant participant) {
-                try {
-                    waitingImage.setVisibility(View.VISIBLE);
-                } catch (Exception e) {
-                    e.printStackTrace();
+                @Override
+                public void onAudioTrackDisabled(RemoteParticipant remoteParticipant, RemoteAudioTrackPublication remoteAudioTrackPublication) {
+                    Log.e("onAudioTrackDisabled",remoteParticipant.getIdentity());
                 }
-                Toast.makeText(getContext(), getActivity().getString(R.string.Disconnected), Toast.LENGTH_LONG).show();
+
+                @Override
+                public void onVideoTrackEnabled(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
+                    try {
+                        waitingImage.setVisibility(View.GONE);
+                    } catch (Exception e) {
+
+                    }
+                }
+
+                @Override
+                public void onVideoTrackDisabled(RemoteParticipant remoteParticipant, RemoteVideoTrackPublication remoteVideoTrackPublication) {
+                    try {
+                        waitingImage.setVisibility(View.VISIBLE);
+                    } catch (Exception e) {
+
+                    }
+                }
+            });
+            try {
+                waitingImage.setVisibility(View.VISIBLE);
+            } catch (Exception e) {
+
             }
+            break;
+        }
 
-            @Override
-            public void onRecordingStarted(Room room) {
+        try {
+            Toast.makeText(getContext(), "connect", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getActivity().getString(R.string.SuccessConnected), Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
 
-            }
-
-            @Override
-            public void onRecordingStopped(Room room) {
-
-            }
-        });
+        }
     }
 
     @Override

@@ -310,7 +310,6 @@
                 android:layout_marginBottom="@dimen/margin_Small"
                 android:background="@drawable/shadow"
                 android:clickable="true"
-                android:visibility="gone"
                 android:focusable="true"
                 android:onClick="messages"
                 android:orientation="horizontal"

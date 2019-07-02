@@ -166,7 +166,7 @@ public class WebService {
     }
 
     public static class Image {
-        public static final String imageLink = "doctor/public/images/";
+        public static final String imageLink = "http://haseboty.com/doctor/public/images/";
         public static String baseUrl = "http://haseboty.com/";
         public static String fullPathImage = baseUrl + imageLink;
         public static final String fileName = "uploadImage.php";

@@ -128,7 +128,7 @@
     <string name="finshChatDoctor">Have you finished answering the consultation?</string>
     <string name="finshChatPatient">Has the consultation been answered?</string>
     <string name="arrow"><![CDATA[>]]></string>
-    <string name="questionDescription">In order to get you the most accurate medical advice, please answer the below questions before sending your question
+    <string name="questionDescription">In order to get you the most accurate medical advice, please answer the below questions before sending your question.
 In case the consultation is for a child, please give the information related to the child</string>
     <string name="age">Please state your age</string>
     <string name="hasasya">Do you suffer from any allergies?</string>
@@ -139,10 +139,11 @@ In case the consultation is for a child, please give the information related to 
     <string name="mozmna">Are you suffering from any chronic diseases? </string>
     <string name="adwya">Are you taking long-term treatments or medications?</string>
     <string name="whatIsIt">please state what type(s)</string>
-    <string name="whatIsConsultation">What is your consultation?</string>
+    <string name="whatIsConsultation">Please write your medical question here</string>
     <string name="chooseGender">Please state your gender</string>
     <string name="male">male</string>
     <string name="female">female</string>
     <string name="emptyField">Please insert required data</string>
+    <string name="alreadyReserved">You can chat free once daily</string>
 
 </resources>
