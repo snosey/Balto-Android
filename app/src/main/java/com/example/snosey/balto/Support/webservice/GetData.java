@@ -104,7 +104,7 @@ public class GetData extends AsyncTask<String, Void, String> {
         try {
 
             if (result.equals("null")&&dialogShown)
-                Toast.makeText(activity, activity.getString(R.string.FailToConnected), Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, activity.getString(R.string.locaFailToConnected), Toast.LENGTH_SHORT).show();
             dialog.setVisibility(View.GONE);
             delegate.processFinish(result);
             Log.e("TAG-Result: ", result); // this is expecting a response code to be sent from your server upon receiving the POST data
